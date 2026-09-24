@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --accent-hex: #18181B;
+}
+
+@layer base {
+  body {
+    @apply font-sans antialiased transition-colors duration-200;
+  }
+}
+
+/* -------------------------------------------------------------
+   THEME PALETTE DEFINITIONS (Clean, Standardized & High-Contrast)
+   ------------------------------------------------------------- */
+
+/* 1. LIGHT THEME */
+.theme-light {
+  background-color: #FAFAFA;
+  color: #09090B;
+}
+
+.theme-light .navbar-scrolled-bg {
+  background-color: rgba(250, 250, 250, 0.92);
+  color: #09090B;
+}
+
+/* 2. DARK THEME */
+.theme-dark {
+  background-color: #09090B;
+  color: #F4F4F5;
+}
+
+.theme-dark .navbar-scrolled-bg {
+  background-color: rgba(9, 9, 11, 0.92);
+  color: #F4F4F5;
+}
+
+/* 3. INK (CREMITA) THEME */
+.theme-ink {
+  background-color: #F2EDE2;
+  color: #1A1816;
+}
+
+.theme-ink .navbar-scrolled-bg {
+  background-color: rgba(242, 237, 226, 0.92);
+  color: #1A1816;
+}
+
+/* Ink Theme Utility Overrides */
+html.theme-ink body {
+  background-color: #F2EDE2;
+  color: #1A1816;
+}
+
+html.theme-ink .text-zinc-400,
+html.theme-ink .text-zinc-500 {
+  color: #5E574B;
+}
+
+html.theme-ink .border-zinc-200,
+html.theme-ink .border-zinc-300,
+html.theme-ink .border-zinc-800 {
+  border-color: #D6CEBE;
+}
+
+/* Accent Dynamic Helpers */
+.accent-bg {
+  background-color: var(--accent-hex) !important;
+}
+
+.accent-text {
+  color: var(--accent-hex) !important;
+}
+
+.accent-border {
+  border-color: var(--accent-hex) !important;
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A1A1AA;
+}
+
+.theme-dark ::-webkit-scrollbar-thumb {
+  background: #3F3F46;
+}
+
+/* Dynamic Architectural Grid Background */
+.bg-grid-pattern {
+  background-size: 48px 48px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.theme-ink .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(70, 55, 35, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(70, 55, 35, 0.08) 1px, transparent 1px);
+}
+
+/* Glass & Border Utilities */
+.glass-header {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 28s linear infinite;
+}
