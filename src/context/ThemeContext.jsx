@@ -11,19 +11,26 @@ export const ACCENT_COLORS = [
 ];
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light'); // 'light', 'dark', 'ink'
+  const [theme, setTheme] = useState('dark'); // 'light', 'dark', 'ink'
   const [accent, setAccent] = useState('monochrome');
 
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
     root.classList.remove('theme-light', 'theme-dark', 'theme-ink', 'dark');
     
     if (theme === 'dark') {
       root.classList.add('dark', 'theme-dark');
+      body.style.backgroundColor = '#09090B';
+      body.style.color = '#F4F4F5';
     } else if (theme === 'ink') {
       root.classList.add('theme-ink');
+      body.style.backgroundColor = '#F2EDE2';
+      body.style.color = '#1A1816';
     } else {
       root.classList.add('theme-light');
+      body.style.backgroundColor = '#FAFAFA';
+      body.style.color = '#09090B';
     }
   }, [theme]);
 

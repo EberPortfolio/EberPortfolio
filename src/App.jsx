@@ -46,7 +46,7 @@ function PortfolioApp() {
   };
 
   return (
-    <div className="min-h-screen bg-grid-pattern selection:bg-zinc-950 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 transition-colors duration-300">
+    <div className="min-h-screen bg-grid-pattern selection:bg-zinc-950 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 transition-colors duration-300" style={{ backgroundColor: 'inherit', color: 'inherit' }}>
       
       {/* Custom Pointer Cursor */}
       <CustomCursor cursorState={cursorState} />
