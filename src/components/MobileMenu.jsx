@@ -27,6 +27,7 @@ export const MobileMenu = ({ isOpen, onClose, onNavigate }) => {
             </span>
             <button
               onClick={onClose}
+              aria-label="Cerrar menú"
               className="p-2.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white"
             >
               <X className="w-5 h-5" />

@@ -227,7 +227,7 @@ export const EBER_ART_ITEMS = [
     title: 'Retratos Geométricos & Formas Orgánicas',
     year: '2026',
     description: 'Serie personal de exploración vectorial sobre abstracción geométrica y la figura humana.',
-    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=1200&q=80',
     tags: ['Ilustración Vectorial', 'Afiches de Autor', 'Edición Limitada']
   },
   {

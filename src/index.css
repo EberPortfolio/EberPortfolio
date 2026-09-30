@@ -189,3 +189,11 @@ html.theme-ink .navbar-scrolled-bg {
   display: inline-flex;
   animation: marquee 28s linear infinite;
 }
+
+/* Horizontal scrollers (e.g. project filter on mobile) without a visible scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

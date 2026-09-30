@@ -64,9 +64,9 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="space-y-4"
         >
-          <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
+          <div className="flex flex-wrap items-center [&>span]:whitespace-nowrap gap-x-2 gap-y-1 font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
             <span>PORTFOLIO // EBER STUDIO</span>
-            <span>—</span>
+            <span className="hidden sm:inline" aria-hidden="true">—</span>
             <span className="text-zinc-800 dark:text-zinc-200">ART DIRECTION & BRANDING</span>
           </div>
 
@@ -100,7 +100,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           className="flex flex-wrap items-center gap-4 pt-4"
         >
           <button
-            onClick={() => onNavigate('proyectos')}
+            onClick={() => onNavigate('work')}
             onMouseEnter={cursorHandlers?.onButtonHover}
             onMouseLeave={cursorHandlers?.onHoverLeave}
             className="group flex items-center gap-4 px-9 py-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs uppercase tracking-wider font-semibold transition-all hover:opacity-90 shadow-xs cursor-pointer"
@@ -111,7 +111,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           </button>
 
           <button
-            onClick={() => onNavigate('contacto')}
+            onClick={() => onNavigate('contact')}
             onMouseEnter={cursorHandlers?.onButtonHover}
             onMouseLeave={cursorHandlers?.onHoverLeave}
             className="px-8 py-4 border border-zinc-400 dark:border-zinc-700 text-zinc-950 dark:text-white font-mono text-xs uppercase tracking-wider font-semibold hover:border-zinc-950 dark:hover:border-white transition-colors cursor-pointer"

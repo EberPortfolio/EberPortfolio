@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProjectCard } from './ProjectCard';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 export const ProjectGrid = ({ projects, onSelectProject, cursorHandlers }) => {
   return (

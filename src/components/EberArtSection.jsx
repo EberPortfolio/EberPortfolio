@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EBER_ART_SECTIONS, EBER_ART_ITEMS } from '../data/projects';
 import { useTheme } from '../context/ThemeContext';
-import { Sparkles, Palette, BookOpen, PenTool } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export const EberArtSection = ({ cursorHandlers }) => {
   const [activeTab, setActiveTab] = useState('all');
@@ -42,7 +42,7 @@ export const EberArtSection = ({ cursorHandlers }) => {
           }`}
           style={{ borderRadius: '0px' }}
         >
-          Todos los Trabajos (6)
+          Todos los Trabajos ({EBER_ART_ITEMS.length})
         </button>
 
         {EBER_ART_SECTIONS.map((sec) => (

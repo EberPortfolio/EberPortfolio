@@ -10,27 +10,45 @@ export const ACCENT_COLORS = [
   { id: 'violet', name: 'Violeta', hex: '#8B5CF6', bg: 'bg-violet-500', text: 'text-violet-500', border: 'border-violet-500' }
 ];
 
+export const THEMES = ['dark', 'light', 'ink'];
+const THEME_STORAGE_KEY = 'eber-theme';
+// Keep in sync with the inline script in index.html
+const THEME_COLORS = {
+  dark: ['#09090B', '#F4F4F5'],
+  light: ['#FAFAFA', '#09090B'],
+  ink: ['#F2EDE2', '#1A1816']
+};
+
+const readStoredTheme = () => {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (THEMES.includes(stored)) return stored;
+  } catch {
+    // Storage can be blocked (private mode); fall back to the default
+  }
+  return 'dark';
+};
+
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('dark'); // 'light', 'dark', 'ink'
+  const [theme, setTheme] = useState(readStoredTheme); // 'light', 'dark', 'ink'
   const [accent, setAccent] = useState('monochrome');
 
   useEffect(() => {
     const root = document.documentElement;
-    const body = document.body;
     root.classList.remove('theme-light', 'theme-dark', 'theme-ink', 'dark');
-    
-    if (theme === 'dark') {
-      root.classList.add('dark', 'theme-dark');
-      body.style.backgroundColor = '#09090B';
-      body.style.color = '#F4F4F5';
-    } else if (theme === 'ink') {
-      root.classList.add('theme-ink');
-      body.style.backgroundColor = '#F2EDE2';
-      body.style.color = '#1A1816';
-    } else {
-      root.classList.add('theme-light');
-      body.style.backgroundColor = '#FAFAFA';
-      body.style.color = '#09090B';
+    root.classList.add(...(theme === 'dark' ? ['dark', 'theme-dark'] : [`theme-${theme}`]));
+
+    // html and body both get the colors so overscroll areas match the theme
+    const [bg, fg] = THEME_COLORS[theme];
+    for (const el of [root, document.body]) {
+      el.style.backgroundColor = bg;
+      el.style.color = fg;
+    }
+
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // Ignore: the theme just won't persist
     }
   }, [theme]);
 

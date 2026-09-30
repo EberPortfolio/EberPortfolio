@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 export const ContactSection = ({ cursorHandlers }) => {
   const { currentAccentObj } = useTheme();
   const [selectedScopes, setSelectedScopes] = useState(['Identidad Visual']);
-  const [selectedBudget, setSelectedBudget] = useState('$3,000 - $5,000 USD');
+  const [selectedBudget, setSelectedBudget] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -39,24 +39,44 @@ export const ContactSection = ({ cursorHandlers }) => {
     }
   };
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(EBER_PROFILE.email);
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EBER_PROFILE.email);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    } catch {
+      // Clipboard blocked (insecure context or permissions): open the mail client instead
+      window.location.href = `mailto:${EBER_PROFILE.email}`;
+    }
+  };
+
+  // No backend: the brief is sent through the visitor's mail client, prefilled
+  const buildMailto = () => {
+    const subject = `Consulta de proyecto — ${name}`;
+    const body = [
+      `Nombre: ${name}`,
+      `Email: ${email}`,
+      `Áreas: ${selectedScopes.join(', ')}`,
+      `Presupuesto: ${selectedBudget || 'A definir'}`,
+      '',
+      message
+    ].join('\n');
+    return `mailto:${EBER_PROFILE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    window.location.href = buildMailto();
     setSubmitted(true);
-    
+
     try {
       confetti({
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 }
       });
-    } catch (err) {
-      console.log('Confetti effect');
+    } catch {
+      // Confetti is decorative; ignore failures
     }
   };
 
@@ -137,17 +157,23 @@ export const ContactSection = ({ cursorHandlers }) => {
                 <Sparkles className="w-8 h-8" style={{ color: currentAccentObj.hex }} />
               </div>
               <h3 className="text-2xl font-light text-zinc-950 dark:text-white">
-                ¡Mensaje Enviado con Éxito!
+                ¡Tu consulta está lista!
               </h3>
               <p className="text-sm text-zinc-700 dark:text-zinc-300 max-w-md mx-auto font-light">
-                Gracias, {name || 'cliente'}. Eber revisará tu solicitud para {selectedScopes.join(', ')} y se pondrá en contacto pronto.
+                Gracias, {name || 'cliente'}. Abrimos tu correo con el mensaje completo para {selectedScopes.join(', ')}: solo falta que lo envíes.
+              </p>
+              <p className="text-xs text-zinc-500 max-w-md mx-auto font-mono">
+                ¿No se abrió? Escribí directo a{' '}
+                <a href={buildMailto()} className="underline underline-offset-2 text-zinc-800 dark:text-zinc-200">
+                  {EBER_PROFILE.email}
+                </a>
               </p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="px-6 py-3 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase font-semibold"
+                className="px-6 py-3 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase font-semibold cursor-pointer"
                 style={{ borderRadius: '0px' }}
               >
-                Enviar otra consulta
+                Volver al formulario
               </button>
             </div>
           ) : (
@@ -166,6 +192,7 @@ export const ContactSection = ({ cursorHandlers }) => {
                         type="button"
                         key={scope}
                         onClick={() => toggleScope(scope)}
+                        aria-pressed={isSelected}
                         onMouseEnter={cursorHandlers?.onButtonHover}
                         onMouseLeave={cursorHandlers?.onHoverLeave}
                         className={`px-4 py-2.5 text-xs font-mono transition-all rounded-full ${
@@ -184,14 +211,15 @@ export const ContactSection = ({ cursorHandlers }) => {
               {/* Budget Range Selector */}
               <div className="space-y-3">
                 <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
-                  2. Presupuesto estimado para la inversión
+                  2. Presupuesto estimado (opcional)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {budgetOptions.map((b) => (
                     <button
                       type="button"
                       key={b}
-                      onClick={() => setSelectedBudget(b)}
+                      onClick={() => setSelectedBudget(selectedBudget === b ? "" : b)}
+                      aria-pressed={selectedBudget === b}
                       onMouseEnter={cursorHandlers?.onButtonHover}
                       onMouseLeave={cursorHandlers?.onHoverLeave}
                       className={`p-2.5 border text-xs font-mono text-center transition-all ${
@@ -211,8 +239,10 @@ export const ContactSection = ({ cursorHandlers }) => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Nombre</label>
+                    <label htmlFor="contact-name" className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Nombre</label>
                     <input
+                      id="contact-name"
+                      autoComplete="name"
                       type="text"
                       required
                       placeholder="Tu nombre o empresa"
@@ -223,8 +253,10 @@ export const ContactSection = ({ cursorHandlers }) => {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Email de Contacto</label>
+                    <label htmlFor="contact-email" className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Email de Contacto</label>
                     <input
+                      id="contact-email"
+                      autoComplete="email"
                       type="email"
                       required
                       placeholder="ejemplo@empresa.com"
@@ -237,8 +269,9 @@ export const ContactSection = ({ cursorHandlers }) => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Detalles del Proyecto</label>
+                  <label htmlFor="contact-message" className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Detalles del Proyecto</label>
                   <textarea
+                    id="contact-message"
                     rows={4}
                     required
                     placeholder="Cuéntame brevemente sobre tus objetivos, plazos esperados y referentes..."
@@ -259,7 +292,7 @@ export const ContactSection = ({ cursorHandlers }) => {
                 style={{ borderRadius: '0px' }}
               >
                 <Send className="w-4 h-4" />
-                <span>Enviar Solicitud de Proyecto</span>
+                <span>Enviar consulta por mail</span>
               </button>
 
             </form>

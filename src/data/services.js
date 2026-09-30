@@ -42,7 +42,7 @@ export const SERVICES = [
   {
     number: '04',
     title: 'Dirección de Arte & Digital UI',
-    description: 'Supervisión estética para campañas de comunicación, sitios web minimalist adaptativos y piezas para redes con alto nivel de pulido.',
+    description: 'Supervisión estética para campañas de comunicación, sitios web minimalistas y adaptativos y piezas para redes con alto nivel de pulido.',
     skills: ['UI Web Minimalista', 'Dirección de Fotografía', 'Social Media Branding', 'Key Visuals']
   }
 ];

@@ -1,16 +1,28 @@
-# React + Vite
+# Eber · Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Portfolio de Eber, diseñador gráfico y director de arte. React 19 + Vite + Tailwind CSS v4 + Framer Motion.
 
-Currently, two official plugins are available:
+## Desarrollo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev      # servidor local
+npm run build    # build de producción en dist/
+npm run lint     # oxlint
+```
 
-## React Compiler
+## Temas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tres temas: oscuro (por defecto), claro y cremita. Se eligen con el botón del navbar y se recuerdan en `localStorage` (`eber-theme`).
 
-## Expanding the Oxlint configuration
+- Las clases `dark:` de Tailwind responden a la clase `.dark` en `<html>` (ver `@variant dark` en `src/index.css`), no al modo del sistema.
+- Los colores de fondo de cada tema están en `src/context/ThemeContext.jsx` y en el script inline de `index.html` (tienen que coincidir).
+- Los ajustes específicos de claro y cremita viven en `src/index.css`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Contenido
+
+- Proyectos y obra de autor: `src/data/projects.js`
+- Perfil, servicios, redes y email: `src/data/services.js`
+- Cada caso de estudio tiene link propio: `/#caso/<id>`.
+
+El formulario de contacto no tiene backend: arma el mail con los datos completados y lo abre en el cliente de correo del visitante.

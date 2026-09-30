@@ -1,10 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CATEGORIES } from '../data/projects';
-import { useTheme } from '../context/ThemeContext';
 
 export const ProjectFilter = ({ activeCategory, onSelectCategory, cursorHandlers }) => {
-  const { currentAccentObj } = useTheme();
 
   return (
     <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar scroll-smooth">

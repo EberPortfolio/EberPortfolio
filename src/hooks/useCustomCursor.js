@@ -1,49 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
+// Only the hover variant lives in React state; the pointer position is tracked
+// inside CustomCursor with motion values so mouse moves never re-render the app.
 export const useCustomCursor = () => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
   const [cursorText, setCursorText] = useState('');
-  const [isHovered, setIsHovered] = useState(false);
-  const [cursorVariant, setCursorVariant] = useState('default'); // 'default', 'project', 'button', 'drag'
+  const [cursorVariant, setCursorVariant] = useState('default'); // 'default', 'project', 'button'
 
-  useEffect(() => {
-    // Only activate custom cursor on non-touch devices
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-    if (isTouchDevice) return;
-
-    const handleMouseMove = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  const onProjectHover = (text = 'VER CASO') => {
-    setIsHovered(true);
+  const onProjectHover = useCallback((text = 'VER CASO') => {
     setCursorText(text);
     setCursorVariant('project');
-  };
+  }, []);
 
-  const onButtonHover = () => {
-    setIsHovered(true);
+  const onButtonHover = useCallback(() => {
     setCursorText('');
     setCursorVariant('button');
-  };
+  }, []);
 
-  const onHoverLeave = () => {
-    setIsHovered(false);
+  const onHoverLeave = useCallback(() => {
     setCursorText('');
     setCursorVariant('default');
-  };
+  }, []);
 
-  return {
-    position,
+  return useMemo(() => ({
     cursorText,
-    isHovered,
     cursorVariant,
     onProjectHover,
     onButtonHover,
     onHoverLeave
-  };
+  }), [cursorText, cursorVariant, onProjectHover, onButtonHover, onHoverLeave]);
 };

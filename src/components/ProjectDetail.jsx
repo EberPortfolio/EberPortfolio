@@ -12,6 +12,14 @@ export const ProjectDetail = ({ project, onClose, onSelectProject, cursorHandler
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [project.id]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   if (!project) return null;
 
   const currentIndex = PROJECTS.findIndex(p => p.id === project.id);
