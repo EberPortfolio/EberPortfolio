@@ -16,7 +16,7 @@ export const ProjectFilter = ({ activeCategory, onSelectCategory, cursorHandlers
             onClick={() => onSelectCategory(category.id)}
             onMouseEnter={cursorHandlers?.onButtonHover}
             onMouseLeave={cursorHandlers?.onHoverLeave}
-            className={`relative px-4 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-colors whitespace-nowrap font-medium ${
+            className={`relative isolate px-4 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-colors whitespace-nowrap font-medium ${
               isActive 
                 ? 'text-white dark:text-zinc-950 font-semibold shadow-xs' 
                 : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white border border-zinc-300 dark:border-zinc-800'

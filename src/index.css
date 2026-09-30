@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
+/* CRITICAL: Tailwind v4 dark mode via .dark class (not system media query) */
+@variant dark (&:where(.dark, .dark *));
+
 :root {
-  --accent-hex: #18181B;
+  --accent-hex: currentColor;
 }
 
 @layer base {
@@ -102,6 +105,17 @@ html.theme-ink .border-zinc-200,
 html.theme-ink .border-zinc-300,
 html.theme-ink .border-zinc-800 {
   border-color: #D6CEBE;
+}
+
+/* Warm surfaces: pure white/zinc cards clash with the cream background */
+html.theme-ink .bg-white {
+  background-color: #FBF8F1;
+}
+html.theme-ink .bg-zinc-50 {
+  background-color: #F6F1E6;
+}
+html.theme-ink .bg-zinc-100 {
+  background-color: #EAE4D8;
 }
 
 html.theme-ink .navbar-scrolled-bg {
