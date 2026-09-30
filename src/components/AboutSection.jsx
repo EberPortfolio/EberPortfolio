@@ -11,6 +11,10 @@ const reveal = {
   transition: { duration: 0.6, ease: 'easeOut' }
 };
 
+// Captions sit on the photo so image and text columns end on the same line
+const captionClass =
+  'absolute bottom-3 px-3 py-2 bg-zinc-950/75 backdrop-blur-sm text-white font-mono text-[10px] sm:text-[11px] uppercase tracking-widest';
+
 const Photo = ({ photo, sizes, className = '' }) => (
   <img
     {...cloudinaryImage(photo.publicId, { sizes })}
@@ -29,23 +33,21 @@ export const AboutSection = ({ onNavigate, cursorHandlers }) => {
   return (
     <section id="sobre-mi" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-300 dark:border-zinc-800">
 
-      {/* Intro: portrait + headline */}
+      {/* Intro: portrait + headline, both ending on the same baseline */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
 
-        <motion.figure {...reveal} className="lg:col-span-5">
-          <div className="relative aspect-[4/5] overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
-            <Photo photo={portrait} sizes="(min-width: 1024px) 40vw, 100vw" />
-          </div>
-          <figcaption className="mt-3 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-widest text-zinc-500">
-            <span>Eber · {EBER_PROFILE.title}</span>
-            <span className="flex items-center gap-1.5 shrink-0 text-emerald-700 dark:text-emerald-400 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        <motion.figure {...reveal} className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
+          <Photo photo={portrait} sizes="(min-width: 1024px) 40vw, 100vw" />
+          <figcaption className={`${captionClass} inset-x-3 flex items-center justify-between gap-4`}>
+            <span>Eber · Diseño &amp; ilustración</span>
+            <span className="flex items-center gap-1.5 shrink-0 text-emerald-300 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               Disponible
             </span>
           </figcaption>
         </motion.figure>
 
-        <motion.div {...reveal} className="lg:col-span-7 space-y-8 lg:pb-10">
+        <motion.div {...reveal} className="lg:col-span-7 space-y-8">
           <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
             Sobre mí
           </span>
@@ -68,10 +70,10 @@ export const AboutSection = ({ onNavigate, cursorHandlers }) => {
         </motion.div>
       </div>
 
-      {/* Pillars + second photo */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 mt-20 lg:mt-28 items-start">
+      {/* Pillars + second photo: the photo stretches so both columns share top and bottom edges */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 mt-20 lg:mt-28 lg:items-stretch">
 
-        <motion.div {...reveal} className="lg:col-span-7 lg:order-2">
+        <motion.div {...reveal} className="lg:col-span-7 lg:order-2 flex flex-col">
           <ol className="divide-y divide-zinc-300 dark:divide-zinc-800 border-y border-zinc-300 dark:border-zinc-800">
             {ABOUT.pillars.map((pillar, idx) => (
               <li key={pillar.title} className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_13rem_1fr] gap-x-4 gap-y-2 py-7">
@@ -106,11 +108,13 @@ export const AboutSection = ({ onNavigate, cursorHandlers }) => {
           </div>
         </motion.div>
 
-        <motion.figure {...reveal} className="lg:col-span-5 lg:order-1 max-w-md lg:max-w-none">
-          <div className="aspect-[4/3] lg:aspect-[3/4] overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
-            <Photo photo={outdoors} sizes="(min-width: 1024px) 40vw, 90vw" className="object-[center_80%] lg:object-center" />
-          </div>
-          <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-widest text-zinc-500">
+        <motion.figure {...reveal} className="lg:col-span-5 lg:order-1 relative aspect-[4/3] lg:aspect-auto overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
+          <Photo
+            photo={outdoors}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="object-[center_80%] lg:absolute lg:inset-0"
+          />
+          <figcaption className={`${captionClass} left-3`}>
             Siempre con algo para dibujar.
           </figcaption>
         </motion.figure>
