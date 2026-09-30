@@ -114,9 +114,6 @@ export const AboutSection = ({ onNavigate, cursorHandlers }) => {
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-[center_80%] lg:absolute lg:inset-0"
           />
-          <figcaption className={`${captionClass} left-3`}>
-            Siempre con algo para dibujar.
-          </figcaption>
         </motion.figure>
       </div>
 
