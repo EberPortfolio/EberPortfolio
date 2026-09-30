@@ -13,14 +13,17 @@ const slides = (...numbers) => numbers.map((n) => `web_47-${String(n).padStart(2
 export const WORK_PROJECTS = [
   {
     id: '47-street',
-    title: 'I ♥ 47',
+    title: '47 Street',
     client: '47 Street',
     category: 'universos',
     categoryLabel: 'Universo de marca · Personajes',
+    subtitle: 'Línea I ♥ 47',
     tagline: 'Un universo de personajes para la línea I ♥ 47, de las bolsas de compra a la papelería y las mochilas.',
     summary: 'Creación y desarrollo del universo visual de I ♥ 47, la línea de 47 Street. Personajes propios —Amanda, Renata y Olivia— que dan vida a bolsas, estampas, agendas, cuadernos, stickers y mochilas, junto con colaboraciones con licencias como Hello Kitty y Snoopy.',
     thumbnail: 'web_47-01',
+    thumbnailGravity: 'west', // the left panel of the board works as a standalone cover
     coverImage: 'web_47-03',
+    heroImage: 'web_47-03', // shown in the home hero; the card uses the thumbnail
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Personajes', 'Bolsas & troqueles', 'Estampas', 'Papelería', 'Mochilas', 'Licencias'],
     sections: [

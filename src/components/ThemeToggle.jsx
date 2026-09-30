@@ -1,26 +1,20 @@
 import React from 'react';
-import { useTheme, THEMES } from '../context/ThemeContext';
-import { Sun, Moon, Feather } from 'lucide-react';
-
-const THEME_LABELS = { dark: 'Oscuro', light: 'Claro', ink: 'Cremita' };
+import { Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
-  const nextTheme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
-  const label = `Tema: ${THEME_LABELS[theme]}. Cambiar a ${THEME_LABELS[nextTheme]}`;
+  const { theme, toggleTheme } = useTheme();
+  const label = theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro';
 
   return (
-    <div className="flex items-center gap-1">
-      <button
-        onClick={() => setTheme(nextTheme)}
-        className="p-2 text-zinc-500 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
-        title={label}
-        aria-label={label}
-      >
-        {theme === 'light' && <Sun className="w-4 h-4 text-zinc-900" />}
-        {theme === 'dark' && <Moon className="w-4 h-4 text-white" />}
-        {theme === 'ink' && <Feather className="w-4 h-4 text-amber-900" />}
-      </button>
-    </div>
+    <button
+      type="button"
+      onClick={toggleTheme}
+      title={label}
+      aria-label={label}
+      className="p-2 -m-2 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
+    >
+      {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+    </button>
   );
 };

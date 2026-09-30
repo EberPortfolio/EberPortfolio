@@ -1,103 +1,74 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { ThemeToggle } from './ThemeToggle';
-import { Menu } from 'lucide-react';
+import { RollText } from './RollText';
+import { containerClass } from './SectionHeader';
+import { fullName } from '../data/profile';
 
-export const Navbar = ({ onOpenMobileMenu, onNavigate, cursorHandlers }) => {
+export const NAV_LINKS = [
+  { id: 'work', label: 'Trabajos' },
+  { id: 'eber-art', label: 'Eber Art' },
+  { id: 'about-me', label: 'Sobre mí' },
+  { id: 'contact', label: 'Contacto' }
+];
+
+const itemClass = 'group text-[13px] font-medium uppercase tracking-[0.02em] text-zinc-950 dark:text-white cursor-pointer';
+
+export const Navbar = ({ onOpenMobileMenu, onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 16);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const leftNavLinks = [
-    { id: 'work', label: 'WORK' },
-    { id: 'eber-art', label: 'EBER ART', isArt: true }
-  ];
-
-  const rightNavLinks = [
-    { id: 'about-me', label: 'ABOUT ME' },
-    { id: 'contact', label: 'CONTACT' }
-  ];
-
   return (
-    <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-      scrolled 
-        ? 'py-4 glass-header navbar-scrolled-bg border-b border-zinc-300/60 dark:border-zinc-800/60 shadow-xs' 
-        : 'py-8 bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between relative">
-        
-        {/* Mobile Left Trigger */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={onOpenMobileMenu}
-            onMouseEnter={cursorHandlers?.onButtonHover}
-            onMouseLeave={cursorHandlers?.onHoverLeave}
-            className="p-1 text-zinc-950 dark:text-white"
-            aria-label="Abrir Menú"
-          >
-            <Menu className="w-6 h-6" />
+    <motion.header
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-500 border-b ${
+        scrolled
+          ? 'bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-zinc-200 dark:border-zinc-900'
+          : 'bg-transparent border-transparent'
+      }`}
+    >
+      <div className={`${containerClass} h-16 flex items-center justify-between gap-6`}>
+        <div className="flex items-center gap-10">
+          <button type="button" onClick={() => onNavigate('home')} className={itemClass}>
+            <RollText>{fullName}</RollText>
           </button>
-        </div>
-
-        {/* Left Desktop Nav Links (WORK, EBER ART) */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-medium w-1/3">
-          {leftNavLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => onNavigate(link.id)}
-              onMouseEnter={cursorHandlers?.onButtonHover}
-              onMouseLeave={cursorHandlers?.onHoverLeave}
-              className="relative py-1 hover:text-zinc-500 transition-colors group flex items-center gap-1.5 cursor-pointer text-left font-semibold"
-            >
-              <span>{link.label}</span>
-              {link.isArt && (
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" title="Proyectos de Autor" />
-              )}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-zinc-950 dark:bg-white transition-all duration-300 group-hover:w-full" />
-            </button>
-          ))}
-        </nav>
-
-        {/* Center Prominent Brand Statement: EBER */}
-        <div className="flex-1 md:w-1/3 text-center">
-          <button
-            onClick={() => onNavigate('home')}
-            onMouseEnter={cursorHandlers?.onButtonHover}
-            onMouseLeave={cursorHandlers?.onHoverLeave}
-            className="inline-block group cursor-pointer"
-          >
-            <span className="font-sans font-light text-2xl sm:text-3xl md:text-4xl tracking-[0.25em] uppercase text-zinc-950 dark:text-white transition-transform group-hover:scale-105 inline-block">
-              EBER
+          <span className="hidden lg:inline-flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.02em] text-zinc-950 dark:text-white">
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-60 motion-reduce:animate-none" />
+              <span className="relative w-2 h-2 rounded-full bg-emerald-500" />
             </span>
-          </button>
+            Disponible
+          </span>
         </div>
 
-        {/* Right Desktop Nav Links (ABOUT ME, CONTACT) + Theme Toggle */}
-        <div className="flex items-center justify-end gap-8 w-auto md:w-1/3">
-          <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-medium">
-            {rightNavLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => onNavigate(link.id)}
-                onMouseEnter={cursorHandlers?.onButtonHover}
-                onMouseLeave={cursorHandlers?.onHoverLeave}
-                className="relative py-1 hover:text-zinc-500 transition-colors group cursor-pointer text-left font-semibold"
-              >
-                <span>{link.label}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-zinc-950 dark:bg-white transition-all duration-300 group-hover:w-full" />
+        <div className="flex items-center gap-7">
+          <nav aria-label="Principal" className="hidden md:flex items-center gap-7">
+            {NAV_LINKS.map((link) => (
+              <button key={link.id} type="button" onClick={() => onNavigate(link.id)} className={itemClass}>
+                <RollText>{link.label}</RollText>
               </button>
             ))}
           </nav>
 
           <ThemeToggle />
-        </div>
 
+          <button
+            type="button"
+            onClick={onOpenMobileMenu}
+            className="md:hidden text-[13px] font-medium uppercase tracking-[0.02em] text-zinc-950 dark:text-white cursor-pointer"
+          >
+            Menú
+          </button>
+        </div>
       </div>
-    </header>
+    </motion.header>
   );
 };
