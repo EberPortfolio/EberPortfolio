@@ -1,53 +1,68 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowDown } from 'lucide-react';
 import { KineticHeadline } from './KineticHeadline';
-import { RotatingBadge } from './RotatingBadge';
 import { containerClass } from './SectionHeader';
 
-const HEADLINE = ['Diseñador gráfico,', 'ilustrador', '& tipógrafo'];
+const HEADLINE = ['DISEÑO &', 'DIRECCIÓN'];
 
 const fadeUp = (delay) => ({
   initial: { opacity: 0, y: 14 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }
+  transition: { duration: 0.85, delay, ease: [0.16, 1, 0.3, 1] }
 });
 
 export const Hero = ({ onNavigate }) => {
   const sectionRef = useRef(null);
-  // As the hero leaves, the headline drifts up and fades: a quiet parallax
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const headlineY = useTransform(scrollYProgress, [0, 1], ['0%', '-18%']);
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.15]);
+  const headlineY = useTransform(scrollYProgress, [0, 1], ['0%', '-15%']);
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
 
   return (
     <section
       id="home"
       ref={sectionRef}
-      className={`${containerClass} min-h-[100svh] flex flex-col justify-between pt-28 sm:pt-32 pb-8 sm:pb-10`}
+      className={`${containerClass} min-h-[90svh] flex flex-col justify-center pt-28 sm:pt-36 pb-16 sm:pb-24`}
     >
-      <motion.div style={{ y: headlineY, opacity: headlineOpacity }}>
-        <KineticHeadline
-          lines={HEADLINE}
-          className="uppercase text-[10.8vw] sm:text-[9.2vw] lg:text-[8.2vw] leading-[0.9] tracking-[-0.045em] text-zinc-950 dark:text-white select-none"
-        />
-      </motion.div>
-
-      <div className="grid grid-cols-12 gap-x-5 gap-y-5 items-start border-t border-zinc-300 dark:border-zinc-800 pt-6">
-        <motion.p {...fadeUp(0.6)} className="col-span-6 sm:col-span-3 label pt-1">
-          Qué hago
-        </motion.p>
-        <motion.p
-          {...fadeUp(0.7)}
-          className="order-3 sm:order-2 col-span-12 sm:col-span-6 lg:col-span-5 text-base sm:text-xl leading-snug text-zinc-800 dark:text-zinc-200 text-pretty"
-        >
-          Creo identidades visuales, conceptos y universos de marca, y dirijo arte para la industria textil, el entretenimiento y los contenidos infantiles.
-        </motion.p>
-        <motion.div {...fadeUp(0.85)} className="order-2 sm:order-3 col-span-6 sm:col-span-3 lg:col-span-4 flex justify-end sm:self-end">
-          <RotatingBadge
-            text="Ver trabajos · Ver trabajos · "
-            label="Ver trabajos"
-            onClick={() => onNavigate('work')}
+      {/* Titular Principal & Bajada */}
+      <div className="my-auto py-8 sm:py-14 text-center select-none">
+        <motion.div style={{ y: headlineY, opacity: headlineOpacity }}>
+          <KineticHeadline
+            lines={HEADLINE}
+            baseWeight={900}
+            className="uppercase font-black text-[clamp(2.6rem,14.5vw,13.8rem)] leading-[0.82] tracking-[-0.055em] text-zinc-950 dark:text-white"
           />
+        </motion.div>
+
+        {/* Bajada Descriptiva */}
+        <motion.p
+          {...fadeUp(0.35)}
+          className="mt-8 sm:mt-10 max-w-2xl mx-auto text-xs sm:text-sm font-mono uppercase tracking-[0.09em] text-zinc-600 dark:text-zinc-400 leading-relaxed text-balance"
+        >
+          Identidades visuales, conceptos de marca y dirección de arte para la industria textil, el entretenimiento y los contenidos infantiles.
+        </motion.p>
+
+        {/* Únicamente dos CTAs */}
+        <motion.div
+          {...fadeUp(0.5)}
+          className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5"
+        >
+          <button
+            type="button"
+            onClick={() => onNavigate('work')}
+            className="group px-7 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase tracking-wider font-semibold hover:opacity-90 transition-all cursor-pointer inline-flex items-center gap-2.5 shadow-xs"
+          >
+            <span>Ver trabajos</span>
+            <ArrowDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('contact')}
+            className="px-7 py-3.5 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white text-xs font-mono uppercase tracking-wider font-semibold hover:border-zinc-950 dark:hover:border-white transition-colors cursor-pointer"
+          >
+            Contacto
+          </button>
         </motion.div>
       </div>
     </section>

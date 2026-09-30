@@ -10,8 +10,10 @@ import { EberArtSection } from './components/EberArtSection';
 import { AboutSection } from './components/AboutSection';
 import { ExperienceSection } from './components/ExperienceSection';
 import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
 import { WORK_PROJECTS } from './data/projects';
+import { EXPERIENCE, TEACHING } from './data/profile';
+
+const hasExperience = EXPERIENCE.length > 0 || TEACHING.length > 0;
 import { initSmoothScroll, scrollToTarget } from './lib/smoothScroll';
 
 // Case studies are addressable as #caso/<id> so they can be shared and the
@@ -144,16 +146,14 @@ function PortfolioApp() {
         ) : (
           <main key="main-gallery" ref={handleGalleryMount}>
             <Hero onNavigate={handleNavigate} />
-            <WorkSection onOpenProject={openProject} />
-            <EberArtSection />
-            <AboutSection onNavigate={handleNavigate} />
-            <ExperienceSection />
-            <ContactSection />
+            <WorkSection index="01" onOpenProject={openProject} />
+            <EberArtSection index="02" />
+            <AboutSection index="03" onNavigate={handleNavigate} />
+            <ExperienceSection index="04" />
+            <ContactSection index={hasExperience ? '05' : '04'} onNavigate={handleNavigate} />
           </main>
         )}
       </AnimatePresence>
-
-      <Footer onNavigate={handleNavigate} />
     </div>
   );
 }

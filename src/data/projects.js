@@ -8,7 +8,9 @@ export const CATEGORIES = [
 
 // Images are Cloudinary public IDs (see src/lib/cloudinary.js).
 // Optional fields (year, location, role, colorPalette, typography) render only when present.
-const slides = (...numbers) => numbers.map((n) => `web_47-${String(n).padStart(2, '0')}`);
+// Board public IDs follow web_<project>-NN
+const boards = (project, ...numbers) => numbers.map((n) => `web_${project}-${String(n).padStart(2, '0')}`);
+const slides = (...numbers) => boards('47', ...numbers);
 
 export const WORK_PROJECTS = [
   {
@@ -49,6 +51,77 @@ export const WORK_PROJECTS = [
       }
     ],
     featured: true
+  },
+  {
+    id: 'owoko',
+    title: 'Owoko',
+    client: 'Owoko',
+    category: 'universos',
+    categoryLabel: 'Identidad · Personajes · Indumentaria infantil',
+    tagline: 'Una marca de indumentaria infantil construida alrededor de una familia de personajes.',
+    summary: 'Identidad, personajes y sistema gráfico para Owoko: del logo y la familia de personajes a las gráficas de las prendas, el e-commerce, las piezas editoriales y el packaging.',
+    thumbnail: 'web_owoko-04',
+    coverImage: 'web_owoko-01',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Identidad', 'Personajes', 'Gráficas textiles', 'E-commerce', 'Editorial', 'Packaging'],
+    sections: [
+      {
+        title: 'Identidad y personajes',
+        text: 'El logo y una familia de personajes con nombre propio, pensada para vivir en cualquier pieza de la marca.',
+        images: boards('owoko', 2, 4, 5, 6, 7, 8, 9, 10)
+      },
+      {
+        title: 'Gráficas y prendas',
+        text: 'Gráficas, estampados y bordados aplicados a la colección, del diseño a la prenda fotografiada.',
+        images: boards('owoko', 3, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29)
+      },
+      {
+        title: 'Digital',
+        text: 'El universo de la marca en el e-commerce y las redes.',
+        images: boards('owoko', 18, 19, 20)
+      },
+      {
+        title: 'Editorial y packaging',
+        text: 'Libros para colorear, piezas impresas y bolsas.',
+        images: boards('owoko', 21, 22, 23, 24, 25, 30)
+      }
+    ]
+  },
+  {
+    id: 'violetta',
+    title: 'Violetta',
+    client: 'Disney',
+    category: 'ilustracion',
+    categoryLabel: 'Ilustración · Apertura de serie',
+    tagline: 'Ilustraciones, doodles y storyboard para la apertura de la serie Violetta.',
+    summary: 'El proyecto recorre el sketchbook de ilustraciones y doodles, los objetos ilustrados que el equipo de motion modeló en 3D y el storyboard de la secuencia.',
+    thumbnail: 'web_violetta-03',
+    thumbnailGravity: 'west',
+    coverImage: 'web_violetta-01',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Ilustración', 'Doodles', 'Objetos para 3D', 'Storyboard'],
+    sections: [
+      {
+        title: 'La apertura',
+        text: 'La secuencia terminada.',
+        video: 'disney_-_opening_violetta_Original'
+      },
+      {
+        title: 'Ilustración y doodles',
+        text: 'Un sketchbook de ilustraciones y un sistema de doodles —música, mariposas, corazones, instrumentos— que dan el tono de la apertura.',
+        images: boards('violetta', 2, 3, 4, 5, 6, 7, 8, 10, 11, 12)
+      },
+      {
+        title: 'Objetos y escenografía',
+        text: 'Eber ilustró los objetos y el equipo de motion los modeló en 3D para armar los sets.',
+        images: boards('violetta', 13, 14, 15, 16, 17)
+      },
+      {
+        title: 'Storyboard, títulos y rodaje',
+        text: 'El storyboard de la secuencia, los títulos del elenco y el rodaje en chroma.',
+        images: boards('violetta', 9, 18, 19, 20, 21, 22)
+      }
+    ]
   }
 ];
 

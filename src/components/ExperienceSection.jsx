@@ -21,12 +21,12 @@ const Timeline = ({ title, items, placeKey }) => (
 );
 
 // Hidden until Eber's experience is filled in src/data/profile.js
-export const ExperienceSection = () => {
+export const ExperienceSection = ({ index }) => {
   if (EXPERIENCE.length === 0 && TEACHING.length === 0) return null;
 
   return (
     <section id="trayectoria" className={sectionClass}>
-      <SectionHeader title="Trayectoria" />
+      <SectionHeader index={index} title="Trayectoria" />
       <div className="space-y-14">
         {EXPERIENCE.length > 0 && <Timeline title="Experiencia" items={EXPERIENCE} placeKey="company" />}
         {TEACHING.length > 0 && <Timeline title="Docencia" items={TEACHING} placeKey="institution" />}

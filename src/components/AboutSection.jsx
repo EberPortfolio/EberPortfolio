@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowDown } from 'lucide-react';
-import { ABOUT } from '../data/profile';
+import { ABOUT, EBER_PROFILE } from '../data/profile';
 import { cloudinaryImage } from '../lib/cloudinary';
 import { SectionHeader, sectionClass } from './SectionHeader';
 
@@ -16,24 +16,29 @@ const Photo = ({ photo, sizes, className = '' }) => (
   />
 );
 
-export const AboutSection = ({ onNavigate }) => {
+export const AboutSection = ({ onNavigate, index }) => {
   const { portrait, outdoors } = ABOUT.photos;
 
   return (
     <section id="about-me" className={sectionClass}>
-      <SectionHeader title="Sobre mí" />
+      <SectionHeader index={index} title="Sobre mí" />
 
-      {/* Intro: portrait + headline, both ending on the same line */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+      {/* Intro: the text starts level with the portrait and stays pinned while it scrolls past */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         <figure className="reveal-clip lg:col-span-5 aspect-[4/5] overflow-hidden bg-zinc-200 dark:bg-zinc-900">
           <Photo photo={portrait} sizes="(min-width: 1024px) 40vw, 100vw" />
         </figure>
 
-        <div className="reveal-up lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-6 lg:sticky lg:top-24">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500 font-medium">
+            <span>PERFIL & VISIÓN</span>
+            <span>—</span>
+            <span>HOLA, SOY EBER</span>
+          </div>
           <p className="text-3xl sm:text-5xl font-medium tracking-[-0.03em] leading-[1.08] text-zinc-950 dark:text-white text-balance">
             {ABOUT.headline}
           </p>
-          <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
             {ABOUT.lead}
           </p>
         </div>
@@ -76,6 +81,13 @@ export const AboutSection = ({ onNavigate }) => {
             className="object-[center_80%] lg:absolute lg:inset-0"
           />
         </figure>
+      </div>
+
+      {/* Editorial Meta Bar al pie de Sobre mí (inspirada en la imagen 1 y 2) */}
+      <div className="mt-16 pt-5 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-4 text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+        <span>EBER // DISEÑO GRÁFICO, ILUSTRACIÓN & TIPOGRAFÍA</span>
+        <span className="hidden sm:inline">DIRECCIÓN DE ARTE · DOCENCIA UNIVERSITARIA</span>
+        <span>{EBER_PROFILE.location}</span>
       </div>
     </section>
   );

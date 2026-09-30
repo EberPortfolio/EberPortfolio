@@ -5,7 +5,7 @@ import { ProjectFilter } from './ProjectFilter';
 import { ProjectGrid } from './ProjectGrid';
 import { SectionHeader, sectionClass } from './SectionHeader';
 
-export const WorkSection = ({ onOpenProject }) => {
+export const WorkSection = ({ onOpenProject, index }) => {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = CATEGORIES
@@ -21,7 +21,7 @@ export const WorkSection = ({ onOpenProject }) => {
 
   return (
     <section id="work" className={sectionClass}>
-      <SectionHeader title="Trabajos seleccionados" count={WORK_PROJECTS.length}>
+      <SectionHeader index={index} title="Trabajos seleccionados" count={WORK_PROJECTS.length}>
         {/* Filtering only makes sense once there are two or more categories */}
         {categories.length > 2 && (
           <ProjectFilter
@@ -34,11 +34,12 @@ export const WorkSection = ({ onOpenProject }) => {
       </SectionHeader>
 
       <ProjectGrid>
-        {projects.map((project) => (
+        {projects.map((project, idx) => (
           <ProjectCard
             key={project.id}
             image={project.thumbnail}
             gravity={project.thumbnailGravity}
+            index={String(idx + 1).padStart(2, '0')}
             title={project.title}
             meta={project.categoryLabel}
             onClick={() => onOpenProject(project)}

@@ -3,6 +3,21 @@
 /* Tailwind v4 reads theme tokens from CSS (tailwind.config.js is not used) */
 @theme {
   --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+  /* Accent is monochrome (ink on paper) */
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+}
+
+:root {
+  --accent: #09090b;
+  --accent-foreground: #ffffff;
+}
+
+.dark {
+  --accent: #fafafa;
+  --accent-foreground: #09090b;
 }
 
 /* Dark mode follows the .dark class set by ThemeContext, not the OS setting */
@@ -23,16 +38,13 @@
   }
 
   ::selection {
-    @apply bg-zinc-950 text-white;
+    @apply bg-accent text-accent-foreground;
   }
 
-  .dark ::selection {
-    @apply bg-white text-zinc-950;
-  }
 
   /* Visible keyboard focus everywhere, invisible for mouse clicks */
   :focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 
@@ -52,7 +64,7 @@
 
 /* Small uppercase labels: the only "meta" style in the site */
 @utility label {
-  @apply text-xs font-medium uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-400;
+  @apply text-sm text-zinc-500 dark:text-zinc-400;
 }
 
 /* Scroll-driven reveals. Pure CSS: where unsupported (or with reduced motion)
@@ -94,14 +106,16 @@
 
 /* Link underline that draws in from the left on hover */
 @utility link-draw {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0% 1px;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-size: 0% 2px;
   background-position: 0 100%;
   background-repeat: no-repeat;
   transition: background-size 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   &:hover,
+  .group:hover &,
+  .group:focus-visible &,
   &:focus-visible {
-    background-size: 100% 1px;
+    background-size: 100% 2px;
   }
 }
 

@@ -24,3 +24,12 @@ export const cloudinaryImage = (publicId, { sizes = '100vw', widths = DEFAULT_WI
     sizes
   };
 };
+
+// Video source + poster frame (a few seconds in) for <video>
+export const cloudinaryVideo = (publicId, { width = 1600 } = {}) => {
+  const base = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload`;
+  return {
+    src: `${base}/q_auto,vc_auto,w_${width},c_limit/${publicId}.mp4`,
+    poster: `${base}/so_4,f_auto,q_auto,w_${width}/${publicId}.jpg`
+  };
+};

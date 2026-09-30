@@ -40,7 +40,7 @@ export const ABOUT = {
       height: 1517
     }
   },
-  headline: 'Transformo ideas en conceptos visuales sólidos, coherentes y con personalidad.',
+  headline: 'Me interesa transformar ideas en conceptos visuales sólidos, coherentes y con personalidad.',
   lead: 'Soy diseñador gráfico, ilustrador y tipógrafo, con más de 10 años creando identidades visuales, conceptos y universos de marca. Trabajé en dirección de arte para la industria textil, el entretenimiento y los contenidos infantiles.',
   pillars: [
     {
@@ -53,7 +53,7 @@ export const ABOUT = {
     },
     {
       title: 'Docencia universitaria',
-      text: 'Enseño conceptualización, tipografía y nuevos medios: una práctica que integra el oficio con una mirada reflexiva sobre el diseño.'
+      text: 'Como docente universitario profundicé en la conceptualización, la tipografía y los nuevos medios, integrando la práctica profesional con una mirada reflexiva sobre el diseño.'
     }
   ],
   lookingFor: 'Hoy busco nuevos desafíos en roles creativos senior, liderazgo de equipos y proyectos donde el diseño aporte valor estratégico al negocio.'

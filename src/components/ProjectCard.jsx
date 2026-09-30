@@ -6,7 +6,7 @@ const GRID_SIZES = '(min-width: 1024px) 32vw, (min-width: 640px) 48vw, 100vw';
 const EASE = 'ease-[cubic-bezier(0.16,1,0.3,1)]';
 
 // Shared by Work and Eber Art. Without onClick the card is static.
-export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick }) => {
+export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick, index }) => {
   const isInteractive = Boolean(onClick);
   const Wrapper = isInteractive ? motion.button : motion.div;
 
@@ -32,14 +32,15 @@ export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick }) =
         />
         {isInteractive && (
           <span
-            className={`absolute left-4 bottom-4 px-3 py-1.5 bg-zinc-50 text-zinc-950 text-[12px] font-medium uppercase tracking-[0.02em] opacity-0 translate-y-2 transition-all duration-500 ${EASE} group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0`}
+            className={`absolute left-4 bottom-4 px-3 py-1.5 bg-zinc-50 text-zinc-950 text-sm font-medium opacity-0 translate-y-2 transition-all duration-500 ${EASE} group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0`}
           >
             Ver caso
           </span>
         )}
       </span>
-      <span className="mt-3 flex items-baseline justify-between gap-4 text-[13px] font-medium uppercase tracking-[0.02em]">
-        <span className="text-zinc-950 dark:text-white">{title}</span>
+      <span className="mt-3 flex items-baseline gap-3 text-sm">
+        {index && <span className="shrink-0 tabular-nums text-zinc-400 dark:text-zinc-500">{index}</span>}
+        <span className="flex-1 font-medium text-zinc-950 dark:text-white">{title}</span>
         {meta && <span className="shrink-0 whitespace-nowrap text-right text-zinc-500 dark:text-zinc-400">{meta}</span>}
       </span>
     </Wrapper>
