@@ -1,12 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CATEGORIES } from '../data/projects';
 
-export const ProjectFilter = ({ activeCategory, onSelectCategory, cursorHandlers }) => {
+export const ProjectFilter = ({ categories, activeCategory, onSelectCategory, cursorHandlers }) => {
 
   return (
     <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
-      {CATEGORIES.map((category) => {
+      {categories.map((category) => {
         const isActive = activeCategory === category.id;
         return (
           <button

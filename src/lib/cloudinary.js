@@ -6,9 +6,10 @@ const DEFAULT_WIDTHS = [480, 800, 1200, 1600];
 
 const isExternal = (src) => /^https?:\/\//.test(src);
 
-export const cloudinaryUrl = (publicId, { width, crop = 'limit', gravity } = {}) => {
+export const cloudinaryUrl = (publicId, { width, crop = 'limit', gravity, aspectRatio } = {}) => {
   if (isExternal(publicId)) return publicId;
   const transforms = ['f_auto', 'q_auto', `c_${crop}`];
+  if (aspectRatio) transforms.push(`ar_${aspectRatio}`);
   if (width) transforms.push(`w_${width}`);
   if (gravity) transforms.push(`g_${gravity}`);
   return `${BASE_URL}/${transforms.join(',')}/${publicId}`;

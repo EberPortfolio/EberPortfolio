@@ -13,7 +13,7 @@ import { ServicesSection } from './components/ServicesSection';
 import { AboutSection } from './components/AboutSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { WORK_PROJECTS } from './data/projects';
+import { WORK_PROJECTS, CATEGORIES } from './data/projects';
 import { AnimatePresence } from 'framer-motion';
 
 // Case studies are addressable as #caso/<id> so they can be shared and the
@@ -48,6 +48,10 @@ function PortfolioApp() {
   const afterDetailExitRef = useRef(null);
 
   const cursorState = useCustomCursor();
+
+  const availableCategories = CATEGORIES.filter(
+    (c) => c.id === 'all' || WORK_PROJECTS.some((p) => p.category === c.id)
+  );
 
   const filteredProjects = activeCategory === 'all'
     ? WORK_PROJECTS
@@ -186,24 +190,27 @@ function PortfolioApp() {
               
               <div className="space-y-4 mb-10">
                 <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
-                  COMERCIAL & CLIENTES // WORK ({WORK_PROJECTS.length} PROYECTOS)
+                  Work // {WORK_PROJECTS.length} {WORK_PROJECTS.length === 1 ? 'caso' : 'casos'} de estudio
                 </span>
                 <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-zinc-950 dark:text-white">
-                  Casos de estudio & proyectos de cliente
+                  Trabajos seleccionados
                 </h2>
               </div>
 
-              {/* Animated Category Filter */}
-              <div className="mb-12">
-                <ProjectFilter
-                  activeCategory={activeCategory}
-                  onSelectCategory={setActiveCategory}
-                  cursorHandlers={{
-                    onButtonHover: cursorState.onButtonHover,
-                    onHoverLeave: cursorState.onHoverLeave
-                  }}
-                />
-              </div>
+              {/* Category filter: only worth showing with 2+ categories in use */}
+              {availableCategories.length > 2 && (
+                <div className="mb-12">
+                  <ProjectFilter
+                    categories={availableCategories}
+                    activeCategory={activeCategory}
+                    onSelectCategory={setActiveCategory}
+                    cursorHandlers={{
+                      onButtonHover: cursorState.onButtonHover,
+                      onHoverLeave: cursorState.onHoverLeave
+                    }}
+                  />
+                </div>
+              )}
 
               {/* Responsive Projects Grid */}
               <ProjectGrid

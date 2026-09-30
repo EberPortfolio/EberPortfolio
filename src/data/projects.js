@@ -1,215 +1,51 @@
 export const CATEGORIES = [
   { id: 'all', name: 'Todos' },
-  { id: 'branding', name: 'Identidad & Marca' },
-  { id: 'packaging', name: 'Packaging' },
-  { id: 'editorial', name: 'Editorial & Print' },
-  { id: 'digital', name: 'Web & UI/UX' }
+  { id: 'universos', name: 'Universos de marca' },
+  { id: 'identidad', name: 'Identidad visual' },
+  { id: 'ilustracion', name: 'Ilustración' },
+  { id: 'packaging', name: 'Packaging & producto' }
 ];
+
+// Images are Cloudinary public IDs (see src/lib/cloudinary.js).
+// Optional fields (year, location, role, colorPalette, typography) render only when present.
+const slides = (...numbers) => numbers.map((n) => `web_47-${String(n).padStart(2, '0')}`);
 
 export const WORK_PROJECTS = [
   {
-    id: 'kanso-coffee',
-    title: 'Kanso Coffee Roasters',
-    category: 'packaging',
-    categoryLabel: 'Packaging & Brand Identity',
-    year: '2026',
-    client: 'Kanso Coffee Co.',
-    location: 'Buenos Aires, Argentina',
-    tagline: 'Empaque minimalista inspirado en el diseño artesanal de tostado especial.',
-    summary: 'Diseño de identidad visual completa y línea de empaques sostenibles para tostaduría de café de especialidad. Enfocado en materiales táctiles, serigrafía monocromática y código visual por origen del grano.',
-    thumbnail: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1600&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1589396575653-c09c794ff6a6?auto=format&fit=crop&w=1200&q=80'
+    id: '47-street',
+    title: 'I ♥ 47',
+    client: '47 Street',
+    category: 'universos',
+    categoryLabel: 'Universo de marca · Personajes',
+    tagline: 'Un universo de personajes para la línea I ♥ 47, de las bolsas de compra a la papelería y las mochilas.',
+    summary: 'Creación y desarrollo del universo visual de I ♥ 47, la línea de 47 Street. Personajes propios —Amanda, Renata y Olivia— que dan vida a bolsas, estampas, agendas, cuadernos, stickers y mochilas, junto con colaboraciones con licencias como Hello Kitty y Snoopy.',
+    thumbnail: 'web_47-01',
+    coverImage: 'web_47-03',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Personajes', 'Bolsas & troqueles', 'Estampas', 'Papelería', 'Mochilas', 'Licencias'],
+    sections: [
+      {
+        title: 'Bolsas',
+        text: 'Bolsas de compra y de rafia con troqueles propios: cada modelo presenta a una personaje con su propio mundo gráfico, y conviven con las licencias de Hello Kitty y Snoopy.',
+        images: slides(1, 2, 4, 5, 6, 7, 8, 10, 9)
+      },
+      {
+        title: 'Personajes y estampas',
+        text: 'Amanda, Renata y Olivia, y el sistema de estampas que las rodea: tramas, frases y composiciones que llevan el universo a cada producto.',
+        images: slides(11, 12, 13, 14, 15, 16, 17, 18, 19, 26)
+      },
+      {
+        title: 'Papelería',
+        text: 'Agendas, cuadernos y planchas de stickers: del armado de la ilustración por capas a la familia completa de productos en góndola.',
+        images: slides(20, 21, 22, 24, 25)
+      },
+      {
+        title: 'Mochilas',
+        text: 'Del diseño técnico, con la especificación de colores Pantone, al producto terminado.',
+        images: slides(27, 28, 29)
+      }
     ],
-    accentColor: '#C4A484',
-    colorPalette: ['#1A1A1A', '#F5F2EC', '#C4A484', '#8B5A2B'],
-    typography: { primary: 'Neue Haas Grotesk', secondary: 'Editorial New' },
-    deliverables: ['Identidad Visual', 'Packaging x6', 'Guía de Estilo'],
     featured: true
-  },
-  {
-    id: 'aura-skincare',
-    title: 'Aura Botanicals',
-    category: 'branding',
-    categoryLabel: 'Identidad de Marca',
-    year: '2025',
-    client: 'Aura Cosmetics',
-    location: 'Santiago, Chile',
-    tagline: 'Cosmética orgánica consciente con estética límpida y atemporal.',
-    summary: 'Branding integral para marca premium de cuidado de la piel. Construido a partir de formas orgánicas puras, tipografía refinada y tonos minerales.',
-    thumbnail: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1600&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80'
-    ],
-    accentColor: '#A8BBA2',
-    colorPalette: ['#232A26', '#EBEAE6', '#A8BBA2', '#D8C9B9'],
-    typography: { primary: 'Helvética Neue', secondary: 'Playfair Display' },
-    deliverables: ['Logotipo', 'Manual de Marca', 'Envases Primarios'],
-    featured: true
-  },
-  {
-    id: 'monolith-architecture',
-    title: 'Monolith Studio',
-    category: 'digital',
-    categoryLabel: 'Web Design & Editorial',
-    year: '2025',
-    client: 'Monolith Arq',
-    location: 'Montevideo, Uruguay',
-    tagline: 'Plataforma digital interactiva para estudio de arquitectura brutalista.',
-    summary: 'Presencia digital y libro de proyectos anual. La grilla estructurada permite que las fotos de arquitectura estructural resalten con la máxima fuerza visual.',
-    thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80'
-    ],
-    accentColor: '#3A3D40',
-    colorPalette: ['#121212', '#F9F9F9', '#3A3D40'],
-    typography: { primary: 'Space Grotesk', secondary: 'Space Mono' },
-    deliverables: ['UI/UX Design', 'Sitio Web Responsive', 'Catálogo Editorial'],
-    featured: true
-  },
-  {
-    id: 'lumen-journal',
-    title: 'Lumen Magazine',
-    category: 'editorial',
-    categoryLabel: 'Diseño Editorial',
-    year: '2025',
-    client: 'Lumen Press',
-    location: 'Madrid, España',
-    tagline: 'Publicación bimestral independiente de arte contemporáneo y ensayo.',
-    summary: 'Dirección de arte y diseño de layout para revista impresa de distribución europea. Encuadernación a la vista y composición tipográfica experimental.',
-    thumbnail: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80'
-    ],
-    accentColor: '#E65100',
-    colorPalette: ['#1A1715', '#FAF8F5', '#E65100'],
-    typography: { primary: 'Baskerville', secondary: 'Neue Montreal' },
-    deliverables: ['Grilla Editorial', 'Infografías', 'Preprensa'],
-    featured: false
-  },
-  {
-    id: 'terra-spirits',
-    title: 'Terra Small Batch Gin',
-    category: 'packaging',
-    categoryLabel: 'Packaging Premium',
-    year: '2024',
-    client: 'Terra Distillery',
-    location: 'Mendoza, Argentina',
-    tagline: 'Destilado artesanal envuelto en botánica autóctona y bajorrelieve dorado.',
-    summary: 'Diseño de botella de edición limitada impreso sobre papel de algodón texturado con bajorrelieve grabado en hot-stamping cobre.',
-    thumbnail: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=1600&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=1200&q=80'
-    ],
-    accentColor: '#27AE60',
-    colorPalette: ['#1C2833', '#F4F6F6', '#27AE60'],
-    typography: { primary: 'Bodoni Poster', secondary: 'Agrandir' },
-    deliverables: ['Diseño de Etiqueta', 'Caja de Presentación', 'Acabados Especiales'],
-    featured: true
-  },
-  {
-    id: 'vanguard-studio',
-    title: 'Vanguard Audio Lab',
-    category: 'branding',
-    categoryLabel: 'Identidad de Marca',
-    year: '2024',
-    client: 'Vanguard Audio',
-    location: 'Berlín, Alemania',
-    tagline: 'Identidad sonora y visual para laboratorio de ingeniería en sintetizadores.',
-    summary: 'Construcción de logotipo generativo y piezas promocionales basadas en oscilaciones electromagnéticas y retícula modular pura.',
-    thumbnail: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1600&q=80',
-    images: ['https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1200&q=80'],
-    accentColor: '#6C5CE7',
-    colorPalette: ['#0B0C10', '#6C5CE7', '#F8F9FA'],
-    typography: { primary: 'Syne Bold', secondary: 'Inter' },
-    deliverables: ['Identidad Visual', 'System UI', 'Manual de Marca'],
-    featured: false
-  },
-  {
-    id: 'nordic-design',
-    title: 'Nórdico Furniture',
-    category: 'packaging',
-    categoryLabel: 'Branding & Packaging',
-    year: '2024',
-    client: 'Nórdico Co.',
-    location: 'Copenhague, Dinamarca',
-    tagline: 'Mapeo de empaques planos de ensamblaje para mobiliario minimalista.',
-    summary: 'Dirección de arte y embalajes sostenibles con diagramas de instrucciones iconográficos sin texto aplicados directamente a cartón reciclado.',
-    thumbnail: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1600&q=80',
-    images: ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80'],
-    accentColor: '#D4AC0D',
-    colorPalette: ['#2C3E50', '#ECF0F1', '#D4AC0D'],
-    typography: { primary: 'Helvetica Now', secondary: 'Futura' },
-    deliverables: ['Diseño de Packaging', 'Iconografía Instructiva'],
-    featured: false
-  },
-  {
-    id: 'solaris-energy',
-    title: 'Solaris Systems',
-    category: 'digital',
-    categoryLabel: 'Web UI & Identity',
-    year: '2024',
-    client: 'Solaris Tech',
-    location: 'San Francisco, EEUU',
-    tagline: 'Rediseño de plataforma de energía solar limpia e informes ejecutivos.',
-    summary: 'Sistema visual para startup de tecnología solar. Interfaz limpia con visualización de datos cuantitativos y manual corporativo.',
-    thumbnail: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80',
-    images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80'],
-    accentColor: '#F39C12',
-    colorPalette: ['#1B2631', '#F39C12', '#F4F6F6'],
-    typography: { primary: 'Inter', secondary: 'Roboto Mono' },
-    deliverables: ['UI/UX Design', 'Brand Identity', 'Icon Set'],
-    featured: false
-  },
-  {
-    id: 'alma-wine',
-    title: 'Alma de los Andes',
-    category: 'packaging',
-    categoryLabel: 'Packaging de Colección',
-    year: '2024',
-    client: 'Bodega Alma',
-    location: 'Salta, Argentina',
-    tagline: 'Vinos de extrema altura con estampados botánicos dorados.',
-    summary: 'Serie de 3 etiquetas para vinos de alta gama en relieve con tipografía caligráfica intervenida a mano por Eber.',
-    thumbnail: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1600&q=80',
-    images: ['https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80'],
-    accentColor: '#8E44AD',
-    colorPalette: ['#1A002C', '#8E44AD', '#F5EEF8'],
-    typography: { primary: 'Baskerville Pro', secondary: 'Calligraphy Hand' },
-    deliverables: ['Diseño de Etiqueta', 'Estuche de Madera'],
-    featured: false
-  },
-  {
-    id: 'pulsar-media',
-    title: 'Pulsar Culture Press',
-    category: 'editorial',
-    categoryLabel: 'Diseño Editorial & Afiches',
-    year: '2024',
-    client: 'Pulsar Press',
-    location: 'Buenos Aires, Argentina',
-    tagline: 'Monografía impresa sobre arquitectura de tipografía latinoamericana.',
-    summary: 'Edición limitada de 500 ejemplares numerados con tapa dura en tela impreso a dos tintas en serigrafía tradicional.',
-    thumbnail: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600&q=80',
-    images: ['https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80'],
-    accentColor: '#C0392B',
-    colorPalette: ['#111111', '#C0392B', '#F9F9F9'],
-    typography: { primary: 'Futura Bold', secondary: 'Garamond' },
-    deliverables: ['Maquetación 180 págs', 'Impresión Serigráfica', 'Preprensa'],
-    featured: false
   }
 ];
 
