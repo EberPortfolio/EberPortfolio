@@ -1,42 +1,58 @@
 import React, { useState } from 'react';
 import { EBER_PROFILE } from '../data/services';
-import { Mail, Copy, Check, Send, Sparkles } from 'lucide-react';
-import confetti from 'canvas-confetti';
-import { useTheme } from '../context/ThemeContext';
+import { Mail, Copy, Check, Send, ArrowUpRight } from 'lucide-react';
+
+const REASONS = [
+  { id: 'rol', label: 'Oportunidad laboral', subject: 'Oportunidad laboral' },
+  { id: 'proyecto', label: 'Proyecto freelance', subject: 'Proyecto' },
+  { id: 'docencia', label: 'Docencia o charla', subject: 'Docencia / charla' }
+];
+
+const PROJECT_AREAS = [
+  'Identidad visual',
+  'Dirección de arte',
+  'Ilustración',
+  'Tipografía & lettering',
+  'Producto & retail'
+];
+
+const MESSAGE_PLACEHOLDER = {
+  rol: 'Contexto del equipo, el rol y cómo imaginan el aporte de Eber…',
+  proyecto: 'Objetivos, plazos y referencias del proyecto…',
+  docencia: 'Institución, temática, fechas y formato…'
+};
+
+const inputClass =
+  'w-full px-4 py-3 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors';
+const labelClass = 'block text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1.5 font-medium';
+const legendClass = 'text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold mb-3';
+
+const chipClass = (isSelected) =>
+  `px-4 py-2.5 text-xs font-mono transition-colors rounded-full border cursor-pointer ${
+    isSelected
+      ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-white dark:text-zinc-950 dark:border-white font-semibold'
+      : 'border-zinc-300 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-zinc-500'
+  }`;
 
 export const ContactSection = ({ cursorHandlers }) => {
-  const { currentAccentObj } = useTheme();
-  const [selectedScopes, setSelectedScopes] = useState(['Identidad Visual']);
-  const [selectedBudget, setSelectedBudget] = useState('');
+  const [reason, setReason] = useState('rol');
+  const [areas, setAreas] = useState([]);
   const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const scopeOptions = [
-    'Identidad Visual',
-    'Packaging & Envases',
-    'Editorial & Print',
-    'Web & Digital UI',
-    'Dirección de Arte'
-  ];
+  const hover = {
+    onMouseEnter: cursorHandlers?.onButtonHover,
+    onMouseLeave: cursorHandlers?.onHoverLeave
+  };
+  const linkedin = EBER_PROFILE.social.find((s) => s.name === 'LinkedIn');
+  const currentReason = REASONS.find((r) => r.id === reason);
 
-  const budgetOptions = [
-    '< $2,000 USD',
-    '$2,000 - $5,000 USD',
-    '$5,000 - $10,000 USD',
-    '+$10,000 USD'
-  ];
-
-  const toggleScope = (scope) => {
-    if (selectedScopes.includes(scope)) {
-      if (selectedScopes.length > 1) {
-        setSelectedScopes(selectedScopes.filter(s => s !== scope));
-      }
-    } else {
-      setSelectedScopes([...selectedScopes, scope]);
-    }
+  const toggleArea = (area) => {
+    setAreas((prev) => (prev.includes(area) ? prev.filter((a) => a !== area) : [...prev, area]));
   };
 
   const handleCopyEmail = async () => {
@@ -50,254 +66,231 @@ export const ContactSection = ({ cursorHandlers }) => {
     }
   };
 
-  // No backend: the brief is sent through the visitor's mail client, prefilled
+  // No backend: the message is sent through the visitor's mail client, prefilled
   const buildMailto = () => {
-    const subject = `Consulta de proyecto — ${name}`;
-    const body = [
+    const from = company ? `${name} (${company})` : name;
+    const subject = `${currentReason.subject} — ${from}`;
+    const lines = [
       `Nombre: ${name}`,
+      company && `Empresa: ${company}`,
       `Email: ${email}`,
-      `Áreas: ${selectedScopes.join(', ')}`,
-      `Presupuesto: ${selectedBudget || 'A definir'}`,
+      `Motivo: ${currentReason.label}`,
+      reason === 'proyecto' && areas.length > 0 && `Áreas: ${areas.join(', ')}`,
       '',
       message
-    ].join('\n');
-    return `mailto:${EBER_PROFILE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    ].filter((line) => line !== false && line !== undefined && line !== null);
+    return `mailto:${EBER_PROFILE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     window.location.href = buildMailto();
     setSubmitted(true);
-
-    try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    } catch {
-      // Confetti is decorative; ignore failures
-    }
   };
 
   return (
-    <section id="contacto" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
-      
+    <section id="contacto" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-300 dark:border-zinc-800">
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        
-        {/* Left Column: Direct Contact Info */}
-        <div className="lg:col-span-5 space-y-8">
+
+        {/* Left: intro + direct contact */}
+        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-28">
           <div className="space-y-4">
-            <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
-              INICIAR PROYECTO
+            <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
+              Contacto
             </span>
-            <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-zinc-950 dark:text-white leading-tight">
-              ¿Tienes una idea en mente? <br />
-              Construyámosla.
+            <h2 className="text-4xl sm:text-6xl font-light tracking-tight text-zinc-950 dark:text-white leading-[1.05]">
+              Hablemos.
             </h2>
-            <p className="text-base text-zinc-700 dark:text-zinc-300 font-light leading-relaxed">
-              Cuéntame sobre las metas de tu marca o empresa. Responderé en menos de 24 horas laborables.
+            <p className="text-base text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-md">
+              Un rol, un proyecto o una charla: cualquier propuesta es bienvenida. Respondo en menos de 24 horas hábiles.
             </p>
           </div>
 
-          {/* Quick Contact Card */}
-          <div 
-            className="p-6 bg-zinc-950 text-white space-y-4 shadow-lg border border-zinc-800"
-            style={{ borderRadius: '0px' }}
-          >
+          <div className="p-6 bg-zinc-950 text-white space-y-5 border border-zinc-800">
             <div className="flex items-center justify-between font-mono text-xs text-zinc-400">
-              <span>CONTACTO DIRECTO</span>
+              <span className="uppercase tracking-wider">Contacto directo</span>
               <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Disponible</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                Disponible
               </span>
             </div>
 
-            <div className="space-y-1">
-              <p className="text-xs font-mono text-zinc-400 uppercase">Email:</p>
-              <p className="text-lg font-mono font-semibold break-all text-white">
-                {EBER_PROFILE.email}
-              </p>
-            </div>
+            <p className="text-lg font-mono font-semibold break-all">
+              {EBER_PROFILE.email}
+            </p>
 
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3">
               <button
+                type="button"
                 onClick={handleCopyEmail}
-                onMouseEnter={cursorHandlers?.onButtonHover}
-                onMouseLeave={cursorHandlers?.onHoverLeave}
-                className="flex-1 py-2.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-xs font-mono font-medium flex items-center justify-center gap-2 transition-colors border border-zinc-700"
-                style={{ borderRadius: '0px' }}
+                {...hover}
+                className="flex-1 min-w-[9rem] py-2.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-xs font-mono font-medium flex items-center justify-center gap-2 transition-colors border border-zinc-700 cursor-pointer"
               >
                 {copiedEmail ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                <span>{copiedEmail ? 'Email Copiado' : 'Copiar Email'}</span>
+                <span aria-live="polite">{copiedEmail ? 'Email copiado' : 'Copiar email'}</span>
               </button>
-
               <a
-                href={`mailto:${EBER_PROFILE.email}?subject=Consulta%20de%20Proyecto`}
-                onMouseEnter={cursorHandlers?.onButtonHover}
-                onMouseLeave={cursorHandlers?.onHoverLeave}
-                className="py-2.5 px-4 bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-mono font-medium flex items-center gap-1 transition-colors"
-                style={{ borderRadius: '0px' }}
+                href={`mailto:${EBER_PROFILE.email}`}
+                {...hover}
+                className="py-2.5 px-4 bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-mono font-medium flex items-center gap-2 transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                <span>Enviar Mail</span>
+                <span>Escribir</span>
               </a>
             </div>
+
+            {linkedin && (
+              <a
+                href={linkedin.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                {...hover}
+                className="group flex items-center justify-between pt-4 border-t border-zinc-800 font-mono text-xs uppercase tracking-wider text-zinc-300 hover:text-white transition-colors"
+              >
+                <span>Ver perfil en LinkedIn</span>
+                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            )}
           </div>
         </div>
 
-        {/* Right Column: Estimator & Form */}
-        <div 
-          className="lg:col-span-7 p-6 sm:p-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 shadow-xs"
-          style={{ borderRadius: '0px' }}
-        >
+        {/* Right: form */}
+        <div className="lg:col-span-7 p-6 sm:p-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
           {submitted ? (
-            <div className="py-16 text-center space-y-6">
-              <div className="w-16 h-16 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 mx-auto flex items-center justify-center">
-                <Sparkles className="w-8 h-8" style={{ color: currentAccentObj.hex }} />
+            <div className="py-16 text-center space-y-6" role="status">
+              <div className="w-14 h-14 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 mx-auto flex items-center justify-center">
+                <Mail className="w-6 h-6" />
               </div>
               <h3 className="text-2xl font-light text-zinc-950 dark:text-white">
-                ¡Tu consulta está lista!
+                El mensaje está listo
               </h3>
-              <p className="text-sm text-zinc-700 dark:text-zinc-300 max-w-md mx-auto font-light">
-                Gracias, {name || 'cliente'}. Abrimos tu correo con el mensaje completo para {selectedScopes.join(', ')}: solo falta que lo envíes.
+              <p className="text-sm text-zinc-700 dark:text-zinc-300 max-w-md mx-auto font-light leading-relaxed">
+                Gracias, {name}. Se abrió el correo con todo lo que completaste: solo falta enviarlo.
               </p>
               <p className="text-xs text-zinc-500 max-w-md mx-auto font-mono">
-                ¿No se abrió? Escribí directo a{' '}
+                ¿No se abrió?{' '}
                 <a href={buildMailto()} className="underline underline-offset-2 text-zinc-800 dark:text-zinc-200">
-                  {EBER_PROFILE.email}
-                </a>
+                  Abrir de nuevo
+                </a>{' '}
+                o escribir a {EBER_PROFILE.email}
               </p>
               <button
+                type="button"
                 onClick={() => setSubmitted(false)}
-                className="px-6 py-3 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase font-semibold cursor-pointer"
-                style={{ borderRadius: '0px' }}
+                className="px-6 py-3 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white text-xs font-mono uppercase tracking-wider font-semibold hover:border-zinc-950 dark:hover:border-white transition-colors cursor-pointer"
               >
                 Volver al formulario
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-8">
-              
-              {/* Scope Selector */}
-              <div className="space-y-3">
-                <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
-                  1. ¿Qué áreas de diseño necesitas? (Selecciona una o varias)
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {scopeOptions.map((scope) => {
-                    const isSelected = selectedScopes.includes(scope);
-                    return (
-                      <button
-                        type="button"
-                        key={scope}
-                        onClick={() => toggleScope(scope)}
-                        aria-pressed={isSelected}
-                        onMouseEnter={cursorHandlers?.onButtonHover}
-                        onMouseLeave={cursorHandlers?.onHoverLeave}
-                        className={`px-4 py-2.5 text-xs font-mono transition-all rounded-full ${
-                          isSelected
-                            ? 'bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-xs'
-                            : 'border border-zinc-300 dark:border-zinc-800 text-zinc-700 dark:text-zinc-400 hover:border-zinc-500'
-                        }`}
-                      >
-                        {scope}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
 
-              {/* Budget Range Selector */}
-              <div className="space-y-3">
-                <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
-                  2. Presupuesto estimado (opcional)
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {budgetOptions.map((b) => (
+              <fieldset>
+                <legend className={legendClass}>Motivo</legend>
+                <div className="flex flex-wrap gap-2">
+                  {REASONS.map((r) => (
                     <button
                       type="button"
-                      key={b}
-                      onClick={() => setSelectedBudget(selectedBudget === b ? "" : b)}
-                      aria-pressed={selectedBudget === b}
-                      onMouseEnter={cursorHandlers?.onButtonHover}
-                      onMouseLeave={cursorHandlers?.onHoverLeave}
-                      className={`p-2.5 border text-xs font-mono text-center transition-all ${
-                        selectedBudget === b
-                          ? 'border-zinc-950 bg-zinc-950 text-white dark:border-white dark:bg-white dark:text-zinc-950 font-semibold'
-                          : 'border-zinc-300 dark:border-zinc-800 text-zinc-700 dark:text-zinc-400 hover:border-zinc-500'
-                      }`}
-                      style={{ borderRadius: '0px' }}
+                      key={r.id}
+                      onClick={() => setReason(r.id)}
+                      aria-pressed={reason === r.id}
+                      {...hover}
+                      className={chipClass(reason === r.id)}
                     >
-                      {b}
+                      {r.label}
                     </button>
                   ))}
                 </div>
-              </div>
+              </fieldset>
 
-              {/* Text Fields */}
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="contact-name" className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Nombre</label>
-                    <input
-                      id="contact-name"
-                      autoComplete="name"
-                      type="text"
-                      required
-                      placeholder="Tu nombre o empresa"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-3 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-white focus:outline-none focus:border-zinc-950 dark:focus:border-white"
-                      style={{ borderRadius: '0px' }}
-                    />
+              {reason === 'proyecto' && (
+                <fieldset>
+                  <legend className={legendClass}>Áreas (opcional)</legend>
+                  <div className="flex flex-wrap gap-2">
+                    {PROJECT_AREAS.map((area) => (
+                      <button
+                        type="button"
+                        key={area}
+                        onClick={() => toggleArea(area)}
+                        aria-pressed={areas.includes(area)}
+                        {...hover}
+                        className={chipClass(areas.includes(area))}
+                      >
+                        {area}
+                      </button>
+                    ))}
                   </div>
-                  <div>
-                    <label htmlFor="contact-email" className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Email de Contacto</label>
-                    <input
-                      id="contact-email"
-                      autoComplete="email"
-                      type="email"
-                      required
-                      placeholder="ejemplo@empresa.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-white focus:outline-none focus:border-zinc-950 dark:focus:border-white"
-                      style={{ borderRadius: '0px' }}
-                    />
-                  </div>
-                </div>
+                </fieldset>
+              )}
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="contact-message" className="block text-xs font-mono text-zinc-500 uppercase mb-1 font-medium">Detalles del Proyecto</label>
+                  <label htmlFor="contact-name" className={labelClass}>Nombre</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="contact-company" className={labelClass}>Empresa (opcional)</label>
+                  <input
+                    id="contact-company"
+                    type="text"
+                    autoComplete="organization"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label htmlFor="contact-email" className={labelClass}>Email</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    placeholder="nombre@empresa.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label htmlFor="contact-message" className={labelClass}>Mensaje</label>
                   <textarea
                     id="contact-message"
-                    rows={4}
+                    rows={5}
                     required
-                    placeholder="Cuéntame brevemente sobre tus objetivos, plazos esperados y referentes..."
+                    placeholder={MESSAGE_PLACEHOLDER[reason]}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-4 py-3 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-white focus:outline-none focus:border-zinc-950 dark:focus:border-white resize-none"
-                    style={{ borderRadius: '0px' }}
+                    className={`${inputClass} resize-y min-h-32`}
                   />
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                onMouseEnter={cursorHandlers?.onButtonHover}
-                onMouseLeave={cursorHandlers?.onHoverLeave}
-                className="w-full py-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-xs"
-                style={{ borderRadius: '0px' }}
-              >
-                <Send className="w-4 h-4" />
-                <span>Enviar consulta por mail</span>
-              </button>
+              <div className="space-y-3">
+                <button
+                  type="submit"
+                  {...hover}
+                  className="w-full py-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>Enviar mensaje</span>
+                </button>
+                <p className="text-[11px] font-mono text-zinc-500 text-center">
+                  Se abre el correo con el mensaje listo para enviar.
+                </p>
+              </div>
 
             </form>
           )}
-
         </div>
 
       </div>

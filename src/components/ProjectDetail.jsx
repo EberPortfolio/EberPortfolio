@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { cloudinaryImage } from '../lib/cloudinary';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Copy, Check, Sparkles, ArrowRight } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
@@ -110,7 +111,7 @@ export const ProjectDetail = ({ project, onClose, onSelectProject, cursorHandler
       {/* Main Full-Width Hero Cover Image */}
       <div className="border border-zinc-300 dark:border-zinc-800 overflow-hidden shadow-xs">
         <img
-          src={project.coverImage || project.thumbnail}
+          {...cloudinaryImage(project.coverImage || project.thumbnail, { sizes: '(min-width: 1280px) 1216px, 100vw', widths: [800, 1200, 1600, 2400] })}
           alt={project.title}
           className="w-full h-auto max-h-[75vh] object-cover"
         />
@@ -187,7 +188,9 @@ export const ProjectDetail = ({ project, onClose, onSelectProject, cursorHandler
           {project.images?.map((imgUrl, idx) => (
             <div key={idx} className="border border-zinc-300 dark:border-zinc-800 overflow-hidden bg-zinc-100 dark:bg-zinc-900">
               <img
-                src={imgUrl}
+                {...cloudinaryImage(imgUrl, { sizes: '(min-width: 640px) 50vw, 100vw' })}
+                loading="lazy"
+                decoding="async"
                 alt={`${project.title} pieza ${idx + 1}`}
                 className="w-full h-80 sm:h-[450px] object-cover hover:scale-105 transition-transform duration-700"
               />

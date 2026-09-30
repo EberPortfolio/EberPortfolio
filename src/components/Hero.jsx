@@ -65,9 +65,9 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           className="space-y-4"
         >
           <div className="flex flex-wrap items-center [&>span]:whitespace-nowrap gap-x-2 gap-y-1 font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
-            <span>PORTFOLIO // EBER STUDIO</span>
+            <span>PORTFOLIO // EBER</span>
             <span className="hidden sm:inline" aria-hidden="true">—</span>
-            <span className="text-zinc-800 dark:text-zinc-200">ART DIRECTION & BRANDING</span>
+            <span className="text-zinc-800 dark:text-zinc-200">DISEÑO · ILUSTRACIÓN · TIPOGRAFÍA</span>
           </div>
 
           <h1 className={`text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.95] text-zinc-950 dark:text-white transition-all duration-300 ${
@@ -87,9 +87,9 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-xl text-base sm:text-xl text-zinc-700 dark:text-zinc-300 font-light leading-relaxed"
+          className="max-w-2xl text-base sm:text-xl text-zinc-700 dark:text-zinc-300 font-light leading-relaxed"
         >
-          Branding táctil, sistemas gráficos rigurosos y packaging de autor para marcas con visión clara.
+          Diseñador gráfico, ilustrador y tipógrafo. Creo identidades visuales y universos de marca, y dirijo arte para la industria textil, el entretenimiento y los contenidos infantiles.
         </motion.p>
 
         {/* Action Buttons */}
@@ -106,7 +106,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
             className="group flex items-center gap-4 px-9 py-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs uppercase tracking-wider font-semibold transition-all hover:opacity-90 shadow-xs cursor-pointer"
             style={{ borderRadius: '0px' }}
           >
-            <span>Explorar Casos</span>
+            <span>Ver trabajos</span>
             <ArrowDownRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:translate-y-1" />
           </button>
 
@@ -117,7 +117,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
             className="px-8 py-4 border border-zinc-400 dark:border-zinc-700 text-zinc-950 dark:text-white font-mono text-xs uppercase tracking-wider font-semibold hover:border-zinc-950 dark:hover:border-white transition-colors cursor-pointer"
             style={{ borderRadius: '0px' }}
           >
-            Cotizar Proyecto
+            Contacto
           </button>
         </motion.div>
       </div>
@@ -127,14 +127,14 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-zinc-300 dark:border-zinc-800 pt-8"
+        className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-10 border-t border-zinc-300 dark:border-zinc-800 pt-8"
       >
         {EBER_PROFILE.stats.map((stat, idx) => (
-          <div key={idx} className="space-y-1">
+          <div key={idx} className="space-y-1.5">
             <p className="text-3xl sm:text-4xl font-light font-mono text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider font-medium">
+            <p className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider font-medium max-w-[16rem] leading-relaxed">
               {stat.label}
             </p>
           </div>

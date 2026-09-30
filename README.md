@@ -22,7 +22,11 @@ Tres temas: oscuro (por defecto), claro y cremita. Se eligen con el botón del n
 ## Contenido
 
 - Proyectos y obra de autor: `src/data/projects.js`
-- Perfil, servicios, redes y email: `src/data/services.js`
+- Perfil, texto del About, servicios, redes y email: `src/data/services.js`
 - Cada caso de estudio tiene link propio: `/#caso/<id>`.
+
+## Imágenes (Cloudinary)
+
+Las imágenes viven en Cloudinary (cloud `le59kgwh`). En los datos se referencian por **public ID** (por ejemplo `about_me`) y `src/lib/cloudinary.js` arma las URLs con formato y calidad automáticos (`f_auto,q_auto`) y un `srcset` responsivo. Las URLs completas (`https://…`) siguen funcionando tal cual.
 
 El formulario de contacto no tiene backend: arma el mail con los datos completados y lo abre en el cliente de correo del visitante.

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { cloudinaryImage } from '../lib/cloudinary';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EBER_ART_SECTIONS, EBER_ART_ITEMS } from '../data/projects';
 import { useTheme } from '../context/ThemeContext';
@@ -80,7 +81,8 @@ export const EberArtSection = ({ cursorHandlers }) => {
               {/* Image Frame */}
               <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
                 <img
-                  src={item.image}
+                  {...cloudinaryImage(item.image, { sizes: '(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw' })}
+                  decoding="async"
                   alt={item.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"

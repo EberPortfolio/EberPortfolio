@@ -1,89 +1,119 @@
 import React from 'react';
-import { EBER_PROFILE } from '../data/services';
-import { ArrowUpRight } from 'lucide-react';
-import eberProfileImg from '../assets/eber-profile.jpg';
+import { motion } from 'framer-motion';
+import { ArrowDownRight } from 'lucide-react';
+import { EBER_PROFILE, ABOUT } from '../data/services';
+import { cloudinaryImage } from '../lib/cloudinary';
 
-export const AboutSection = ({ cursorHandlers }) => {
+const reveal = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-80px' },
+  transition: { duration: 0.6, ease: 'easeOut' }
+};
+
+const Photo = ({ photo, sizes, className = '' }) => (
+  <img
+    {...cloudinaryImage(photo.publicId, { sizes })}
+    alt={photo.alt}
+    width={photo.width}
+    height={photo.height}
+    loading="lazy"
+    decoding="async"
+    className={`w-full h-full object-cover ${className}`}
+  />
+);
+
+export const AboutSection = ({ onNavigate, cursorHandlers }) => {
+  const { portrait, outdoors } = ABOUT.photos;
+
   return (
     <section id="sobre-mi" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-300 dark:border-zinc-800">
-      
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        {/* Left Column: Eber Real Portrait Photo */}
-        <div className="lg:col-span-5">
-          <div 
-            className="relative aspect-square sm:aspect-[4/5] overflow-hidden bg-zinc-950 border border-zinc-300 dark:border-zinc-800 shadow-md"
-            style={{ borderRadius: '0px' }}
-          >
-            <img
-              src={eberProfileImg}
-              alt="Eber Diseñador Gráfico & Director de Arte"
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            />
-            <div 
-              className="absolute bottom-4 left-4 right-4 p-4 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border border-zinc-300 dark:border-zinc-800 text-xs font-mono"
-              style={{ borderRadius: '0px' }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-zinc-950 dark:text-white">EBER · ART DIRECTOR</span>
-                <span className="flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  DISPONIBLE
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Right Column: Short Manifesto & Specializations */}
-        <div className="lg:col-span-7 space-y-8">
-          <div className="space-y-4">
-            <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
-              SOBRE EBER
+      {/* Intro: portrait + headline */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+
+        <motion.figure {...reveal} className="lg:col-span-5">
+          <div className="relative aspect-[4/5] overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
+            <Photo photo={portrait} sizes="(min-width: 1024px) 40vw, 100vw" />
+          </div>
+          <figcaption className="mt-3 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-widest text-zinc-500">
+            <span>Eber · {EBER_PROFILE.title}</span>
+            <span className="flex items-center gap-1.5 shrink-0 text-emerald-700 dark:text-emerald-400 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Disponible
             </span>
-            <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-zinc-950 dark:text-white leading-tight">
-              Diseño con rigor gráfico y foco obsesivo en el detalle.
-            </h2>
-          </div>
+          </figcaption>
+        </motion.figure>
 
-          <p className="text-lg text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-xl">
-            Basado en Buenos Aires y trabajando para clientes globales. Ayudo a fundadores y agencias a definir identidades atemporales, packaging táctil y dirección de arte clara.
+        <motion.div {...reveal} className="lg:col-span-7 space-y-8 lg:pb-10">
+          <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
+            Sobre mí
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-zinc-950 dark:text-white leading-[1.1] text-balance">
+            {ABOUT.headline}
+          </h2>
+          <p className="text-lg text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-2xl">
+            {ABOUT.lead}
           </p>
-
-          {/* Minimal 4-Pill Tag Row */}
-          <div className="flex flex-wrap gap-2 pt-2">
-            {[
-              'Identidad Visual',
-              'Packaging de Autor',
-              'Diseño Editorial',
-              'Dirección de Arte'
-            ].map((tag, i) => (
-              <span
-                key={i}
-                className="px-4 py-2 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-800 font-mono text-xs font-medium"
-                style={{ borderRadius: '0px' }}
+          <ul className="flex flex-wrap gap-2" aria-label="Industrias">
+            {EBER_PROFILE.industries.map((industry) => (
+              <li
+                key={industry}
+                className="px-3.5 py-1.5 border border-zinc-300 dark:border-zinc-700 font-mono text-[11px] uppercase tracking-wider text-zinc-800 dark:text-zinc-200"
               >
-                ● {tag}
-              </span>
+                {industry}
+              </li>
             ))}
-          </div>
+          </ul>
+        </motion.div>
+      </div>
 
-          {/* Direct CTA Link */}
-          <div className="pt-4">
-            <a
-              href={`mailto:${EBER_PROFILE.email}`}
+      {/* Pillars + second photo */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 mt-20 lg:mt-28 items-start">
+
+        <motion.div {...reveal} className="lg:col-span-7 lg:order-2">
+          <ol className="divide-y divide-zinc-300 dark:divide-zinc-800 border-y border-zinc-300 dark:border-zinc-800">
+            {ABOUT.pillars.map((pillar, idx) => (
+              <li key={pillar.title} className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_13rem_1fr] gap-x-4 gap-y-2 py-7">
+                <span className="font-mono text-xs text-zinc-500 pt-1">0{idx + 1}</span>
+                <h3 className="text-lg font-normal text-zinc-950 dark:text-white tracking-tight">
+                  {pillar.title}
+                </h3>
+                <p className="col-start-2 sm:col-start-3 text-sm text-zinc-700 dark:text-zinc-300 font-light leading-relaxed">
+                  {pillar.text}
+                </p>
+              </li>
+            ))}
+          </ol>
+
+          {/* What Eber is looking for now */}
+          <div className="mt-10 p-8 sm:p-10 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 space-y-6">
+            <span className="font-mono text-[11px] uppercase tracking-widest opacity-60 block">
+              Próximo paso
+            </span>
+            <p className="text-xl sm:text-2xl font-light leading-snug text-balance">
+              {ABOUT.lookingFor}
+            </p>
+            <button
+              onClick={() => onNavigate?.('contact')}
               onMouseEnter={cursorHandlers?.onButtonHover}
               onMouseLeave={cursorHandlers?.onHoverLeave}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-opacity"
-              style={{ borderRadius: '0px' }}
+              className="group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-wider font-semibold border-b border-current pb-1 cursor-pointer"
             >
-              <span>Escribir a Eber</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
+              <span>Hablemos</span>
+              <ArrowDownRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+            </button>
           </div>
+        </motion.div>
 
-        </div>
-
+        <motion.figure {...reveal} className="lg:col-span-5 lg:order-1 max-w-md lg:max-w-none">
+          <div className="aspect-[4/3] lg:aspect-[3/4] overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800">
+            <Photo photo={outdoors} sizes="(min-width: 1024px) 40vw, 90vw" className="object-[center_80%] lg:object-center" />
+          </div>
+          <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-widest text-zinc-500">
+            Siempre con algo para dibujar.
+          </figcaption>
+        </motion.figure>
       </div>
 
     </section>

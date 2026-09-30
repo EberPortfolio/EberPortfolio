@@ -5,10 +5,10 @@ import { EBER_PROFILE } from '../data/services';
 
 export const MobileMenu = ({ isOpen, onClose, onNavigate }) => {
   const menuLinks = [
-    { id: 'work', label: 'WORK (Proyectos)' },
-    { id: 'eber-art', label: 'EBER ART (Ilustración, Letras & Docencia)', isArt: true },
-    { id: 'about-me', label: 'ABOUT ME' },
-    { id: 'contact', label: 'CONTACT' }
+    { id: 'work', label: 'Work' },
+    { id: 'eber-art', label: 'Eber Art', isArt: true },
+    { id: 'about-me', label: 'About me' },
+    { id: 'contact', label: 'Contact' }
   ];
 
   return (
@@ -23,7 +23,7 @@ export const MobileMenu = ({ isOpen, onClose, onNavigate }) => {
           {/* Header Bar */}
           <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
             <span className="font-mono text-xs uppercase tracking-widest text-zinc-400">
-              Eber · Menú Navegación
+              Eber · Menú
             </span>
             <button
               onClick={onClose}

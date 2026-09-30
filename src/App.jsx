@@ -239,6 +239,7 @@ function PortfolioApp() {
             {/* SECTION 3: ABOUT ME */}
             <div id="about-me">
               <AboutSection
+                onNavigate={handleNavigate}
                 cursorHandlers={{
                   onButtonHover: cursorState.onButtonHover,
                   onHoverLeave: cursorState.onHoverLeave

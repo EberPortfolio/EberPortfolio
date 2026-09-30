@@ -1,4 +1,5 @@
 import React from 'react';
+import { cloudinaryImage } from '../lib/cloudinary';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -25,7 +26,8 @@ export const ProjectCard = ({ project, onClick, cursorHandlers }) => {
         style={{ borderRadius: '0px' }}
       >
         <img
-          src={project.thumbnail}
+          {...cloudinaryImage(project.thumbnail, { sizes: '(min-width: 768px) 45vw, 100vw' })}
+          decoding="async"
           alt={project.title}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
