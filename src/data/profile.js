@@ -5,17 +5,21 @@ export const EBER_PROFILE = {
   lastName: '', // TODO: apellido de Eber
   role: 'Diseñador gráfico, ilustrador y tipógrafo',
   location: 'Buenos Aires', // TODO: confirmar
-  // TODO: reemplazar por el mail real de Eber
-  email: 'eber.design@portfolio.com',
+  email: 'eber.crio@gmail.com',
+  // Shown as typed; the WhatsApp link uses the digits only
+  phone: '+54 9 11 3012-1986',
   cvUrl: '', // TODO: link al CV en PDF (por ejemplo, subido a Cloudinary)
-  // TODO: reemplazar por los perfiles reales de Eber (los que no tenga, borrarlos)
   social: [
-    { name: 'LinkedIn', url: 'https://linkedin.com' },
-    { name: 'Behance', url: 'https://behance.net' },
-    { name: 'Instagram', url: 'https://instagram.com' }
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/ebersantonocito/' },
+    { name: 'Behance', url: 'https://www.behance.net/crio' },
+    { name: 'Instagram', url: 'https://www.instagram.com/eber.arg/' }
   ],
   industries: ['Industria textil', 'Entretenimiento', 'Contenidos infantiles']
 };
+
+export const whatsappUrl = EBER_PROFILE.phone
+  ? `https://wa.me/${EBER_PROFILE.phone.replace(/\D/g, '')}`
+  : '';
 
 export const fullName = [EBER_PROFILE.name, EBER_PROFILE.lastName].filter(Boolean).join(' ');
 

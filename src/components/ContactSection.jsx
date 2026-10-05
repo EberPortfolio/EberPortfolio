@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Download, Send, Check } from 'lucide-react';
-import { EBER_PROFILE } from '../data/profile';
+import { ArrowUpRight, Download, Send, Check, Loader2 } from 'lucide-react';
+import { EBER_PROFILE, whatsappUrl } from '../data/profile';
 import { SectionHeader, sectionClass } from './SectionHeader';
 import { RollText } from './RollText';
+import { ServiceSelect } from './ServiceSelect';
+
+const SERVICES = [
+  'Identidad visual & Branding',
+  'Diseño textil & Estampería',
+  'Ilustración & Personajes',
+  'Dirección de arte',
+  'Otro tipo de consulta'
+];
+
+// Web3Forms access key (public by design: it only lets the form send to Eber's inbox).
+// Without it the form falls back to opening the visitor's mail app.
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
+
+const EMPTY_FORM = { name: '', email: '', service: SERVICES[0], message: '' };
 
 const linkClass =
   'group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-zinc-950 dark:text-white';
 
 export const ContactSection = ({ index, onNavigate }) => {
   const [copied, setCopied] = useState(false);
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    service: 'Identidad visual & Branding',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [formState, setFormState] = useState(EMPTY_FORM);
+  // idle | sending | sent | error
+  const [status, setStatus] = useState('idle');
+  const [sentTo, setSentTo] = useState('');
 
   const handleCopy = async () => {
     try {
@@ -27,14 +39,42 @@ export const ContactSection = ({ index, onNavigate }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Consulta de proyecto - ${formState.name} (${formState.service})`);
-    const body = encodeURIComponent(
-      `Nombre: ${formState.name}\nEmail: ${formState.email}\nServicio / Área: ${formState.service}\n\nMensaje:\n${formState.message}`
-    );
-    window.location.href = `mailto:${EBER_PROFILE.email}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    const subject = `Consulta de proyecto - ${formState.name} (${formState.service})`;
+
+    if (!WEB3FORMS_KEY) {
+      const body = `Nombre: ${formState.name}\nEmail: ${formState.email}\nServicio / Área: ${formState.service}\n\nMensaje:\n${formState.message}`;
+      window.location.href = `mailto:${EBER_PROFILE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return;
+    }
+
+    setStatus('sending');
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject,
+          from_name: 'Portfolio de Eber',
+          replyto: formState.email,
+          name: formState.name,
+          email: formState.email,
+          servicio: formState.service,
+          message: formState.message,
+          // Honeypot: real visitors never see or tick it
+          botcheck: e.target.elements.botcheck.checked
+        })
+      });
+      const result = await response.json();
+      if (!result.success) throw new Error(result.message);
+      setSentTo(formState.email);
+      setFormState(EMPTY_FORM);
+      setStatus('sent');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -88,6 +128,14 @@ export const ContactSection = ({ index, onNavigate }) => {
                   </a>
                 </li>
               ))}
+              {whatsappUrl && (
+                <li>
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                    <RollText>WhatsApp</RollText>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </a>
+                </li>
+              )}
               {EBER_PROFILE.cvUrl && (
                 <li>
                   <a href={EBER_PROFILE.cvUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
@@ -139,18 +187,12 @@ export const ContactSection = ({ index, onNavigate }) => {
               <label htmlFor="service" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 Área de interés / Servicio
               </label>
-              <select
+              <ServiceSelect
                 id="service"
                 value={formState.service}
-                onChange={(e) => setFormState({ ...formState, service: e.target.value })}
-                className="w-full pb-2.5 pt-1 border-b border-zinc-300 dark:border-zinc-700 bg-transparent text-sm sm:text-base text-zinc-950 dark:text-white focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors cursor-pointer"
-              >
-                <option value="Identidad visual & Branding" className="bg-zinc-50 dark:bg-zinc-900">Identidad visual & Branding</option>
-                <option value="Diseño textil & Estampería" className="bg-zinc-50 dark:bg-zinc-900">Diseño textil & Estampería</option>
-                <option value="Ilustración & Personajes" className="bg-zinc-50 dark:bg-zinc-900">Ilustración & Personajes</option>
-                <option value="Dirección de arte" className="bg-zinc-50 dark:bg-zinc-900">Dirección de arte</option>
-                <option value="Otro tipo de consulta" className="bg-zinc-50 dark:bg-zinc-900">Otro tipo de consulta</option>
-              </select>
+                options={SERVICES}
+                onChange={(service) => setFormState({ ...formState, service })}
+              />
             </div>
 
             <div className="space-y-2">
@@ -168,15 +210,18 @@ export const ContactSection = ({ index, onNavigate }) => {
               />
             </div>
 
-            <div className="pt-2">
+            <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+
+            <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
               <button
                 type="submit"
-                className="px-8 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:bg-eber-blue hover:text-white dark:hover:bg-eber-blue dark:hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2"
+                disabled={status === 'sending'}
+                className="px-8 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:bg-eber-blue hover:text-white dark:hover:bg-eber-blue dark:hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2 self-start disabled:opacity-60 disabled:cursor-wait"
               >
-                {submitted ? (
+                {status === 'sending' ? (
                   <>
-                    <span>Listo para enviar</span>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Enviando</span>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   </>
                 ) : (
                   <>
@@ -185,6 +230,24 @@ export const ContactSection = ({ index, onNavigate }) => {
                   </>
                 )}
               </button>
+
+              <p role="status" aria-live="polite" className="text-sm leading-snug">
+                {status === 'sent' && (
+                  <span className="inline-flex items-start gap-2 text-zinc-950 dark:text-white">
+                    <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--eber-blue)' }} />
+                    <span>Consulta enviada. Eber te va a responder a {sentTo}.</span>
+                  </span>
+                )}
+                {status === 'error' && (
+                  <span className="text-eber-red">
+                    No se pudo enviar. Probá de nuevo o escribile a{' '}
+                    <a href={`mailto:${EBER_PROFILE.email}`} className="underline underline-offset-2">
+                      {EBER_PROFILE.email}
+                    </a>
+                    .
+                  </span>
+                )}
+              </p>
             </div>
           </form>
         </div>

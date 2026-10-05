@@ -122,6 +122,52 @@ export const WORK_PROJECTS = [
         images: boards('violetta', 9, 18, 19, 20, 21, 22)
       }
     ]
+  },
+  {
+    id: 'topa',
+    title: 'Topa',
+    client: 'Disney Junior',
+    category: 'packaging',
+    categoryLabel: 'Packaging · Lettering · Ilustración',
+    subtitle: 'Me muevo para aquí',
+    tagline: 'El disco «Me muevo para aquí» de Topa para Disney Junior, de la tapa al librillo.',
+    summary: 'Logo y lettering, packaging del CD, librillo con las letras de las canciones y una familia de personajes y objetos que acompañan cada tema.',
+    thumbnail: 'web_topa-07',
+    coverImage: 'web_topa-04',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Logo y lettering', 'Packaging', 'Librillo', 'Personajes', 'Objetos 3D'],
+    sections: [
+      {
+        title: 'El disco',
+        text: 'Tapa, contratapa con la lista de temas y el disco.',
+        images: boards('topa', 6, 5, 17)
+      },
+      {
+        title: 'Logo y lettering',
+        text: 'El nombre de Topa en letras infladas, y las variantes tipográficas que se exploraron en el camino.',
+        images: boards('topa', 7, 16)
+      },
+      {
+        title: 'Personajes y objetos',
+        text: 'Un elenco de personajes y objetos, del boceto al modelo terminado, que acompaña a cada canción.',
+        images: boards('topa', 8, 12, 14)
+      },
+      {
+        title: 'Poses y fotografía',
+        text: 'Bocetos de poses, la sesión de fotos y el sistema gráfico que las arma en las piezas.',
+        images: boards('topa', 9, 10, 11)
+      },
+      {
+        title: 'Librillo',
+        text: 'El armado del librillo, de la grilla en línea a las páginas con las letras de las canciones.',
+        images: boards('topa', 13, 15)
+      },
+      {
+        title: 'El mundo de Disney Junior',
+        text: 'Escenarios y piezas de marca de Disney Junior.',
+        images: boards('topa', 2, 3)
+      }
+    ]
   }
 ];
 
