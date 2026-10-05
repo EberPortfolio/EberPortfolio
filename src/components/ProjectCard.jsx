@@ -40,8 +40,8 @@ export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick, ind
       </span>
       <span className="mt-3 flex items-baseline gap-3 text-sm">
         {index && <span className="shrink-0 tabular-nums text-zinc-400 dark:text-zinc-500">{index}</span>}
-        <span className="flex-1 font-medium text-zinc-950 dark:text-white">{title}</span>
-        {meta && <span className="shrink-0 whitespace-nowrap text-right text-zinc-500 dark:text-zinc-400">{meta}</span>}
+        <span className="flex-1 shrink-0 font-medium text-zinc-950 dark:text-white">{title}</span>
+        {meta && <span className="min-w-0 truncate text-right text-zinc-500 dark:text-zinc-400">{meta}</span>}
       </span>
     </Wrapper>
   );

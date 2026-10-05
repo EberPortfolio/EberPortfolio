@@ -5,19 +5,30 @@
   --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-mono: 'Space Mono', ui-monospace, monospace;
+  --font-display: 'Big Shoulders', 'Arial Narrow', sans-serif;
   /* Accent is monochrome (ink on paper) */
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  /* Eber's poster palette (from his IG posts): primaries on black */
+  --color-eber-red: var(--eber-red);
+  --color-eber-yellow: var(--eber-yellow);
+  --color-eber-blue: var(--eber-blue);
 }
 
 :root {
   --accent: #09090b;
   --accent-foreground: #ffffff;
+  --eber-red: #E0202F;
+  --eber-yellow: #E89A00;
+  --eber-blue: #1460D6;
 }
 
 .dark {
   --accent: #fafafa;
   --accent-foreground: #09090b;
+  --eber-red: #F2333F;
+  --eber-yellow: #FFB400;
+  --eber-blue: #1F7AEC;
 }
 
 /* Dark mode follows the .dark class set by ThemeContext, not the OS setting */
@@ -34,7 +45,7 @@
   }
 
   .dark body {
-    @apply bg-zinc-950 text-zinc-100;
+    @apply bg-black text-zinc-100;
   }
 
   ::selection {

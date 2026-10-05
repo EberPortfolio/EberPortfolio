@@ -171,7 +171,7 @@ export const ContactSection = ({ index, onNavigate }) => {
             <div className="pt-2">
               <button
                 type="submit"
-                className="px-8 py-3.5 rounded-full bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase tracking-wider font-semibold hover:opacity-90 transition-all cursor-pointer inline-flex items-center gap-2 shadow-xs"
+                className="px-8 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:bg-eber-blue hover:text-white dark:hover:bg-eber-blue dark:hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2"
               >
                 {submitted ? (
                   <>
@@ -196,7 +196,7 @@ export const ContactSection = ({ index, onNavigate }) => {
         <div>
           <a
             href={`mailto:${EBER_PROFILE.email}`}
-            className="text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-zinc-950 dark:text-white hover:opacity-80 transition-opacity"
+            className="text-2xl sm:text-4xl md:text-5xl font-display tracking-wide text-zinc-950 dark:text-white hover:text-eber-blue transition-colors"
           >
             {EBER_PROFILE.email}
           </a>

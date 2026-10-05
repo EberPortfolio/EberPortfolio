@@ -4,7 +4,17 @@ import { ArrowDown } from 'lucide-react';
 import { KineticHeadline } from './KineticHeadline';
 import { containerClass } from './SectionHeader';
 
+// Set like Eber's own posters: condensed type filling the frame, one colour per letter.
+// On phones the words stack by syllable, as in his "BRAN / DING" post.
 const HEADLINE = ['DISEÑO &', 'DIRECCIÓN'];
+const HEADLINE_MOBILE = ['DISE', 'ÑO &', 'DIREC', 'CIÓN'];
+
+// His disciplines, coloured as in the label stack of his posts
+const DISCIPLINES = [
+  { label: 'Diseño', color: 'var(--eber-yellow)' },
+  { label: 'Tipografía', color: 'var(--eber-red)' },
+  { label: 'Ilustración', color: 'var(--eber-blue)' }
+];
 
 const fadeUp = (delay) => ({
   initial: { opacity: 0, y: 14 },
@@ -15,42 +25,49 @@ const fadeUp = (delay) => ({
 export const Hero = ({ onNavigate }) => {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const headlineY = useTransform(scrollYProgress, [0, 1], ['0%', '-15%']);
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
+  const headlineY = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
 
   return (
     <section
       id="home"
       ref={sectionRef}
-      className={`${containerClass} min-h-[90svh] flex flex-col justify-center pt-28 sm:pt-36 pb-16 sm:pb-24`}
+      className={`${containerClass} min-h-svh flex flex-col pt-24 sm:pt-28 pb-8 sm:pb-10`}
     >
-      {/* Titular Principal & Bajada */}
-      <div className="my-auto py-8 sm:py-14 text-center select-none">
-        <motion.div style={{ y: headlineY, opacity: headlineOpacity }}>
-          <KineticHeadline
-            lines={HEADLINE}
-            baseWeight={900}
-            className="uppercase font-black text-[clamp(2.6rem,14.5vw,13.8rem)] leading-[0.82] tracking-[-0.055em] text-zinc-950 dark:text-white"
-          />
-        </motion.div>
+      <motion.ul
+        {...fadeUp(0.6)}
+        className="self-end text-right font-display font-extrabold text-lg sm:text-2xl leading-[1.05] tracking-[0.01em]"
+        aria-label="Disciplinas"
+      >
+        {DISCIPLINES.map((d) => (
+          <li key={d.label} style={{ color: d.color }}>
+            {d.label}
+          </li>
+        ))}
+      </motion.ul>
 
-        {/* Bajada Descriptiva */}
+      <motion.div style={{ y: headlineY }} className="my-auto py-6 select-none">
+        <KineticHeadline
+          lines={HEADLINE}
+          mobileLines={HEADLINE_MOBILE}
+          cycle
+          baseWeight={900}
+          className="font-display uppercase text-[min(37vw,24svh)] sm:text-[min(24.5vw,33svh)] leading-[0.86] sm:leading-[0.8] tracking-[-0.01em] text-zinc-950 dark:text-white -ml-[0.03em]"
+        />
+      </motion.div>
+
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
         <motion.p
           {...fadeUp(0.35)}
-          className="mt-8 sm:mt-10 max-w-2xl mx-auto text-xs sm:text-sm font-mono uppercase tracking-[0.09em] text-zinc-600 dark:text-zinc-400 leading-relaxed text-balance"
+          className="max-w-md text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-snug text-pretty"
         >
           Identidades visuales, conceptos de marca y dirección de arte para la industria textil, el entretenimiento y los contenidos infantiles.
         </motion.p>
 
-        {/* Únicamente dos CTAs */}
-        <motion.div
-          {...fadeUp(0.5)}
-          className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5"
-        >
+        <motion.div {...fadeUp(0.5)} className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={() => onNavigate('work')}
-            className="group px-7 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-xs font-mono uppercase tracking-wider font-semibold hover:opacity-90 transition-all cursor-pointer inline-flex items-center gap-2.5 shadow-xs"
+            className="group px-7 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:bg-eber-blue hover:text-white dark:hover:bg-eber-blue dark:hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2.5"
           >
             <span>Ver trabajos</span>
             <ArrowDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" />
@@ -59,7 +76,7 @@ export const Hero = ({ onNavigate }) => {
           <button
             type="button"
             onClick={() => onNavigate('contact')}
-            className="px-7 py-3.5 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white text-xs font-mono uppercase tracking-wider font-semibold hover:border-zinc-950 dark:hover:border-white transition-colors cursor-pointer"
+            className="px-7 py-3.5 border border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-white text-xs font-mono uppercase tracking-wider font-semibold hover:border-eber-red hover:text-eber-red transition-colors cursor-pointer"
           >
             Contacto
           </button>

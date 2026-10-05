@@ -5,6 +5,7 @@ import { cloudinaryImage, cloudinaryVideo } from '../lib/cloudinary';
 import { PROJECTS } from '../data/projects';
 import { fullName } from '../data/profile';
 import { Lightbox } from './Lightbox';
+import { CycleText } from './CycleText';
 import { containerClass } from './SectionHeader';
 import { scrollToTarget } from '../lib/smoothScroll';
 
@@ -15,12 +16,12 @@ const BOARD_WIDTHS = [600, 900, 1200, 1600, 2200];
 const MEDIA_MAX = '';
 
 // Presentation boards are shown whole (never cropped) and open in the lightbox
-const Board = ({ publicId, alt, size, eager = false, onOpen, sizes = GRID_SIZES }) => (
+const Board = ({ publicId, alt, size, eager = false, onOpen, sizes = GRID_SIZES, className = '' }) => (
   <button
     type="button"
     onClick={onOpen}
     aria-label={`Ampliar: ${alt}`}
-    className="group relative block w-full cursor-zoom-in"
+    className={`group relative block w-full cursor-zoom-in ${className}`}
   >
     <img
       {...cloudinaryImage(publicId, { sizes, widths: BOARD_WIDTHS })}
@@ -123,8 +124,8 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
         <header className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 pt-10 pb-14 sm:pt-14 sm:pb-20">
           <div className="lg:col-span-8 space-y-6">
             <p className="label">{project.categoryLabel}</p>
-            <h1 className="text-5xl sm:text-8xl font-semibold uppercase tracking-[-0.045em] leading-[0.92] text-zinc-950 dark:text-white">
-              {project.title}
+            <h1 className="font-display font-black text-7xl sm:text-9xl uppercase tracking-[-0.01em] leading-[0.85] text-zinc-950 dark:text-white">
+              <CycleText text={project.title} />
             </h1>
             <p className="text-xl sm:text-2xl text-zinc-800 dark:text-zinc-200 leading-snug text-balance max-w-3xl">
               {project.tagline}
@@ -193,8 +194,10 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
             )}
 
             <div className={`${MEDIA_MAX} grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4`}>
-              {(section.images || []).map((publicId, idx) => {
+              {(section.images || []).map((publicId, idx, images) => {
                 const boardIndex = boardCursor++;
+                // An odd board out spans both columns instead of sitting alone
+                const spansRow = images.length % 2 === 1 && idx === images.length - 1;
                 return (
                   <Board
                     key={publicId}
@@ -202,6 +205,8 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
                     alt={`${project.title}, ${section.title}, lámina ${idx + 1}`}
                     size={project.imageSize}
                     onOpen={() => setLightboxIndex(boardIndex)}
+                    className={spansRow ? 'md:col-span-2' : ''}
+                    sizes={spansRow ? COVER_SIZES : GRID_SIZES}
                   />
                 );
               })}

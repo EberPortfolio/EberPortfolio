@@ -31,7 +31,7 @@ export const Navbar = ({ onOpenMobileMenu, onNavigate }) => {
       transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-500 border-b ${
         scrolled
-          ? 'bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-zinc-200 dark:border-zinc-900'
+          ? 'bg-zinc-50/80 dark:bg-black/80 backdrop-blur-md border-zinc-200 dark:border-zinc-900'
           : 'bg-transparent border-transparent'
       }`}
     >
@@ -59,7 +59,7 @@ export const Navbar = ({ onOpenMobileMenu, onNavigate }) => {
         <button
           type="button"
           onClick={() => onNavigate('home')}
-          className="absolute left-1/2 -translate-x-1/2 text-base sm:text-lg font-black tracking-[-0.04em] uppercase text-zinc-950 dark:text-white cursor-pointer hover:opacity-80 transition-opacity"
+          className="absolute left-1/2 -translate-x-1/2 text-lg sm:text-xl font-display tracking-[0.05em] uppercase text-zinc-950 dark:text-white cursor-pointer hover:text-eber-red transition-colors"
         >
           {EBER_PROFILE.name || 'EBER'}
         </button>

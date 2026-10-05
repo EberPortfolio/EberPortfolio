@@ -30,7 +30,7 @@ export const MobileMenu = ({ isOpen, onClose, onNavigate }) => {
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
           exit={{ clipPath: 'inset(0 0 100% 0)' }}
           transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-50 md:hidden flex flex-col bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-white"
+          className="fixed inset-0 z-50 md:hidden flex flex-col bg-zinc-50 text-zinc-950 dark:bg-black dark:text-white"
         >
           <div className="px-5 h-16 flex items-center justify-between">
             <span className="text-[13px] font-medium uppercase">{fullName}</span>
