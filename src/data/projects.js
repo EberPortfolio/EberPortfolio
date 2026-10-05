@@ -133,19 +133,19 @@ export const WORK_PROJECTS = [
     tagline: 'El disco «Me muevo para aquí» de Topa para Disney Junior, de la tapa al librillo.',
     summary: 'Logo y lettering, packaging del CD, librillo con las letras de las canciones y una familia de personajes y objetos que acompañan cada tema.',
     thumbnail: 'web_topa-07',
-    coverImage: 'web_topa-04',
+    coverImage: 'web_topa-07',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Logo y lettering', 'Packaging', 'Librillo', 'Personajes', 'Objetos 3D'],
     sections: [
       {
         title: 'El disco',
         text: 'Tapa, contratapa con la lista de temas y el disco.',
-        images: boards('topa', 6, 5, 17)
+        images: boards('topa', 4, 6, 5, 17)
       },
       {
         title: 'Logo y lettering',
-        text: 'El nombre de Topa en letras infladas, y las variantes tipográficas que se exploraron en el camino.',
-        images: boards('topa', 7, 16)
+        text: 'Las variantes tipográficas que se exploraron hasta llegar a las letras infladas del logo.',
+        images: boards('topa', 16)
       },
       {
         title: 'Personajes y objetos',
