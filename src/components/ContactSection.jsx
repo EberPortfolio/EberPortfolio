@@ -234,7 +234,7 @@ export const ContactSection = ({ index, onNavigate }) => {
               <p role="status" aria-live="polite" className="text-sm leading-snug">
                 {status === 'sent' && (
                   <span className="inline-flex items-start gap-2 text-zinc-950 dark:text-white">
-                    <Check className="w-4 h-4 mt-0.5 shrink-0" />
+                    <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--eber-blue)' }} />
                     <span>Consulta enviada. Eber te va a responder a {sentTo}.</span>
                   </span>
                 )}
