@@ -32,7 +32,7 @@ export const AboutSection = ({ onNavigate, index }) => {
         <div className="lg:col-span-7 space-y-6 lg:sticky lg:top-24">
           <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500 font-medium">
             <span>PERFIL & VISIÓN</span>
-            <span className="text-eber-yellow">—</span>
+            <span>—</span>
             <span>HOLA, SOY EBER</span>
           </div>
           <p className="text-3xl sm:text-5xl font-medium tracking-[-0.03em] leading-[1.08] text-zinc-950 dark:text-white text-balance">

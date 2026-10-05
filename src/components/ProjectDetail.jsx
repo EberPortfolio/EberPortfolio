@@ -5,7 +5,6 @@ import { cloudinaryImage, cloudinaryVideo } from '../lib/cloudinary';
 import { PROJECTS } from '../data/projects';
 import { fullName } from '../data/profile';
 import { Lightbox } from './Lightbox';
-import { CycleText } from './CycleText';
 import { containerClass } from './SectionHeader';
 import { scrollToTarget } from '../lib/smoothScroll';
 
@@ -125,7 +124,7 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
           <div className="lg:col-span-8 space-y-6">
             <p className="label">{project.categoryLabel}</p>
             <h1 className="font-display font-black text-7xl sm:text-9xl uppercase tracking-[-0.01em] leading-[0.85] text-zinc-950 dark:text-white">
-              <CycleText text={project.title} />
+              {project.title}
             </h1>
             <p className="text-xl sm:text-2xl text-zinc-800 dark:text-zinc-200 leading-snug text-balance max-w-3xl">
               {project.tagline}

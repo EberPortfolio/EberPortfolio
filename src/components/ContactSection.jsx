@@ -216,7 +216,7 @@ export const ContactSection = ({ index, onNavigate }) => {
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="px-8 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:bg-eber-blue hover:text-white dark:hover:bg-eber-blue dark:hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2 self-start disabled:opacity-60 disabled:cursor-wait"
+                className="px-8 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:opacity-80 transition-opacity cursor-pointer inline-flex items-center gap-2 self-start disabled:opacity-60 disabled:cursor-wait"
               >
                 {status === 'sending' ? (
                   <>
@@ -234,7 +234,7 @@ export const ContactSection = ({ index, onNavigate }) => {
               <p role="status" aria-live="polite" className="text-sm leading-snug">
                 {status === 'sent' && (
                   <span className="inline-flex items-start gap-2 text-zinc-950 dark:text-white">
-                    <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--eber-blue)' }} />
+                    <Check className="w-4 h-4 mt-0.5 shrink-0" />
                     <span>Consulta enviada. Eber te va a responder a {sentTo}.</span>
                   </span>
                 )}
@@ -259,7 +259,7 @@ export const ContactSection = ({ index, onNavigate }) => {
         <div>
           <a
             href={`mailto:${EBER_PROFILE.email}`}
-            className="text-2xl sm:text-4xl md:text-5xl font-display tracking-wide text-zinc-950 dark:text-white hover:text-eber-blue transition-colors"
+            className="text-2xl sm:text-4xl md:text-5xl font-display tracking-wide text-zinc-950 dark:text-white hover:opacity-70 transition-opacity"
           >
             {EBER_PROFILE.email}
           </a>

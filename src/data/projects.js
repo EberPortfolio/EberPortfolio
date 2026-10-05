@@ -168,6 +168,52 @@ export const WORK_PROJECTS = [
         images: boards('topa', 2, 3)
       }
     ]
+  },
+  {
+    id: 'olga',
+    title: 'OLGA',
+    client: 'OLGA',
+    category: 'identidad',
+    categoryLabel: 'Merch · Lettering · Ilustración',
+    subtitle: 'OLGA Store · Propuesta creativa',
+    tagline: 'Merch para los programas de OLGA: un lettering y un universo gráfico para cada uno.',
+    summary: 'Propuesta creativa para OLGA Store: lettering, personajes e ilustraciones para las líneas de Jijolines, Tapados de Laburo, Lauchas, Mi primo es así y Sería increíble, aplicados a remeras, buzos y la tienda online.',
+    thumbnail: 'web_olga-04',
+    coverImage: 'web_olga-28',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Lettering', 'Personajes', 'Pixel art', 'Gráficas textiles', 'Tienda online'],
+    sections: [
+      {
+        title: 'La tienda',
+        text: 'La propuesta para la tienda online, la marca aplicada y los primeros bocetos.',
+        images: boards('olga', 2, 3, 24, 8)
+      },
+      {
+        title: 'Jijolines',
+        text: 'Un lettering hecho a mano, del logo a la remera y el buzo.',
+        images: boards('olga', 5, 6, 4)
+      },
+      {
+        title: 'Tapados de Laburo',
+        text: 'El ají como emblema y el elenco en pixel art, de la pantalla al bordado.',
+        images: boards('olga', 7, 9, 10, 11, 12, 13)
+      },
+      {
+        title: 'Lauchas',
+        text: 'Lauchas Flacas y El Show de las Lauchas: escudo, tipografía y prendas.',
+        images: boards('olga', 17, 20, 21, 15)
+      },
+      {
+        title: 'Mi primo es así',
+        text: 'Dos líneas para el programa: las lauchas de «Enhorabuena» y el lettering gótico de «Mi primo es un vampiro».',
+        images: boards('olga', 14, 16, 22, 18, 19, 23)
+      },
+      {
+        title: 'Sería increíble',
+        text: 'Retratos del elenco en alto contraste, sobre bloques de color.',
+        images: boards('olga', 25, 26, 27)
+      }
+    ]
   }
 ];
 

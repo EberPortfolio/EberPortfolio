@@ -1,5 +1,4 @@
 import React from 'react';
-import { CycleText } from './CycleText';
 
 // Full-bleed layout with tight gutters, capped for very wide screens
 export const containerClass = 'mx-auto w-full max-w-[1760px] px-5 sm:px-8 lg:px-10';
@@ -15,7 +14,7 @@ export const SectionHeader = ({ index, title, count, description, children }) =>
         {index}
       </span>
       <h2 className="col-span-12 sm:col-span-10 lg:col-span-9 font-display font-black uppercase text-[13vw] sm:text-8xl tracking-[-0.01em] leading-[0.85] text-zinc-950 dark:text-white">
-        <CycleText text={title} />
+        {title}
         {count !== undefined && (
           <sup className="ml-2 text-base sm:text-lg font-medium font-sans tracking-normal tabular-nums text-zinc-500 align-super">
             {count}

@@ -59,7 +59,7 @@ export const Navbar = ({ onOpenMobileMenu, onNavigate }) => {
         <button
           type="button"
           onClick={() => onNavigate('home')}
-          className="absolute left-1/2 -translate-x-1/2 text-lg sm:text-xl font-display tracking-[0.05em] uppercase text-zinc-950 dark:text-white cursor-pointer hover:text-eber-red transition-colors"
+          className="absolute left-1/2 -translate-x-1/2 text-lg sm:text-xl font-display tracking-[0.05em] uppercase text-zinc-950 dark:text-white cursor-pointer hover:opacity-70 transition-opacity"
         >
           {EBER_PROFILE.name || 'EBER'}
         </button>

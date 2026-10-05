@@ -1,7 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Check } from 'lucide-react';
-import { cycleColor } from '../lib/cycle';
 
 // Native <select> menus can't be styled, so this is a listbox that follows the
 // form's underline style. Keyboard: arrows, Home/End, Enter/Space, Escape, Tab.
@@ -112,16 +111,14 @@ export const ServiceSelect = ({ id, value, options, onChange }) => {
                     highlighted ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-950 dark:text-white' : 'text-zinc-600 dark:text-zinc-400'
                   }`}
                 >
-                  {/* Each option owns one colour of Eber's cycle, shown as it's reached */}
                   <span
                     aria-hidden="true"
-                    className={`absolute left-0 top-1.5 bottom-1.5 w-1 origin-left transition-transform duration-200 ${
+                    className={`absolute left-0 top-1.5 bottom-1.5 w-1 origin-left bg-zinc-950 dark:bg-white transition-transform duration-200 ${
                       highlighted || selected ? 'scale-x-100' : 'scale-x-0'
                     }`}
-                    style={{ backgroundColor: cycleColor(idx) }}
                   />
                   <span>{option}</span>
-                  {selected && <Check className="w-4 h-4 shrink-0" style={{ color: cycleColor(idx) }} />}
+                  {selected && <Check className="w-4 h-4 shrink-0" />}
                 </li>
               );
             })}
