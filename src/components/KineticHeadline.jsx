@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { prefersReducedMotion } from '../lib/smoothScroll';
+import { cycleColor, isLetter, countLetters } from '../lib/cycle';
 
 // Inter Variable weight axis: letters rest heavy and thin out near the pointer,
 // as if the cursor carved the type. Only on devices with a fine pointer.
@@ -10,8 +11,12 @@ const RADIUS = 260;
 const EASE = [0.16, 1, 0.3, 1];
 
 
-const Chars = ({ text, weight = BASE_WEIGHT }) =>
-  text.split(' ').map((word, wordIdx) => (
+// colorFrom (optional): position in Eber's colour cycle where this text starts.
+// Spaces and punctuation keep the ink colour without advancing the cycle.
+const Chars = ({ text, weight = BASE_WEIGHT, colorFrom }) => {
+  let n = colorFrom ?? 0;
+  const colorOf = (char) => (colorFrom !== undefined && isLetter(char) ? cycleColor(n++) : undefined);
+  return text.split(' ').map((word, wordIdx) => (
     <React.Fragment key={wordIdx}>
       {wordIdx > 0 && ' '}
       <span className="inline-block whitespace-nowrap">
@@ -20,7 +25,7 @@ const Chars = ({ text, weight = BASE_WEIGHT }) =>
             key={charIdx}
             data-char
             className="inline-block transition-[font-variation-settings] duration-500 ease-out"
-            style={{ fontVariationSettings: `'wght' ${weight}` }}
+            style={{ fontVariationSettings: `'wght' ${weight}`, color: colorOf(char) }}
           >
             {char}
           </span>
@@ -28,9 +33,11 @@ const Chars = ({ text, weight = BASE_WEIGHT }) =>
       </span>
     </React.Fragment>
   ));
+};
 
 // lines can be a simple array of strings: ['line 1', 'line 2'] or formatted segments: [[{ text }]]
-export const KineticHeadline = ({ lines, className = '', readoutRef, as: Tag = 'h1', delay = 0, baseWeight = 850 }) => {
+// cycle: paint the letters with Eber's colour sequence, continuous across lines
+export const KineticHeadline = ({ lines, className = '', readoutRef, as: Tag = 'h1', delay = 0, baseWeight = 850, cycle = false }) => {
   const containerRef = useRef(null);
   const normalizedLines = lines.map((line) => {
     if (typeof line === 'string') return [{ text: line }];
@@ -103,6 +110,16 @@ export const KineticHeadline = ({ lines, className = '', readoutRef, as: Tag = '
     };
   }, [readoutRef, baseWeight]);
 
+  // Where each segment starts in the colour cycle, so it runs on across lines
+  let lettersBefore = 0;
+  const colorStarts = normalizedLines.map((line) =>
+    line.map((segment) => {
+      const start = lettersBefore;
+      lettersBefore += countLetters(segment.text);
+      return start;
+    })
+  );
+
   return (
     <Tag ref={containerRef} className={className} aria-label={plainText}>
       {normalizedLines.map((line, lineIdx) => (
@@ -121,10 +138,10 @@ export const KineticHeadline = ({ lines, className = '', readoutRef, as: Tag = '
             {line.map((segment, segIdx) =>
               segment.em ? (
                 <span key={segIdx} className="relative inline-block italic">
-                  <Chars text={segment.text} weight={baseWeight} />
+                  <Chars text={segment.text} weight={baseWeight} colorFrom={cycle ? colorStarts[lineIdx][segIdx] : undefined} />
                 </span>
               ) : (
-                <Chars key={segIdx} text={segment.text} weight={baseWeight} />
+                <Chars key={segIdx} text={segment.text} weight={baseWeight} colorFrom={cycle ? colorStarts[lineIdx][segIdx] : undefined} />
               )
             )}
           </motion.span>

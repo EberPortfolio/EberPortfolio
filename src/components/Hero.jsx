@@ -29,6 +29,7 @@ export const Hero = ({ onNavigate }) => {
         <motion.div style={{ y: headlineY, opacity: headlineOpacity }}>
           <KineticHeadline
             lines={HEADLINE}
+            cycle
             baseWeight={900}
             className="uppercase font-black text-[clamp(2.6rem,14.5vw,13.8rem)] leading-[0.82] tracking-[-0.055em] text-zinc-950 dark:text-white"
           />
