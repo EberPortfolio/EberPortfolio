@@ -1,196 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
-/* CRITICAL: Tailwind v4 dark mode via .dark class (not system media query) */
-@variant dark (&:where(.dark, .dark *));
-
-:root {
-  --accent-hex: currentColor;
+/* Tailwind v4 reads theme tokens from CSS (tailwind.config.js is not used) */
+@theme {
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+  /* Accent is monochrome (ink on paper) */
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 }
 
+:root {
+  --accent: #09090b;
+  --accent-foreground: #ffffff;
+}
+
+.dark {
+  --accent: #fafafa;
+  --accent-foreground: #09090b;
+}
+
+/* Dark mode follows the .dark class set by ThemeContext, not the OS setting */
+@variant dark (&:where(.dark, .dark *));
+
 @layer base {
+  html {
+    font-optical-sizing: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply font-sans antialiased transition-colors duration-200;
+    @apply font-sans antialiased bg-zinc-50 text-zinc-950 transition-colors duration-200;
+  }
+
+  .dark body {
+    @apply bg-zinc-950 text-zinc-100;
+  }
+
+  ::selection {
+    @apply bg-accent text-accent-foreground;
+  }
+
+
+  /* Visible keyboard focus everywhere, invisible for mouse clicks */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-/* -------------------------------------------------------------
-   THEME PALETTE DEFINITIONS (Clean, Standardized & High-Contrast)
-   ------------------------------------------------------------- */
-
-/* 1. LIGHT THEME */
-.theme-light {
-  background-color: #FAFAFA;
-  color: #09090B;
+/* Small uppercase labels: the only "meta" style in the site */
+@utility label {
+  @apply text-sm text-zinc-500 dark:text-zinc-400;
 }
 
-.theme-light .navbar-scrolled-bg {
-  background-color: rgba(250, 250, 250, 0.92);
-  color: #09090B;
+/* Scroll-driven reveals. Pure CSS: where unsupported (or with reduced motion)
+   the content is simply shown, never left hidden. */
+@keyframes reveal-clip {
+  from {
+    clip-path: inset(24% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
-/* 2. DARK THEME */
-.theme-dark {
-  background-color: #09090B;
-  color: #F4F4F5;
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.theme-dark .navbar-scrolled-bg {
-  background-color: rgba(9, 9, 11, 0.92);
-  color: #F4F4F5;
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal-clip {
+      animation: reveal-clip linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+    .reveal-up {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
 }
 
-/* 3. INK (CREMITA) THEME */
-.theme-ink {
-  background-color: #F2EDE2;
-  color: #1A1816;
+/* Link underline that draws in from the left on hover */
+@utility link-draw {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover,
+  .group:hover &,
+  .group:focus-visible &,
+  &:focus-visible {
+    background-size: 100% 2px;
+  }
 }
 
-.theme-ink .navbar-scrolled-bg {
-  background-color: rgba(242, 237, 226, 0.92);
-  color: #1A1816;
-}
-
-/* -------------------------------------------------------
-   LIGHT THEME: Force correct text/bg on all components
-   ------------------------------------------------------- */
-html.theme-light body {
-  background-color: #FAFAFA;
-  color: #09090B;
-}
-
-/* Inputs and textareas */
-html.theme-light input,
-html.theme-light textarea {
-  background-color: #F9F9FB;
-  color: #09090B;
-  border-color: #D4D4D8;
-}
-html.theme-light input::placeholder,
-html.theme-light textarea::placeholder {
-  color: #A1A1AA;
-}
-
-/* Navbar: keep text dark in light mode when scrolled */
-html.theme-light .navbar-scrolled-bg {
-  background-color: rgba(250, 250, 250, 0.95) !important;
-  color: #09090B !important;
-}
-
-/* -------------------------------------------------------
-   INK (CREMITA) THEME: Force correct text/bg
-   ------------------------------------------------------- */
-html.theme-ink body {
-  background-color: #F2EDE2;
-  color: #1A1816;
-}
-
-html.theme-ink input,
-html.theme-ink textarea {
-  background-color: #EAE4D8;
-  color: #1A1816;
-  border-color: #C8C0B0;
-}
-html.theme-ink input::placeholder,
-html.theme-ink textarea::placeholder {
-  color: #8A8070;
-}
-
-html.theme-ink .text-zinc-400,
-html.theme-ink .text-zinc-500 {
-  color: #5E574B;
-}
-
-html.theme-ink .border-zinc-200,
-html.theme-ink .border-zinc-300,
-html.theme-ink .border-zinc-800 {
-  border-color: #D6CEBE;
-}
-
-/* Warm surfaces: pure white/zinc cards clash with the cream background */
-html.theme-ink .bg-white {
-  background-color: #FBF8F1;
-}
-html.theme-ink .bg-zinc-50 {
-  background-color: #F6F1E6;
-}
-html.theme-ink .bg-zinc-100 {
-  background-color: #EAE4D8;
-}
-
-html.theme-ink .navbar-scrolled-bg {
-  background-color: rgba(242, 237, 226, 0.95) !important;
-  color: #1A1816 !important;
-}
-
-/* Accent Dynamic Helpers */
-.accent-bg {
-  background-color: var(--accent-hex) !important;
-}
-
-.accent-text {
-  color: var(--accent-hex) !important;
-}
-
-.accent-border {
-  border-color: var(--accent-hex) !important;
-}
-
-/* Smooth Scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #A1A1AA;
-}
-
-.theme-dark ::-webkit-scrollbar-thumb {
-  background: #3F3F46;
-}
-
-/* Dynamic Architectural Grid Background */
-.bg-grid-pattern {
-  background-size: 48px 48px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-}
-
-.dark .bg-grid-pattern {
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-}
-
-.theme-ink .bg-grid-pattern {
-  background-image: 
-    linear-gradient(to right, rgba(70, 55, 35, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(70, 55, 35, 0.08) 1px, transparent 1px);
-}
-
-/* Glass & Border Utilities */
-.glass-header {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-/* Marquee Animation */
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  display: inline-flex;
-  animation: marquee 28s linear infinite;
-}
-
-/* Horizontal scrollers (e.g. project filter on mobile) without a visible scrollbar */
+/* Horizontal scrollers without a visible scrollbar */
 .no-scrollbar {
   scrollbar-width: none;
 }

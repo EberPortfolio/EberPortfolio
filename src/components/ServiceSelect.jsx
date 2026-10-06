@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Check } from 'lucide-react';
 
 // Native <select> menus can't be styled, so this is a listbox that follows the
-// form's input style. Keyboard: arrows, Home/End, Enter/Space, Escape, Tab.
+// form's underline style. Keyboard: arrows, Home/End, Enter/Space, Escape, Tab.
 export const ServiceSelect = ({ id, value, options, onChange }) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(() => Math.max(0, options.indexOf(value)));
@@ -72,8 +72,8 @@ export const ServiceSelect = ({ id, value, options, onChange }) => {
         aria-controls={listId}
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={handleButtonKey}
-        className={`w-full flex items-center justify-between gap-4 px-4 py-3 border bg-zinc-50 dark:bg-zinc-900 text-left text-sm text-zinc-950 dark:text-white focus:outline-none transition-colors cursor-pointer ${
-          open ? 'border-zinc-950 dark:border-white' : 'border-zinc-300 dark:border-zinc-800 focus-visible:border-zinc-950 dark:focus-visible:border-white'
+        className={`w-full flex items-center justify-between gap-4 pb-2.5 pt-1 border-b bg-transparent text-left text-sm sm:text-base text-zinc-950 dark:text-white focus:outline-none transition-colors cursor-pointer ${
+          open ? 'border-zinc-950 dark:border-white' : 'border-zinc-300 dark:border-zinc-700 focus-visible:border-zinc-950 dark:focus-visible:border-white'
         }`}
       >
         <span>{value}</span>
@@ -94,7 +94,7 @@ export const ServiceSelect = ({ id, value, options, onChange }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute z-20 left-0 right-0 mt-1 py-2 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl shadow-black/10 dark:shadow-black/60 focus:outline-none"
+            className="absolute z-20 left-0 right-0 mt-2 py-2 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl shadow-black/10 dark:shadow-black/60 focus:outline-none"
           >
             {options.map((option, idx) => {
               const selected = option === value;
@@ -107,7 +107,7 @@ export const ServiceSelect = ({ id, value, options, onChange }) => {
                   aria-selected={selected}
                   onPointerEnter={() => setActive(idx)}
                   onClick={() => choose(idx)}
-                  className={`relative flex items-center justify-between gap-4 pl-5 pr-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                  className={`relative flex items-center justify-between gap-4 pl-5 pr-4 py-2.5 text-sm sm:text-base cursor-pointer transition-colors ${
                     highlighted ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-950 dark:text-white' : 'text-zinc-600 dark:text-zinc-400'
                   }`}
                 >

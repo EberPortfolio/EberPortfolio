@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import { cloudinaryUrl } from '../lib/cloudinary';
-import { lockScroll } from '../lib/scrollLock';
+import { lockScroll } from '../lib/smoothScroll';
 
 // Full-screen viewer for presentation boards. Zoom shows the board at full
 // resolution and lets the visitor pan, so small text is readable on phones.

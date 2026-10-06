@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Copy, Check, ArrowRight, Maximize2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Maximize2 } from 'lucide-react';
 import { cloudinaryImage, cloudinaryVideo } from '../lib/cloudinary';
 import { PROJECTS } from '../data/projects';
 import { fullName } from '../data/profile';
 import { Lightbox } from './Lightbox';
+import { containerClass } from './SectionHeader';
+import { scrollToTarget } from '../lib/smoothScroll';
 
-const FULL_WIDTH_SIZES = '(min-width: 1280px) 1216px, 100vw';
-const HALF_WIDTH_SIZES = '(min-width: 1280px) 600px, (min-width: 768px) 48vw, 100vw';
+const COVER_SIZES = '(min-width: 1280px) 1152px, 100vw';
+const GRID_SIZES = '(min-width: 1280px) 570px, (min-width: 768px) 48vw, 100vw';
 const BOARD_WIDTHS = [600, 900, 1200, 1600, 2200];
+// The whole case sits in one centered reading column; full detail lives in the lightbox
+const MEDIA_MAX = '';
 
 // Presentation boards are shown whole (never cropped) and open in the lightbox
-const Board = ({ publicId, alt, size, eager = false, onOpen, sizes = HALF_WIDTH_SIZES, className = '', hover }) => (
+const Board = ({ publicId, alt, size, eager = false, onOpen, sizes = GRID_SIZES, className = '' }) => (
   <button
     type="button"
     onClick={onOpen}
-    {...hover}
     aria-label={`Ampliar: ${alt}`}
-    className={`group relative block w-full border border-zinc-300 dark:border-zinc-800 cursor-zoom-in ${className}`}
+    className={`group relative block w-full cursor-zoom-in ${className}`}
   >
     <img
       {...cloudinaryImage(publicId, { sizes, widths: BOARD_WIDTHS })}
@@ -26,7 +29,7 @@ const Board = ({ publicId, alt, size, eager = false, onOpen, sizes = HALF_WIDTH_
       height={size?.height}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
-      className="w-full h-auto block bg-zinc-100 dark:bg-zinc-900"
+      className="w-full h-auto block bg-zinc-200 dark:bg-zinc-900"
     />
     <span className="absolute top-3 right-3 p-2 bg-zinc-950/70 text-white opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
       <Maximize2 className="w-4 h-4" />
@@ -38,38 +41,38 @@ const Board = ({ publicId, alt, size, eager = false, onOpen, sizes = HALF_WIDTH_
 const CaseVideo = ({ publicId, title }) => {
   const { src, poster } = cloudinaryVideo(publicId);
   return (
-    <div className="border border-zinc-300 dark:border-zinc-800">
-      <video
-        controls
-        playsInline
-        preload="none"
-        poster={poster}
-        aria-label={title}
-        className="w-full h-auto block bg-zinc-900"
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-    </div>
+    <video
+      controls
+      playsInline
+      preload="none"
+      poster={poster}
+      aria-label={title}
+      className="w-full h-auto block bg-zinc-900"
+    >
+      <source src={src} type="video/mp4" />
+    </video>
   );
 };
 
 const MetaItem = ({ label, children }) => (
-  <div className="space-y-1.5">
-    <dt className="font-mono text-[11px] uppercase tracking-widest text-zinc-500">{label}</dt>
-    <dd className="text-sm text-zinc-900 dark:text-zinc-100">{children}</dd>
+  <div className="space-y-1">
+    <dt className="label">{label}</dt>
+    <dd className="text-base text-zinc-950 dark:text-white">{children}</dd>
   </div>
 );
 
-export const ProjectDetail = ({ project, onClose, onSelectProject, cursorHandlers }) => {
-  const [copiedColor, setCopiedColor] = useState(null);
+// Optional narrative blocks, shown only when the project provides them
+const STORY_FIELDS = [
+  { key: 'context', label: 'Contexto' },
+  { key: 'challenge', label: 'Desafío' },
+  { key: 'result', label: 'Resultado' }
+];
+
+export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const hover = {
-    onMouseEnter: cursorHandlers?.onButtonHover,
-    onMouseLeave: cursorHandlers?.onHoverLeave
-  };
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTarget('top', { immediate: true });
     const previousTitle = document.title;
     document.title = `${project.title} · ${fullName}`;
     return () => {
@@ -94,162 +97,103 @@ export const ProjectDetail = ({ project, onClose, onSelectProject, cursorHandler
   const cover = project.coverImage || project.thumbnail;
   // Every board in reading order, so the lightbox can move across chapters
   const allBoards = [cover, ...sections.flatMap((s) => s.images || [])];
-  const pieceCount = allBoards.length - 1;
   let boardCursor = 1;
 
-  const handleCopyColor = async (color) => {
-    try {
-      await navigator.clipboard.writeText(color);
-      setCopiedColor(color);
-      setTimeout(() => setCopiedColor(null), 2000);
-    } catch {
-      // Clipboard unavailable; the hex is visible anyway
-    }
-  };
+  const story = STORY_FIELDS.filter((f) => project[f.key]);
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      transition={{ duration: 0.3 }}
-      className="min-h-screen text-zinc-950 dark:text-white pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className={`${containerClass} pt-24 pb-20`}
     >
-      {/* Back bar */}
-      <div className="flex items-center justify-between gap-4 border-b border-zinc-300 dark:border-zinc-800 pb-6">
+      <div className="max-w-6xl mx-auto">
         <button
+          type="button"
           onClick={onClose}
-          {...hover}
-          className="group flex items-center gap-2 font-mono text-xs uppercase tracking-wider font-semibold hover:text-zinc-500 transition-colors cursor-pointer"
+          className="group inline-flex items-center gap-2 text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span>Volver a trabajos</span>
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+          Trabajos
         </button>
-        <span className="hidden sm:inline font-mono text-xs uppercase tracking-widest text-zinc-500">
-          {project.categoryLabel}
-        </span>
-      </div>
 
-      {/* Title + metadata */}
-      <header className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 py-12 sm:py-16">
-        <div className="lg:col-span-8 space-y-6">
-          <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
-            Caso de estudio
-          </span>
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-light tracking-tighter leading-[0.95]">
-            {project.title}
-          </h1>
-          <p className="text-xl sm:text-2xl text-zinc-800 dark:text-zinc-200 font-light leading-snug text-balance max-w-3xl">
-            {project.tagline}
-          </p>
-          <p className="text-base text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-2xl">
-            {project.summary}
-          </p>
+        {/* Title + metadata */}
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 pt-10 pb-14 sm:pt-14 sm:pb-20">
+          <div className="lg:col-span-8 space-y-6">
+            <p className="label">{project.categoryLabel}</p>
+            <h1 className="text-5xl sm:text-8xl font-semibold uppercase tracking-[-0.045em] leading-[0.92] text-zinc-950 dark:text-white">
+              {project.title}
+            </h1>
+            <p className="text-xl sm:text-2xl text-zinc-800 dark:text-zinc-200 leading-snug text-balance max-w-3xl">
+              {project.tagline}
+            </p>
+            <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
+              {project.summary}
+            </p>
+          </div>
+
+          <dl className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-6 content-start lg:pt-14">
+            <MetaItem label="Cliente">{project.client}</MetaItem>
+            {project.subtitle && <MetaItem label="Proyecto">{project.subtitle}</MetaItem>}
+            {project.year && <MetaItem label="Año">{project.year}</MetaItem>}
+            {project.role && <MetaItem label="Rol">{project.role}</MetaItem>}
+            {project.deliverables?.length > 0 && (
+              <div className="col-span-2 lg:col-span-1">
+                <MetaItem label="Alcance">{project.deliverables.join(', ')}</MetaItem>
+              </div>
+            )}
+          </dl>
+        </header>
+
+        <div className={MEDIA_MAX}>
+          <Board
+            publicId={cover}
+            alt={`${project.title}, portada`}
+            size={project.imageSize}
+            sizes={COVER_SIZES}
+            eager
+            onOpen={() => setLightboxIndex(0)}
+          />
         </div>
 
-        <dl className="lg:col-span-4 lg:pt-10 grid grid-cols-2 lg:grid-cols-1 gap-6 content-start border-t lg:border-t-0 lg:border-l border-zinc-300 dark:border-zinc-800 pt-8 lg:pt-10 lg:pl-10">
-          <MetaItem label="Cliente">{project.client}</MetaItem>
-          {project.subtitle && <MetaItem label="Proyecto">{project.subtitle}</MetaItem>}
-          {project.year && <MetaItem label="Año">{project.year}</MetaItem>}
-          {project.role && <MetaItem label="Rol">{project.role}</MetaItem>}
-          {project.location && <MetaItem label="Ubicación">{project.location}</MetaItem>}
-          {project.deliverables?.length > 0 && (
-            <div className="col-span-2 lg:col-span-1">
-              <MetaItem label="Alcance">
-                <ul className="flex flex-wrap gap-1.5 pt-1">
-                  {project.deliverables.map((item) => (
-                    <li
-                      key={item}
-                      className="px-3 py-1 border border-zinc-300 dark:border-zinc-700 font-mono text-[11px]"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </MetaItem>
-            </div>
-          )}
-        </dl>
-      </header>
-
-      {/* Cover */}
-      <Board
-        publicId={cover}
-        alt={`${project.title}, portada`}
-        size={project.imageSize}
-        sizes={FULL_WIDTH_SIZES}
-        eager
-        hover={hover}
-        onOpen={() => setLightboxIndex(0)}
-      />
-
-      {/* Optional brand specs */}
-      {project.colorPalette && (
-        <section className="mt-16 space-y-6">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">Paleta</h2>
-            {copiedColor && (
-              <span className="text-xs font-mono text-emerald-700 dark:text-emerald-400 flex items-center gap-1 font-semibold" aria-live="polite">
-                <Check className="w-4 h-4" /> {copiedColor} copiado
-              </span>
-            )}
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {project.colorPalette.map((color) => (
-              <button
-                key={color}
-                onClick={() => handleCopyColor(color)}
-                {...hover}
-                className="group flex flex-col p-3 border border-zinc-300 dark:border-zinc-800 hover:border-zinc-950 dark:hover:border-white text-left cursor-pointer transition-colors"
-              >
-                <span className="w-full h-16 mb-3 border border-black/10" style={{ backgroundColor: color }} />
-                <span className="font-mono text-xs uppercase font-semibold flex items-center justify-between">
-                  {color}
-                  <Copy className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-400" />
-                </span>
-              </button>
+        {story.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-20">
+            {story.map((field) => (
+              <div key={field.key} className="space-y-3">
+                <h2 className="label">{field.label}</h2>
+                <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">{project[field.key]}</p>
+              </div>
             ))}
           </div>
-        </section>
-      )}
+        )}
 
-      {project.typography && (
-        <section className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-8 p-8 border border-zinc-300 dark:border-zinc-800">
-          <div className="space-y-2">
-            <h2 className="font-mono text-[11px] uppercase tracking-widest text-zinc-500">Tipografía principal</h2>
-            <p className="text-3xl font-semibold tracking-tight">{project.typography.primary}</p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="font-mono text-[11px] uppercase tracking-widest text-zinc-500">Tipografía secundaria</h2>
-            <p className="text-3xl font-serif italic">{project.typography.secondary}</p>
-          </div>
-        </section>
-      )}
-
-      {/* Chapters */}
-      {sections.map((section, sectionIdx) => (
-        <section key={section.title} className="mt-24 sm:mt-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-16 pb-8 mb-8 border-b border-zinc-300 dark:border-zinc-800">
-            <div className="lg:col-span-5 flex items-baseline gap-5">
-              <span className="font-mono text-xs text-zinc-500">
-                {String(sectionIdx + 1).padStart(2, '0')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-light tracking-tight">{section.title}</h2>
+        {/* Chapters */}
+        {sections.map((section, sectionIdx) => (
+          <section key={section.title} className="mt-24 sm:mt-32">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-16 mb-8 sm:mb-10">
+              <h2 className="lg:col-span-4 text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-zinc-950 dark:text-white">
+                <span className="text-zinc-400 dark:text-zinc-600 tabular-nums mr-3">
+                  {String(sectionIdx + 1).padStart(2, '0')}
+                </span>
+                {section.title}
+              </h2>
+              {section.text && (
+                <p className="lg:col-span-7 text-base text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-2xl">
+                  {section.text}
+                </p>
+              )}
             </div>
-            {section.text && (
-              <p className="lg:col-span-7 text-base text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-2xl">
-                {section.text}
-              </p>
+
+            {section.video && (
+              <div className={MEDIA_MAX}>
+                <CaseVideo publicId={section.video} title={`${project.title}, ${section.title}`} />
+              </div>
             )}
-          </div>
 
-          {section.video && (
-            <CaseVideo publicId={section.video} title={`${project.title}, ${section.title}`} />
-          )}
-
-          {section.images?.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              {section.images.map((publicId, idx, images) => {
+            <div className={`${MEDIA_MAX} grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4`}>
+              {(section.images || []).map((publicId, idx, images) => {
                 const boardIndex = boardCursor++;
                 // An odd board out spans both columns instead of sitting alone
                 const spansRow = images.length % 2 === 1 && idx === images.length - 1;
@@ -259,62 +203,54 @@ export const ProjectDetail = ({ project, onClose, onSelectProject, cursorHandler
                     publicId={publicId}
                     alt={`${project.title}, ${section.title}, lámina ${idx + 1}`}
                     size={project.imageSize}
-                    hover={hover}
                     onOpen={() => setLightboxIndex(boardIndex)}
                     className={spansRow ? 'md:col-span-2' : ''}
-                    sizes={spansRow ? FULL_WIDTH_SIZES : HALF_WIDTH_SIZES}
+                    sizes={spansRow ? COVER_SIZES : GRID_SIZES}
                   />
                 );
               })}
             </div>
-          )}
-        </section>
-      ))}
+          </section>
+        ))}
 
-      {/* Footer navigation */}
-      <div className="mt-24 sm:mt-32 border-t border-zinc-300 dark:border-zinc-800 pt-10">
-        {nextProject ? (
-          <button
-            onClick={() => onSelectProject(nextProject)}
-            {...hover}
-            className="group w-full p-8 border border-zinc-300 dark:border-zinc-800 hover:border-zinc-950 dark:hover:border-white transition-colors flex items-center justify-between gap-6 text-left cursor-pointer"
-          >
-            <span className="space-y-1">
-              <span className="font-mono text-xs text-zinc-500 uppercase tracking-widest font-semibold block">
-                Siguiente caso
-              </span>
-              <span className="text-2xl sm:text-4xl font-light block">{nextProject.title}</span>
-            </span>
-            <span className="w-12 h-12 shrink-0 rounded-full bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center transition-transform group-hover:translate-x-2">
-              <ArrowRight className="w-6 h-6" />
-            </span>
-          </button>
-        ) : (
-          <div className="flex flex-wrap items-center justify-between gap-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">
-              {pieceCount} láminas · {project.client}
-            </span>
+        {/* Footer navigation */}
+        <nav aria-label="Casos" className="mt-24 sm:mt-32 pt-10 border-t border-zinc-200 dark:border-zinc-800">
+          {nextProject ? (
             <button
-              onClick={onClose}
-              {...hover}
-              className="group flex items-center gap-2 font-mono text-xs uppercase tracking-wider font-semibold hover:text-zinc-500 transition-colors cursor-pointer"
+              type="button"
+              onClick={() => onSelectProject(nextProject)}
+              className="group w-full flex items-end justify-between gap-6 text-left cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-              <span>Volver a trabajos</span>
+              <span>
+                <span className="label block mb-2">Siguiente caso</span>
+                <span className="text-3xl sm:text-5xl font-medium tracking-[-0.03em] text-zinc-950 dark:text-white">
+                  {nextProject.title}
+                </span>
+              </span>
+              <ArrowRight className="w-8 h-8 shrink-0 transition-transform group-hover:translate-x-1" />
             </button>
-          </div>
+          ) : (
+            <button
+              type="button"
+              onClick={onClose}
+              className="group inline-flex items-center gap-2 text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+              Volver a trabajos
+            </button>
+          )}
+        </nav>
+
+        {lightboxIndex !== null && (
+          <Lightbox
+            images={allBoards}
+            index={lightboxIndex}
+            onChange={setLightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+            alt={project.title}
+          />
         )}
       </div>
-
-      {lightboxIndex !== null && (
-        <Lightbox
-          images={allBoards}
-          index={lightboxIndex}
-          onChange={setLightboxIndex}
-          onClose={() => setLightboxIndex(null)}
-          alt={project.title}
-        />
-      )}
     </motion.article>
   );
 };
