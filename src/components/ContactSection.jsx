@@ -91,10 +91,10 @@ export const ContactSection = ({ cursorHandlers }) => {
   return (
     <section id="contacto" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-300 dark:border-zinc-800">
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:items-stretch">
 
         {/* Left: intro + direct contact */}
-        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-28">
+        <div className="lg:col-span-5 space-y-8">
           <div className="space-y-4">
             <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
               Contacto
@@ -164,9 +164,9 @@ export const ContactSection = ({ cursorHandlers }) => {
         </div>
 
         {/* Right: form */}
-        <div className="lg:col-span-7 p-6 sm:p-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="lg:col-span-7 flex flex-col p-6 sm:p-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
+          <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-8">
+            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-rows-[auto_auto_1fr] gap-4">
               <div>
                 <label htmlFor="contact-name" className={labelClass}>Nombre</label>
                 <input
@@ -202,7 +202,8 @@ export const ContactSection = ({ cursorHandlers }) => {
                   onChange={(service) => setFormState({ ...formState, service })}
                 />
               </div>
-              <div className="sm:col-span-2">
+              {/* On desktop the message grows so the form ends level with the left column */}
+              <div className="sm:col-span-2 flex flex-col">
                 <label htmlFor="contact-message" className={labelClass}>Mensaje</label>
                 <textarea
                   id="contact-message"
@@ -211,7 +212,7 @@ export const ContactSection = ({ cursorHandlers }) => {
                   placeholder="Contame brevemente los objetivos, tiempos o ideas clave…"
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className={`${inputClass} resize-y min-h-32`}
+                  className={`${inputClass} flex-1 resize-none min-h-32`}
                 />
               </div>
             </div>

@@ -214,6 +214,47 @@ export const WORK_PROJECTS = [
         images: boards('olga', 25, 26, 27)
       }
     ]
+  },
+  {
+    id: 'zpezia',
+    title: 'Zpëzia',
+    client: 'Zpëzia',
+    category: 'identidad',
+    categoryLabel: 'Identidad · Ilustración · Retail',
+    subtitle: 'Accesorios',
+    tagline: 'Una marca de accesorios que recorre las culturas del mundo, del logo al local.',
+    summary: 'Identidad, ilustración y sistema gráfico para Zpëzia: el logo y el packaging, una familia de estampillas por país, la campaña de fotos, el catálogo y las piezas de temporada, el local y la tienda online.',
+    thumbnail: 'web_zpezia-02',
+    coverImage: 'web_zpezia-01',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Logo', 'Ilustración', 'Packaging', 'Estampillas', 'Campaña', 'Catálogo', 'Retail'],
+    sections: [
+      {
+        title: 'Identidad e ilustración',
+        text: 'El logo, los animales dibujados a mano y la trama ilustrada que viste las bolsas, junto a la línea de accesorios en dibujo.',
+        images: boards('zpezia', 3, 2, 4, 11)
+      },
+      {
+        title: 'Un sello por país',
+        text: 'Rusia, India, África, China, Argentina: cada región tiene sus estampillas y su afiche, y juntas arman el mapa de la marca.',
+        images: boards('zpezia', 7, 8, 9, 10, 25, 12)
+      },
+      {
+        title: 'Campaña',
+        text: 'La sesión de fotos, el backstage y su aplicación en piezas y pantallas.',
+        images: boards('zpezia', 13, 14, 16, 20)
+      },
+      {
+        title: 'Catálogo y temporada',
+        text: 'El catálogo, armado como un collage de papeles y objetos, y las piezas de cada temporada.',
+        images: boards('zpezia', 5, 6, 22, 23, 24, 15)
+      },
+      {
+        title: 'Local y tienda online',
+        text: 'El universo de la marca en el local, en el producto y en la web.',
+        images: boards('zpezia', 17, 19, 18, 21)
+      }
+    ]
   }
 ];
 

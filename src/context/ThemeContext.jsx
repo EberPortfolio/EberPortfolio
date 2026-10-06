@@ -11,7 +11,7 @@ export const ACCENT_COLORS = [
 ];
 
 export const THEMES = ['dark', 'light', 'ink'];
-const THEME_STORAGE_KEY = 'eber-theme';
+const THEME_STORAGE_KEY = 'eber-theme-v2';
 // Keep in sync with the inline script in index.html
 const THEME_COLORS = {
   dark: ['#09090B', '#F4F4F5'],
