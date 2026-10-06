@@ -1,69 +1,69 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NAV_LINKS } from './Navbar';
-import { EBER_PROFILE, fullName } from '../data/profile';
-import { lockScroll } from '../lib/smoothScroll';
+import { X, ArrowUpRight } from 'lucide-react';
+import { EBER_PROFILE } from '../data/profile';
 
 export const MobileMenu = ({ isOpen, onClose, onNavigate }) => {
-  // Close with Escape and freeze the page while open
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    const unlock = lockScroll();
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      unlock();
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+  const menuLinks = [
+    { id: 'work', label: 'Work' },
+    { id: 'eber-art', label: 'Eber Art', isArt: true },
+    { id: 'about-me', label: 'About me' },
+    { id: 'contact', label: 'Contact' }
+  ];
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menú"
-          initial={{ clipPath: 'inset(0 0 100% 0)' }}
-          animate={{ clipPath: 'inset(0 0 0% 0)' }}
-          exit={{ clipPath: 'inset(0 0 100% 0)' }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-50 md:hidden flex flex-col bg-zinc-50 text-zinc-950 dark:bg-black dark:text-white"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-2xl text-zinc-100 flex flex-col justify-between p-6 md:hidden"
         >
-          <div className="px-5 h-16 flex items-center justify-between">
-            <span className="text-[13px] font-medium uppercase">{fullName}</span>
-            <button type="button" onClick={onClose} className="text-[13px] font-medium uppercase cursor-pointer">
-              Cerrar
+          {/* Header Bar */}
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-zinc-400">
+              Eber · Menú
+            </span>
+            <button
+              onClick={onClose}
+              aria-label="Cerrar menú"
+              className="p-2.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white"
+            >
+              <X className="w-5 h-5" />
             </button>
           </div>
 
-          <nav aria-label="Principal" className="flex-1 px-5 flex flex-col justify-center">
-            {NAV_LINKS.map((link, idx) => (
-              <span key={link.id} className="block overflow-hidden border-t border-zinc-200 dark:border-zinc-800 last:border-b">
-                <motion.button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onNavigate(link.id);
-                  }}
-                  initial={{ y: '100%' }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.25 + idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full flex items-baseline justify-between py-4 text-left text-5xl font-semibold uppercase tracking-[-0.04em] cursor-pointer"
-                >
+          {/* Nav Links */}
+          <div className="my-auto py-8 space-y-6">
+            {menuLinks.map((link, idx) => (
+              <motion.button
+                key={link.id}
+                onClick={() => {
+                  onNavigate(link.id);
+                  onClose();
+                }}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: idx * 0.08 }}
+                className="w-full text-left group flex items-center justify-between text-2xl font-light tracking-tight text-zinc-300 hover:text-white transition-colors"
+              >
+                <span className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-zinc-500">0{idx + 1}</span>
                   {link.label}
-                  <span className="text-sm font-medium tabular-nums">0{idx + 1}</span>
-                </motion.button>
-              </span>
+                </span>
+                <ArrowUpRight className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-400" />
+              </motion.button>
             ))}
-          </nav>
+          </div>
 
-          <div className="px-5 py-6">
-            <a href={`mailto:${EBER_PROFILE.email}`} className="text-[13px] font-medium uppercase">
-              {EBER_PROFILE.email}
-            </a>
+          {/* Footer Info */}
+          <div className="border-t border-zinc-800 pt-6 space-y-4 text-xs font-mono text-zinc-400">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>{EBER_PROFILE.availability}</span>
+            </div>
+            <p className="text-zinc-500">{EBER_PROFILE.email}</p>
           </div>
         </motion.div>
       )}

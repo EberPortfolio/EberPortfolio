@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Download, Send, Check, Loader2 } from 'lucide-react';
+import { Mail, Copy, Check, Send, ArrowUpRight, Download, Loader2 } from 'lucide-react';
 import { EBER_PROFILE, whatsappUrl } from '../data/profile';
-import { SectionHeader, sectionClass } from './SectionHeader';
-import { RollText } from './RollText';
 import { ServiceSelect } from './ServiceSelect';
 
 const SERVICES = [
@@ -19,22 +17,35 @@ const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
 
 const EMPTY_FORM = { name: '', email: '', service: SERVICES[0], message: '' };
 
-const linkClass =
-  'group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-zinc-950 dark:text-white';
+const inputClass =
+  'w-full px-4 py-3 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors';
+const labelClass = 'block text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1.5 font-medium';
 
-export const ContactSection = ({ index, onNavigate }) => {
-  const [copied, setCopied] = useState(false);
+export const ContactSection = ({ cursorHandlers }) => {
+  const [copiedEmail, setCopiedEmail] = useState(false);
   const [formState, setFormState] = useState(EMPTY_FORM);
   // idle | sending | sent | error
   const [status, setStatus] = useState('idle');
   const [sentTo, setSentTo] = useState('');
 
-  const handleCopy = async () => {
+  const hover = {
+    onMouseEnter: cursorHandlers?.onButtonHover,
+    onMouseLeave: cursorHandlers?.onHoverLeave
+  };
+
+  const directLinks = [
+    ...EBER_PROFILE.social,
+    whatsappUrl && { name: 'WhatsApp', url: whatsappUrl },
+    EBER_PROFILE.cvUrl && { name: 'CV (PDF)', url: EBER_PROFILE.cvUrl, isDownload: true }
+  ].filter(Boolean);
+
+  const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText(EBER_PROFILE.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
     } catch {
+      // Clipboard blocked (insecure context or permissions): open the mail client instead
       window.location.href = `mailto:${EBER_PROFILE.email}`;
     }
   };
@@ -78,168 +89,164 @@ export const ContactSection = ({ index, onNavigate }) => {
   };
 
   return (
-    <section id="contact" className={`${sectionClass} pb-12`}>
-      <SectionHeader index={index} title="Contacto" />
+    <section id="contacto" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-300 dark:border-zinc-800">
 
-      {/* Main Grid: Info a la izquierda, Formulario minimalista a la derecha (como la imagen 3) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        
-        {/* Columna Izquierda: Información de Estudio & Metadatos */}
-        <div className="lg:col-span-5 space-y-8">
-          <div className="space-y-3">
-            <p className="text-xs font-mono uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500 font-medium">
-              Ubicación & Disponibilidad
-            </p>
-            <p className="text-xl sm:text-2xl font-light text-zinc-950 dark:text-white leading-snug">
-              Buenos Aires, Argentina
-            </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Disponible para proyectos de branding, estampería textil, ilustración y dirección de arte.
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+        {/* Left: intro + direct contact */}
+        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-28">
+          <div className="space-y-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold block">
+              Contacto
+            </span>
+            <h2 className="text-4xl sm:text-6xl font-light tracking-tight text-zinc-950 dark:text-white leading-[1.05]">
+              Hablemos.
+            </h2>
+            <p className="text-base text-zinc-700 dark:text-zinc-300 font-light leading-relaxed max-w-md">
+              Un rol, un proyecto o una charla: cualquier propuesta es bienvenida.
             </p>
           </div>
 
-          <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-            <p className="text-xs font-mono uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500 font-medium">
-              Especialidades
-            </p>
-            <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-700 dark:text-zinc-300">
-              <span className="px-2.5 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xs">
-                Moda & Textil
-              </span>
-              <span className="px-2.5 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xs">
-                Entretenimiento
-              </span>
-              <span className="px-2.5 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xs">
-                Contenidos Infantiles
+          <div className="p-6 bg-zinc-950 text-white space-y-5 border border-zinc-800">
+            <div className="flex items-center justify-between font-mono text-xs text-zinc-400">
+              <span className="uppercase tracking-wider">Contacto directo</span>
+              <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                Disponible
               </span>
             </div>
-          </div>
 
-          <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-            <p className="text-xs font-mono uppercase tracking-[0.16em] text-zinc-400 dark:text-zinc-500 font-medium">
-              Redes & Perfiles
+            <p className="text-lg font-mono font-semibold break-all">
+              {EBER_PROFILE.email}
             </p>
-            <ul className="flex flex-wrap gap-x-6 gap-y-3">
-              {EBER_PROFILE.social.map((s) => (
-                <li key={s.name}>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                    <RollText>{s.name}</RollText>
-                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                {...hover}
+                className="flex-1 min-w-[9rem] py-2.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-xs font-mono font-medium flex items-center justify-center gap-2 transition-colors border border-zinc-700 cursor-pointer"
+              >
+                {copiedEmail ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                <span aria-live="polite">{copiedEmail ? 'Email copiado' : 'Copiar email'}</span>
+              </button>
+              <a
+                href={`mailto:${EBER_PROFILE.email}`}
+                {...hover}
+                className="py-2.5 px-4 bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-mono font-medium flex items-center gap-2 transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Escribir</span>
+              </a>
+            </div>
+
+            <ul className="pt-1 border-t border-zinc-800 divide-y divide-zinc-800">
+              {directLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    {...hover}
+                    className="group flex items-center justify-between py-3 font-mono text-xs uppercase tracking-wider text-zinc-300 hover:text-white transition-colors"
+                  >
+                    <span>{link.name}</span>
+                    {link.isDownload ? (
+                      <Download className="w-4 h-4" />
+                    ) : (
+                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    )}
                   </a>
                 </li>
               ))}
-              {whatsappUrl && (
-                <li>
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                    <RollText>WhatsApp</RollText>
-                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </a>
-                </li>
-              )}
-              {EBER_PROFILE.cvUrl && (
-                <li>
-                  <a href={EBER_PROFILE.cvUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                    <RollText>CV (PDF)</RollText>
-                    <Download className="w-3.5 h-3.5 opacity-60" />
-                  </a>
-                </li>
-              )}
             </ul>
           </div>
         </div>
 
-        {/* Columna Derecha: Formulario Minimalista (estilo imagen 3) */}
-        <div className="lg:col-span-7 bg-transparent">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                  Nombre (requerido)
-                </label>
+        {/* Right: form */}
+        <div className="lg:col-span-7 p-6 sm:p-10 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="contact-name" className={labelClass}>Nombre</label>
                 <input
-                  id="name"
+                  id="contact-name"
                   type="text"
+                  autoComplete="name"
                   required
+                  placeholder="Tu nombre o empresa"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  placeholder="Tu nombre o empresa"
-                  className="w-full pb-2.5 pt-1 border-b border-zinc-300 dark:border-zinc-700 bg-transparent text-sm sm:text-base text-zinc-950 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                  className={inputClass}
                 />
               </div>
-
-              <div className="space-y-2">
-                <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                  Email (requerido)
-                </label>
+              <div>
+                <label htmlFor="contact-email" className={labelClass}>Email</label>
                 <input
-                  id="email"
+                  id="contact-email"
                   type="email"
+                  autoComplete="email"
                   required
+                  placeholder="nombre@empresa.com"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  placeholder="tu@correo.com"
-                  className="w-full pb-2.5 pt-1 border-b border-zinc-300 dark:border-zinc-700 bg-transparent text-sm sm:text-base text-zinc-950 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors"
+                  className={inputClass}
                 />
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="service" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                Área de interés / Servicio
-              </label>
-              <ServiceSelect
-                id="service"
-                value={formState.service}
-                options={SERVICES}
-                onChange={(service) => setFormState({ ...formState, service })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                Descripción del proyecto
-              </label>
-              <textarea
-                id="message"
-                rows={4}
-                required
-                value={formState.message}
-                onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                placeholder="Contame brevemente los objetivos, tiempos o ideas clave..."
-                className="w-full pb-2.5 pt-1 border-b border-zinc-300 dark:border-zinc-700 bg-transparent text-sm sm:text-base text-zinc-950 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-zinc-950 dark:focus:border-white transition-colors resize-none"
-              />
+              <div className="sm:col-span-2">
+                <label htmlFor="contact-service" className={labelClass}>Área de interés</label>
+                <ServiceSelect
+                  id="contact-service"
+                  value={formState.service}
+                  options={SERVICES}
+                  onChange={(service) => setFormState({ ...formState, service })}
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="contact-message" className={labelClass}>Mensaje</label>
+                <textarea
+                  id="contact-message"
+                  rows={5}
+                  required
+                  placeholder="Contame brevemente los objetivos, tiempos o ideas clave…"
+                  value={formState.message}
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                  className={`${inputClass} resize-y min-h-32`}
+                />
+              </div>
             </div>
 
             <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="space-y-3">
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="px-8 py-3.5 bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono uppercase tracking-wider font-semibold hover:opacity-80 transition-opacity cursor-pointer inline-flex items-center gap-2 self-start disabled:opacity-60 disabled:cursor-wait"
+                {...hover}
+                className="w-full py-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-60 disabled:cursor-wait"
               >
                 {status === 'sending' ? (
                   <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
                     <span>Enviando</span>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   </>
                 ) : (
                   <>
-                    <span>Enviar consulta</span>
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className="w-4 h-4" />
+                    <span>Enviar mensaje</span>
                   </>
                 )}
               </button>
 
-              <p role="status" aria-live="polite" className="text-sm leading-snug">
+              <p role="status" aria-live="polite" className="text-xs font-mono text-center">
                 {status === 'sent' && (
-                  <span className="inline-flex items-start gap-2 text-zinc-950 dark:text-white">
-                    <Check className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--eber-blue)' }} />
-                    <span>Consulta enviada. Eber te va a responder a {sentTo}.</span>
+                  <span className="inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-semibold">
+                    <Check className="w-4 h-4" />
+                    Mensaje enviado. Eber te va a responder a {sentTo}.
                   </span>
                 )}
                 {status === 'error' && (
-                  <span className="text-eber-red">
+                  <span className="text-red-600 dark:text-red-400">
                     No se pudo enviar. Probá de nuevo o escribile a{' '}
                     <a href={`mailto:${EBER_PROFILE.email}`} className="underline underline-offset-2">
                       {EBER_PROFILE.email}
@@ -254,40 +261,6 @@ export const ContactSection = ({ index, onNavigate }) => {
 
       </div>
 
-      {/* Cierre Definitivo / Footer Integrado (como la imagen 3 de referencia) */}
-      <div className="mt-20 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row items-baseline justify-between gap-6">
-        <div>
-          <a
-            href={`mailto:${EBER_PROFILE.email}`}
-            className="text-2xl sm:text-4xl md:text-5xl font-display tracking-wide text-zinc-950 dark:text-white hover:opacity-70 transition-opacity"
-          >
-            {EBER_PROFILE.email}
-          </a>
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="text-xs font-mono text-zinc-500 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer uppercase tracking-wider"
-            >
-              {copied ? '✓ Email copiado al portapapeles' : 'Copiar dirección de email'}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-6 text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-          <span>© {new Date().getFullYear()} EBER</span>
-          <span>·</span>
-          <span>DIRECCIÓN DE ARTE</span>
-          <span>·</span>
-          <button
-            type="button"
-            onClick={() => onNavigate?.('home')}
-            className="hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer font-medium"
-          >
-            Volver arriba ↑
-          </button>
-        </div>
-      </div>
     </section>
   );
 };

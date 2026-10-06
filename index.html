@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://res.cloudinary.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Eber · Diseñador Gráfico, Ilustrador & Tipógrafo</title>
     <meta name="description" content="Eber, diseñador gráfico, ilustrador y tipógrafo con más de 10 años creando identidades visuales, conceptos y universos de marca. Dirección de arte para la industria textil, el entretenimiento y los contenidos infantiles." />
@@ -16,19 +13,18 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:type" content="website" />
     <script>
-      // Apply the theme before first paint to avoid a flash (keep in sync with ThemeContext)
+      // Apply the saved theme before first paint to avoid a dark flash on reload
       (function () {
-        var theme;
+        var theme = 'dark';
         try {
           var stored = localStorage.getItem('eber-theme');
-          if (stored === 'light' || stored === 'dark') theme = stored;
+          if (stored === 'light' || stored === 'dark' || stored === 'ink') theme = stored;
         } catch (e) {}
-        if (!theme) theme = 'dark';
+        var colors = { dark: ['#09090B', '#F4F4F5'], light: ['#FAFAFA', '#09090B'], ink: ['#F2EDE2', '#1A1816'] };
         var root = document.documentElement;
-        if (theme === 'dark') root.classList.add('dark');
-        root.style.colorScheme = theme;
-        root.style.backgroundColor = theme === 'dark' ? '#000000' : '#fafafa';
-        root.style.color = theme === 'dark' ? '#f4f4f5' : '#09090b';
+        root.className = theme === 'dark' ? 'dark theme-dark' : 'theme-' + theme;
+        root.style.backgroundColor = colors[theme][0];
+        root.style.color = colors[theme][1];
       })();
     </script>
   </head>

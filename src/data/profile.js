@@ -14,6 +14,13 @@ export const EBER_PROFILE = {
     { name: 'Behance', url: 'https://www.behance.net/crio' },
     { name: 'Instagram', url: 'https://www.instagram.com/eber.arg/' }
   ],
+  availability: 'Abierto a roles creativos senior y nuevos proyectos',
+  // Hero metrics, taken from Eber's own bio
+  stats: [
+    { value: '10+', label: 'Años de experiencia' },
+    { value: '3', label: 'Industrias: textil, entretenimiento e infantil' },
+    { value: 'Docente', label: 'Universitario · tipografía y nuevos medios' }
+  ],
   industries: ['Industria textil', 'Entretenimiento', 'Contenidos infantiles']
 };
 

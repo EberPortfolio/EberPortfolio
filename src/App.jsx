@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
+import { useCustomCursor } from './hooks/useCustomCursor';
+import { CustomCursor } from './components/CustomCursor';
 import { Navbar } from './components/Navbar';
 import { MobileMenu } from './components/MobileMenu';
 import { Hero } from './components/Hero';
-import { WorkSection } from './components/WorkSection';
+import { ProjectFilter } from './components/ProjectFilter';
+import { ProjectGrid } from './components/ProjectGrid';
 import { ProjectDetail } from './components/ProjectDetail';
 import { EberArtSection } from './components/EberArtSection';
-import { AboutSection } from './components/AboutSection';
 import { ExperienceSection } from './components/ExperienceSection';
+import { AboutSection } from './components/AboutSection';
 import { ContactSection } from './components/ContactSection';
-import { WORK_PROJECTS } from './data/projects';
-import { EXPERIENCE, TEACHING } from './data/profile';
-
-const hasExperience = EXPERIENCE.length > 0 || TEACHING.length > 0;
-import { initSmoothScroll, scrollToTarget } from './lib/smoothScroll';
+import { Footer } from './components/Footer';
+import { WORK_PROJECTS, CATEGORIES } from './data/projects';
+import { AnimatePresence } from 'framer-motion';
 
 // Case studies are addressable as #caso/<id> so they can be shared and the
 // browser back button returns to the gallery
@@ -30,19 +30,32 @@ const clearHash = () => {
   window.history.replaceState(null, '', window.location.pathname + window.location.search);
 };
 
-const scrollToSection = (sectionId, options) => {
-  scrollToTarget(sectionId === 'home' ? 'top' : sectionId, options);
+const scrollToSection = (sectionId, behavior = 'smooth') => {
+  if (sectionId === 'home' || sectionId === 'top') {
+    window.scrollTo({ top: 0, behavior });
+    return;
+  }
+  document.getElementById(sectionId)?.scrollIntoView({ behavior });
 };
 
 function PortfolioApp() {
+  const [activeCategory, setActiveCategory] = useState('all');
   const [selectedProject, setSelectedProject] = useState(projectFromHash);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => initSmoothScroll(), []);
   const galleryScrollRef = useRef(null);
   const pushedHistoryRef = useRef(false);
   // Scroll to run once the detail view has finished leaving and the gallery is mounted
   const afterDetailExitRef = useRef(null);
+
+  const cursorState = useCustomCursor();
+
+  const availableCategories = CATEGORIES.filter(
+    (c) => c.id === 'all' || WORK_PROJECTS.some((p) => p.category === c.id)
+  );
+
+  const filteredProjects = activeCategory === 'all'
+    ? WORK_PROJECTS
+    : WORK_PROJECTS.filter((p) => p.category === activeCategory);
 
   const leaveDetail = (afterExit) => {
     afterDetailExitRef.current = afterExit;
@@ -52,9 +65,9 @@ function PortfolioApp() {
   const restoreGalleryScroll = () => {
     const top = galleryScrollRef.current;
     if (top === null) {
-      scrollToSection('work', { immediate: true });
+      scrollToSection('work', 'auto');
     } else {
-      scrollToTarget(top, { immediate: true });
+      window.scrollTo({ top });
     }
   };
 
@@ -119,22 +132,36 @@ function PortfolioApp() {
     if (selectedProject) {
       clearHash();
       pushedHistoryRef.current = false;
-      leaveDetail(() => scrollToSection(sectionId, { immediate: true }));
+      leaveDetail(() => scrollToSection(sectionId));
       return;
     }
     scrollToSection(sectionId);
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar onOpenMobileMenu={() => setIsMobileMenuOpen(true)} onNavigate={handleNavigate} />
+    <div className="min-h-screen bg-grid-pattern selection:bg-zinc-950 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 transition-colors duration-300" style={{ backgroundColor: 'inherit', color: 'inherit' }}>
+      
+      {/* Custom Pointer Cursor */}
+      <CustomCursor cursorState={cursorState} />
 
+      {/* Navbar with Clean Navigation (WORK, EBER ART, ABOUT ME, CONTACT) */}
+      <Navbar
+        onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+        onNavigate={handleNavigate}
+        cursorHandlers={{
+          onButtonHover: cursorState.onButtonHover,
+          onHoverLeave: cursorState.onHoverLeave
+        }}
+      />
+
+      {/* Full-Screen Mobile Drawer */}
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         onNavigate={handleNavigate}
       />
 
+      {/* View Switch: Dedicated Project Detail View vs Main Portfolio View */}
       <AnimatePresence mode="wait">
         {selectedProject ? (
           <ProjectDetail
@@ -142,18 +169,108 @@ function PortfolioApp() {
             project={selectedProject}
             onClose={closeProject}
             onSelectProject={openProject}
+            cursorHandlers={{
+              onButtonHover: cursorState.onButtonHover,
+              onHoverLeave: cursorState.onHoverLeave
+            }}
           />
         ) : (
           <main key="main-gallery" ref={handleGalleryMount}>
-            <Hero onNavigate={handleNavigate} />
-            <WorkSection index="01" onOpenProject={openProject} />
-            <EberArtSection index="02" />
-            <AboutSection index="03" onNavigate={handleNavigate} />
-            <ExperienceSection index="04" />
-            <ContactSection index={hasExperience ? '05' : '04'} onNavigate={handleNavigate} />
+            {/* Hero Section */}
+            <Hero
+              onNavigate={handleNavigate}
+              cursorHandlers={{
+                onButtonHover: cursorState.onButtonHover,
+                onHoverLeave: cursorState.onHoverLeave
+              }}
+            />
+
+            {/* SECTION 1: WORK (Commercial Client Projects) */}
+            <section id="work" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-zinc-200 dark:border-zinc-800">
+              
+              <div className="space-y-4 mb-10">
+                <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
+                  Work // {WORK_PROJECTS.length} {WORK_PROJECTS.length === 1 ? 'caso' : 'casos'} de estudio
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-zinc-950 dark:text-white">
+                  Trabajos seleccionados
+                </h2>
+              </div>
+
+              {/* Category filter: only worth showing with 2+ categories in use */}
+              {availableCategories.length > 2 && (
+                <div className="mb-12">
+                  <ProjectFilter
+                    categories={availableCategories}
+                    activeCategory={activeCategory}
+                    onSelectCategory={setActiveCategory}
+                    cursorHandlers={{
+                      onButtonHover: cursorState.onButtonHover,
+                      onHoverLeave: cursorState.onHoverLeave
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* Responsive Projects Grid */}
+              <ProjectGrid
+                projects={filteredProjects}
+                onSelectProject={openProject}
+                cursorHandlers={{
+                  onProjectHover: cursorState.onProjectHover,
+                  onButtonHover: cursorState.onButtonHover,
+                  onHoverLeave: cursorState.onHoverLeave
+                }}
+              />
+
+            </section>
+
+            {/* SECTION 2: EBER ART (Obra independiente: Ilustración, Letras, Docencia) */}
+            <div id="eber-art">
+              <EberArtSection
+                cursorHandlers={{
+                  onButtonHover: cursorState.onButtonHover,
+                  onHoverLeave: cursorState.onHoverLeave
+                }}
+              />
+            </div>
+
+            {/* SECTION 3: ABOUT ME */}
+            <div id="about-me">
+              <AboutSection
+                onNavigate={handleNavigate}
+                cursorHandlers={{
+                  onButtonHover: cursorState.onButtonHover,
+                  onHoverLeave: cursorState.onHoverLeave
+                }}
+              />
+            </div>
+
+            {/* Trayectoria: hidden until Eber's experience is filled in */}
+            <ExperienceSection />
+
+            {/* SECTION 4: CONTACT */}
+            <div id="contact">
+              <ContactSection
+                cursorHandlers={{
+                  onButtonHover: cursorState.onButtonHover,
+                  onHoverLeave: cursorState.onHoverLeave
+                }}
+              />
+            </div>
           </main>
         )}
       </AnimatePresence>
+
+      {/* Footer */}
+      <Footer
+        onNavigate={handleNavigate}
+        cursorHandlers={{
+          onButtonHover: cursorState.onButtonHover,
+          onHoverLeave: cursorState.onHoverLeave
+        }}
+      />
+
     </div>
   );
 }
@@ -161,10 +278,7 @@ function PortfolioApp() {
 export default function App() {
   return (
     <ThemeProvider>
-      {/* Animations are skipped when the visitor asks the OS for reduced motion */}
-      <MotionConfig reducedMotion="user">
-        <PortfolioApp />
-      </MotionConfig>
+      <PortfolioApp />
     </ThemeProvider>
   );
 }

@@ -1,9 +1,20 @@
 import React from 'react';
+import { ProjectCard } from './ProjectCard';
 import { AnimatePresence } from 'framer-motion';
 
-// Same three-column rhythm for Work and Eber Art
-export const ProjectGrid = ({ children }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-12">
-    <AnimatePresence mode="popLayout">{children}</AnimatePresence>
-  </div>
-);
+export const ProjectGrid = ({ projects, onSelectProject, cursorHandlers }) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+      <AnimatePresence mode="popLayout">
+        {projects.map((project) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            onClick={onSelectProject}
+            cursorHandlers={cursorHandlers}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+};
