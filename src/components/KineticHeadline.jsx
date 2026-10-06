@@ -126,7 +126,7 @@ export const KineticHeadline = ({ lines, className = '', readoutRef, as: Tag = '
         // Each line slides up from behind its own mask on load
         <span
           key={lineIdx}
-          className="block overflow-hidden pt-[0.14em] -mt-[0.14em] pb-[0.2em] -mb-[0.2em]"
+          className="block overflow-hidden pt-[0.32em] -mt-[0.32em] pb-[0.2em] -mb-[0.2em]"
           aria-hidden="true"
         >
           <motion.span
