@@ -9,7 +9,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
   const [heroFont, setHeroFont] = useState('sans');
 
   return (
-    <section id="home" className="relative min-h-[88vh] flex flex-col justify-between pt-32 pb-16 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto overflow-hidden">
+    <section id="home" className="relative min-h-[88vh] flex flex-col pt-32 pb-16 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto overflow-hidden">
       
       {/* Top Bar: Location & Clean Single-Line Font Specimen Switcher */}
       <motion.div
@@ -67,7 +67,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           <div className="flex flex-wrap items-center [&>span]:whitespace-nowrap gap-x-2 gap-y-1 font-mono text-xs uppercase tracking-widest text-zinc-500 font-semibold">
             <span>PORTFOLIO // EBER</span>
             <span className="hidden sm:inline" aria-hidden="true">—</span>
-            <span className="text-zinc-800 dark:text-zinc-200">DISEÑO · ILUSTRACIÓN · TIPOGRAFÍA</span>
+            <span className="text-zinc-800 dark:text-zinc-200">DISEÑO · TIPOGRAFÍA · ILUSTRACIÓN</span>
           </div>
 
           <h1 className={`text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.95] text-zinc-950 dark:text-white transition-all duration-300 ${
@@ -75,9 +75,9 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
             heroFont === 'serif' ? 'font-serif italic font-normal' :
             'font-mono font-bold uppercase'
           }`}>
-            Diseño visual <br />
+            Diseño &amp; <br />
             <span className={heroFont === 'serif' ? 'font-sans font-light text-zinc-600 dark:text-zinc-400' : 'font-serif italic font-normal text-zinc-700 dark:text-zinc-300'}>
-              con carácter.
+              dirección
             </span>
           </h1>
         </motion.div>
@@ -89,7 +89,7 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="max-w-2xl text-base sm:text-xl text-zinc-700 dark:text-zinc-300 font-light leading-relaxed"
         >
-          Diseñador gráfico, ilustrador y tipógrafo. Creo identidades visuales y universos de marca, y dirijo arte para la industria textil, el entretenimiento y los contenidos infantiles.
+          Identidades visuales, conceptos de marca y dirección de arte para la industria textil, el entretenimiento y los contenidos infantiles.
         </motion.p>
 
         {/* Action Buttons */}
@@ -121,25 +121,6 @@ export const Hero = ({ onNavigate, cursorHandlers }) => {
           </button>
         </motion.div>
       </div>
-
-      {/* Footer Metrics Row */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-10 border-t border-zinc-300 dark:border-zinc-800 pt-8"
-      >
-        {EBER_PROFILE.stats.map((stat, idx) => (
-          <div key={idx} className="space-y-1.5">
-            <p className="text-3xl sm:text-4xl font-light font-mono text-zinc-950 dark:text-white">
-              {stat.value}
-            </p>
-            <p className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider font-medium max-w-[16rem] leading-relaxed">
-              {stat.label}
-            </p>
-          </div>
-        ))}
-      </motion.div>
 
     </section>
   );
