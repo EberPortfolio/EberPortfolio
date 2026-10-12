@@ -10,7 +10,7 @@ import { EberArtSection } from './components/EberArtSection';
 import { AboutSection } from './components/AboutSection';
 import { ExperienceSection } from './components/ExperienceSection';
 import { ContactSection } from './components/ContactSection';
-import { WORK_PROJECTS } from './data/projects';
+import { WORK_PROJECTS, EBER_ART_ITEMS } from './data/projects';
 import { EXPERIENCE, TEACHING } from './data/profile';
 
 const hasExperience = EXPERIENCE.length > 0 || TEACHING.length > 0;
@@ -23,7 +23,7 @@ const CASE_HASH_PREFIX = '#caso/';
 const projectFromHash = () => {
   if (!window.location.hash.startsWith(CASE_HASH_PREFIX)) return null;
   const id = decodeURIComponent(window.location.hash.slice(CASE_HASH_PREFIX.length));
-  return WORK_PROJECTS.find((p) => p.id === id) || null;
+  return [...WORK_PROJECTS, ...EBER_ART_ITEMS].find((p) => p.id === id) || null;
 };
 
 const clearHash = () => {
@@ -147,7 +147,7 @@ function PortfolioApp() {
           <main key="main-gallery" ref={handleGalleryMount}>
             <Hero onNavigate={handleNavigate} />
             <WorkSection index="01" onOpenProject={openProject} />
-            <EberArtSection index="02" />
+            <EberArtSection index="02" onOpenProject={openProject} />
             <AboutSection index="03" onNavigate={handleNavigate} />
             <ExperienceSection index="04" />
             <ContactSection index={hasExperience ? '05' : '04'} onNavigate={handleNavigate} />

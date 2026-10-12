@@ -7,7 +7,7 @@ import { SectionHeader, sectionClass } from './SectionHeader';
 
 const sectionName = (id) => EBER_ART_SECTIONS.find((s) => s.id === id)?.name;
 
-export const EberArtSection = ({ index }) => {
+export const EberArtSection = ({ onOpenProject, index }) => {
   const [activeTab, setActiveTab] = useState('all');
 
   const tabs = [
@@ -39,10 +39,12 @@ export const EberArtSection = ({ index }) => {
         {items.map((item, idx) => (
           <ProjectCard
             key={item.id}
-            image={item.image}
+            image={item.thumbnail}
+            gravity={item.thumbnailGravity}
             index={String(idx + 1).padStart(2, '0')}
             title={item.title}
-            meta={[sectionName(item.category), item.year].filter(Boolean).join(' · ')}
+            meta={item.categoryLabel || sectionName(item.category)}
+            onClick={() => onOpenProject(item)}
           />
         ))}
       </ProjectGrid>

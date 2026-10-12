@@ -22,7 +22,7 @@ export const WORK_PROJECTS = [
     subtitle: 'Línea I ♥ 47',
     tagline: 'Un universo de personajes para la línea I ♥ 47, de las bolsas de compra a la papelería y las mochilas.',
     summary: 'Creación y desarrollo del universo visual de I ♥ 47, la línea de 47 Street. Personajes propios —Amanda, Renata y Olivia— que dan vida a bolsas, estampas, agendas, cuadernos, stickers y mochilas, junto con colaboraciones con licencias como Hello Kitty y Snoopy.',
-    thumbnail: 'portadas-01',
+    thumbnail: '47',
     coverImage: 'web_47-03',
     heroImage: 'web_47-03', // shown in the home hero; the card uses the thumbnail
     imageSize: { width: 2200, height: 1350 },
@@ -59,7 +59,7 @@ export const WORK_PROJECTS = [
     categoryLabel: 'Identidad · Personajes · Indumentaria infantil',
     tagline: 'Una marca de indumentaria infantil construida alrededor de una familia de personajes.',
     summary: 'Identidad, personajes y sistema gráfico para Owoko: del logo y la familia de personajes a las gráficas de las prendas, el e-commerce, las piezas editoriales y el packaging.',
-    thumbnail: 'portadas-02',
+    thumbnail: 'owoko',
     coverImage: 'web_owoko-01',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Identidad', 'Personajes', 'Gráficas textiles', 'E-commerce', 'Editorial', 'Packaging'],
@@ -94,7 +94,7 @@ export const WORK_PROJECTS = [
     categoryLabel: 'Ilustración · Apertura de serie',
     tagline: 'Ilustraciones, doodles y storyboard para la apertura de la serie Violetta.',
     summary: 'El proyecto recorre el sketchbook de ilustraciones y doodles, los objetos ilustrados que el equipo de motion modeló en 3D y el storyboard de la secuencia.',
-    thumbnail: 'portadas-03',
+    thumbnail: 'violetta',
     coverImage: 'web_violetta-01',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Ilustración', 'Doodles', 'Objetos para 3D', 'Storyboard'],
@@ -130,7 +130,7 @@ export const WORK_PROJECTS = [
     subtitle: 'Me muevo para aquí',
     tagline: 'El disco «Me muevo para aquí» de Topa para Disney Junior, de la tapa al librillo.',
     summary: 'Logo y lettering, packaging del CD, librillo con las letras de las canciones y una familia de personajes y objetos que acompañan cada tema.',
-    thumbnail: 'portadas-04',
+    thumbnail: 'topa',
     coverImage: 'web_topa-07',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Logo y lettering', 'Packaging', 'Librillo', 'Personajes', 'Objetos 3D'],
@@ -176,7 +176,7 @@ export const WORK_PROJECTS = [
     subtitle: 'OLGA Store · Propuesta creativa',
     tagline: 'Merch para los programas de OLGA: un lettering y un universo gráfico para cada uno.',
     summary: 'Propuesta creativa para OLGA Store: lettering, personajes e ilustraciones para las líneas de Jijolines, Tapados de Laburo, Lauchas, Mi primo es así y Sería increíble, aplicados a remeras, buzos y la tienda online.',
-    thumbnail: 'portadas-05',
+    thumbnail: 'Olga_portada',
     coverImage: 'web_olga-28',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Lettering', 'Personajes', 'Pixel art', 'Gráficas textiles', 'Tienda online'],
@@ -222,7 +222,7 @@ export const WORK_PROJECTS = [
     subtitle: 'Accesorios',
     tagline: 'Una marca de accesorios que recorre las culturas del mundo, del logo al local.',
     summary: 'Identidad, ilustración y sistema gráfico para Zpëzia: el logo y el packaging, una familia de estampillas por país, la campaña de fotos, el catálogo y las piezas de temporada, el local y la tienda online.',
-    thumbnail: 'portadas-06',
+    thumbnail: 'zpezia',
     coverImage: 'web_zpezia-01',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Logo', 'Ilustración', 'Packaging', 'Estampillas', 'Campaña', 'Catálogo', 'Retail'],
@@ -253,6 +253,77 @@ export const WORK_PROJECTS = [
         images: boards('zpezia', 17, 19, 18, 21)
       }
     ]
+  },
+  {
+    id: 'art-attack',
+    title: 'Art Attack',
+    client: 'Disney Channel Latam',
+    category: 'ilustracion',
+    categoryLabel: 'Ilustración · Escenografía · TV',
+    tagline: 'Los objetos y escenarios de Art Attack para Disney Channel Latam, del dibujo en línea al set.',
+    summary: 'Ilustración de los objetos que el equipo de 3D convirtió en escenarios —tijeras, lápices, cohetes, globos—, las gráficas del programa y los muñecos hechos a mano.',
+    thumbnail: 'art_attack',
+    coverImage: 'web_art_attack-13',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Ilustración', 'Objetos para 3D', 'Escenografía', 'Gráficas', 'Muñecos'],
+    sections: [
+      {
+        title: 'El programa',
+        text: 'Manualidades paso a paso sobre fondos de colores planos.',
+        images: boards('art_attack', 2, 1)
+      },
+      {
+        title: 'Objetos',
+        text: 'Cada objeto del set, dibujado en línea y despiezado para que el equipo de 3D lo modelara.',
+        images: boards('art_attack', 3, 4)
+      },
+      {
+        title: 'Del boceto al set',
+        text: 'Los escenarios en línea y su versión final en 3D.',
+        images: boards('art_attack', 5, 6, 7, 8)
+      },
+      {
+        title: 'Gráficas y muñecos',
+        text: 'Placas, nubes y piezas gráficas del programa, y un muñeco cosido a mano.',
+        images: boards('art_attack', 9, 10, 12, 11)
+      }
+    ]
+  },
+  {
+    id: 'tecnopolis',
+    title: 'Tecnópolis',
+    client: 'Tecnópolis',
+    category: 'ilustracion',
+    categoryLabel: 'Ilustración · Infografía · Afiche',
+    subtitle: 'Apolo 11 · Hemisphærium Cœlestis',
+    tagline: 'Un afiche infográfico sobre la llegada a la Luna, para exhibir en Tecnópolis.',
+    summary: 'Investigación, ilustración y lettering para contar la misión Apolo 11 en una sola pieza: el logo de la misión, una familia de íconos y escenas, y un afiche circular que lo reúne todo.',
+    thumbnail: 'tecnopolis',
+    coverImage: 'web_tecnopolis-01',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Investigación', 'Ilustración', 'Íconos', 'Lettering', 'Afiche infográfico'],
+    sections: [
+      {
+        title: 'Investigación',
+        text: 'Fotos de archivo, planos técnicos y documentos de la NASA como punto de partida.',
+        images: boards('tecnopolis', 2, 5)
+      },
+      {
+        title: 'Ilustración',
+        text: 'Naves, astronautas y la Luna en dos tintas, azul y naranja, en una familia de íconos y escenas.',
+        images: boards('tecnopolis', 3, 4, 7, 8)
+      },
+      {
+        title: 'Lettering',
+        text: 'El logo de Apolo 11 y el título ornamentado del afiche.',
+        images: boards('tecnopolis', 6, 9)
+      },
+      {
+        title: 'El afiche',
+        text: 'Todas las piezas organizadas en círculos concéntricos, del detalle al afiche impreso y exhibido en el predio.',
+        images: boards('tecnopolis', 10, 11, 12, 13, 14)
+      }
+    ]
   }
 ];
 
@@ -262,66 +333,44 @@ export const EBER_ART_SECTIONS = [
   { id: 'docencia', name: 'Docencia & Talleres' }
 ];
 
+// Eber Art cases share the shape of WORK_PROJECTS and open in the same detail view
 export const EBER_ART_ITEMS = [
   {
-    id: 'art-ilustration-1',
-    category: 'ilustracion',
-    categoryLabel: 'Ilustración de Autor',
-    title: 'Retratos Geométricos & Formas Orgánicas',
-    year: '2026',
-    description: 'Serie personal de exploración vectorial sobre abstracción geométrica y la figura humana.',
-    image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=1200&q=80',
-    tags: ['Ilustración Vectorial', 'Afiches de Autor', 'Edición Limitada']
-  },
-  {
-    id: 'art-ilustration-2',
-    category: 'ilustracion',
-    categoryLabel: 'Poster Art',
-    title: 'Synapse Poster Series',
-    year: '2025',
-    description: 'Cartelería límpida en serigrafía para eventos culturales independientes.',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80',
-    tags: ['Serigrafía', 'Cartelería', 'Arte Sonoro']
-  },
-  {
-    id: 'art-letras-1',
-    category: 'letras',
-    categoryLabel: 'Lettering & Tipografía',
-    title: 'Caligrafía Expresiva & Custom Types',
-    year: '2026',
-    description: 'Estudios de dibujo de letras, fuentes de autor y composiciones caligráficas a tinta sobre papel de algodón.',
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80',
-    tags: ['Lettering', 'Diseño de Tipografía', 'Tinta China']
-  },
-  {
-    id: 'art-letras-2',
-    category: 'letras',
-    categoryLabel: 'Custom Font Development',
-    title: 'Eber Neue Specimen',
-    year: '2025',
-    description: 'Desarrollo de familia tipográfica propia monoespaciada para sistemas de identidad gráfica.',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80',
-    tags: ['Glyphs Software', 'Tipo Mono', 'Especímen Tipográfico']
-  },
-  {
-    id: 'art-docencia-1',
+    id: 'tipomov',
+    title: 'Tipomov',
+    client: 'FADU, UBA',
     category: 'docencia',
-    categoryLabel: 'Docencia & Workshops',
-    title: 'Workshop: Diseño de Sistemas de Identidad Visual',
-    year: '2026',
-    description: 'Talleres intensivos sobre grilla suiza, jerarquía tipográfica y construcción de marcas dirigidos a diseñadores.',
-    image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80',
-    tags: ['Workshops', 'Clases de Tipografía', 'Mentoría de Diseño']
-  },
-  {
-    id: 'art-docencia-2',
-    category: 'docencia',
-    categoryLabel: 'Conferencias & Charlas',
-    title: 'Charla: El Valor del Packaging Táctil en la Era Digital',
-    year: '2025',
-    description: 'Presentación en encuentros de diseño sobre la selección de materiales, papeles y acabados de autor.',
-    image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80',
-    tags: ['Conferencias', 'Diseño Sustentable', 'Dirección Creativa']
+    categoryLabel: 'Identidad · Tipografía · Docencia',
+    subtitle: 'Tipografía y movimiento',
+    role: 'Docente e identidad visual',
+    tagline: 'La identidad de Tipomov, la materia de tipografía y movimiento de la FADU, donde Eber es docente desde 2021.',
+    summary: 'Tipomov es una materia optativa de la FADU (UBA) que estudia la tipografía y su animación como medio de comunicación y expresión. Además de dar clases, Eber se encarga de la identidad visual en redes: hizo el logo y todas las tipografías e ilustraciones.',
+    thumbnail: 'tipomov',
+    coverImage: 'web_tipomov-01',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Logo', 'Tipografías', 'Ilustración', 'Redes', 'Afiches', 'Docencia'],
+    sections: [
+      {
+        title: 'Identidad',
+        text: 'El logo, su personaje y las piezas que lo aplican, del sticker al objeto impreso en 3D.',
+        images: boards('tipomov', 3, 4, 12, 13)
+      },
+      {
+        title: 'Redes y afiche',
+        text: 'El feed de la cátedra, las piezas de cada cursada y el afiche «Universidad pública: futuro siempre».',
+        images: boards('tipomov', 5, 6, 11)
+      },
+      {
+        title: 'El taller',
+        text: 'La cursada, el equipo docente y los trabajos y procesos de los alumnos.',
+        images: boards('tipomov', 2, 7, 8, 9, 10)
+      },
+      {
+        title: 'Exp!',
+        text: 'La identidad de Exp!, una muestra sobre tipografía experimental y expresiva en el Complejo C Art Media.',
+        images: boards('tipomov', 14, 15, 16)
+      }
+    ]
   }
 ];
 

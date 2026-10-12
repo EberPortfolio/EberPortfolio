@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Maximize2 } from 'lucide-react';
 import { cloudinaryImage, cloudinaryVideo } from '../lib/cloudinary';
-import { PROJECTS } from '../data/projects';
+import { WORK_PROJECTS, EBER_ART_ITEMS } from '../data/projects';
 import { fullName } from '../data/profile';
 import { Lightbox } from './Lightbox';
 import { containerClass } from './SectionHeader';
@@ -89,8 +89,12 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose, lightboxIndex]);
 
-  const currentIndex = PROJECTS.findIndex((p) => p.id === project.id);
-  const nextProject = PROJECTS.length > 1 ? PROJECTS[(currentIndex + 1) % PROJECTS.length] : null;
+  // "Next case" stays within the gallery the case belongs to
+  const isArt = EBER_ART_ITEMS.some((p) => p.id === project.id);
+  const siblings = isArt ? EBER_ART_ITEMS : WORK_PROJECTS;
+  const backLabel = isArt ? 'Eber Art' : 'Trabajos';
+  const currentIndex = siblings.findIndex((p) => p.id === project.id);
+  const nextProject = siblings.length > 1 ? siblings[(currentIndex + 1) % siblings.length] : null;
 
   // Legacy projects list a flat `images` array; new ones are organised in sections
   const sections = project.sections || (project.images?.length ? [{ title: 'Galería', images: project.images }] : []);
@@ -116,7 +120,7 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
           className="group inline-flex items-center gap-2 text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
-          Trabajos
+          {backLabel}
         </button>
 
         {/* Title + metadata */}
@@ -236,7 +240,7 @@ export const ProjectDetail = ({ project, onClose, onSelectProject }) => {
               className="group inline-flex items-center gap-2 text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
-              Volver a trabajos
+              Volver a {backLabel.toLowerCase()}
             </button>
           )}
         </nav>
