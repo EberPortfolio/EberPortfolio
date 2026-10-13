@@ -22,7 +22,8 @@ export const Hero = ({ onNavigate }) => {
     <section
       id="home"
       ref={sectionRef}
-      className={`${containerClass} min-h-[90svh] flex flex-col justify-center pt-28 sm:pt-36 pb-16 sm:pb-24`}
+      // On phones the hero fills the screen so the banner only appears on scroll
+      className={`${containerClass} min-h-svh sm:min-h-[90svh] flex flex-col justify-center pt-28 sm:pt-36 pb-16 sm:pb-24`}
     >
       {/* Titular Principal & Bajada */}
       <div className="my-auto py-8 sm:py-14 text-center select-none">

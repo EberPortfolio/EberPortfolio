@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { MobileMenu } from './components/MobileMenu';
 import { Hero } from './components/Hero';
+import { HeroBanner } from './components/HeroBanner';
 import { WorkSection } from './components/WorkSection';
 import { ProjectDetail } from './components/ProjectDetail';
 import { EberArtSection } from './components/EberArtSection';
@@ -146,6 +147,7 @@ function PortfolioApp() {
         ) : (
           <main key="main-gallery" ref={handleGalleryMount}>
             <Hero onNavigate={handleNavigate} />
+            <HeroBanner />
             <WorkSection index="01" onOpenProject={openProject} />
             <EberArtSection index="02" onOpenProject={openProject} />
             <AboutSection index="03" onNavigate={handleNavigate} />
