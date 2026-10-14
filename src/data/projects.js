@@ -371,6 +371,47 @@ export const EBER_ART_ITEMS = [
         images: boards('tipomov', 14, 15, 16)
       }
     ]
+  },
+  {
+    id: 'eber-lettering',
+    title: 'Eber Lettering',
+    client: 'Eber Studio',
+    category: 'letras',
+    categoryLabel: 'Lettering · Ilustración · Producto',
+    year: '2025',
+    tagline: 'Letras de canciones dibujadas a mano que se vuelven stickers, remeras, buzos y totebags.',
+    summary: 'Eber Studio es el estudio y la marca propia de Eber: diseño, tipografía e ilustración. Frases de Wos, Cerati, Los Piojos, el Indio Solari y Coldplay, cada una con su propio lettering, y una serie de personajes que conviven en una línea de productos que se vende en su tienda online.',
+    thumbnail: 'portada_eber_art',
+    coverImage: 'web_eber_lettering-01',
+    imageSize: { width: 2200, height: 1350 },
+    deliverables: ['Lettering', 'Ilustración', 'Stickers', 'Indumentaria', 'Totebags', 'Tienda online'],
+    sections: [
+      {
+        title: 'Lettering',
+        text: 'Cada frase con su propia letra: de la caligrafía de trazo fino a las formas pesadas y entrelazadas, en rojo, amarillo, azul y blanco.',
+        images: boards('eber_lettering', 2, 3, 4, 5, 6, 7, 8, 21)
+      },
+      {
+        title: 'Ilustración',
+        text: 'Una serie de personajes para hablar de la rutina, la ansiedad, las redes y los mambos de todos los días.',
+        images: boards('eber_lettering', 16, 17, 14)
+      },
+      {
+        title: 'Remeras y buzos',
+        text: 'Las letras y los personajes llevados a la indumentaria.',
+        images: boards('eber_lettering', 11, 12, 13, 15)
+      },
+      {
+        title: 'Totebags',
+        text: 'Una línea de bolsas de tela con ilustraciones y frases propias.',
+        images: boards('eber_lettering', 18, 19, 20, 22)
+      },
+      {
+        title: 'Stickers y tienda',
+        text: 'Las planchas de stickers y la tienda online de la marca, con envíos a todo el país.',
+        images: boards('eber_lettering', 9, 10)
+      }
+    ]
   }
 ];
 
