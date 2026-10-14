@@ -2,11 +2,18 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "eber-portfolio",
   "compatibility_date": "2026-10-01",
-  // Static site: the build output is served as-is (no Worker script).
+  // Only redirects http and www to https://eber.ar (see worker/index.js); the site itself is static.
+  "main": "worker/index.js",
   // caso/<id>.html answers at /caso/<id>; unknown paths return a real 404.
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "none"
-  }
+    "not_found_handling": "none",
+    "run_worker_first": true
+  },
+  "routes": [
+    { "pattern": "eber.ar", "custom_domain": true },
+    { "pattern": "www.eber.ar", "custom_domain": true }
+  ]
 }
