@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eber-portfolio",
+  "compatibility_date": "2026-10-01",
+  // Static site: the build output is served as-is (no Worker script).
+  // caso/<id>.html answers at /caso/<id>; unknown paths return a real 404.
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}

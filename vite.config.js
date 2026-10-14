@@ -4,7 +4,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { WORK_PROJECTS, EBER_ART_ITEMS } from './src/data/projects.js'
 
-const SITE_URL = 'https://eber-portfolio.vercel.app'
+// Public address of the site: canonical URLs, sitemap, share previews and structured data
+const SITE_URL = 'https://eber.ar'
 const ogImage = (publicId) =>
   `https://res.cloudinary.com/le59kgwh/image/upload/f_jpg,q_auto,c_fill,g_auto,w_1200,h_630/${publicId}`
 
@@ -55,16 +56,17 @@ const casePage = (html, project) => {
 
 const seoPages = () => ({
   name: 'seo-pages',
-  apply: 'build',
+  transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', SITE_URL),
   async closeBundle() {
+    if (this.meta.watchMode) return
     const outDir = 'dist'
     const html = await readFile(join(outDir, 'index.html'), 'utf8')
     const projects = [...WORK_PROJECTS, ...EBER_ART_ITEMS]
+    await mkdir(join(outDir, 'caso'), { recursive: true })
 
     for (const project of projects) {
-      const dir = join(outDir, 'caso', project.id)
-      await mkdir(dir, { recursive: true })
-      await writeFile(join(dir, 'index.html'), casePage(html, project))
+      // caso/<id>.html is served at /caso/<id> (no trailing-slash redirect)
+      await writeFile(join(outDir, 'caso', `${project.id}.html`), casePage(html, project))
     }
 
     const urls = [`${SITE_URL}/`, ...projects.map((p) => `${SITE_URL}/caso/${p.id}`)]
