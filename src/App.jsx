@@ -16,19 +16,24 @@ import { EXPERIENCE, TEACHING } from './data/profile';
 
 const hasExperience = EXPERIENCE.length > 0 || TEACHING.length > 0;
 import { initSmoothScroll, scrollToTarget } from './lib/smoothScroll';
+import { casePath, caseIdFromLocation } from './lib/routes';
 
-// Case studies are addressable as #caso/<id> so they can be shared and the
-// browser back button returns to the gallery
-const CASE_HASH_PREFIX = '#caso/';
-
-const projectFromHash = () => {
-  if (!window.location.hash.startsWith(CASE_HASH_PREFIX)) return null;
-  const id = decodeURIComponent(window.location.hash.slice(CASE_HASH_PREFIX.length));
-  return [...WORK_PROJECTS, ...EBER_ART_ITEMS].find((p) => p.id === id) || null;
+// Case studies are addressable as /caso/<id> so they can be shared and indexed,
+// and the browser back button returns to the gallery
+const projectFromUrl = () => {
+  const id = caseIdFromLocation();
+  return id ? [...WORK_PROJECTS, ...EBER_ART_ITEMS].find((p) => p.id === id) || null : null;
 };
 
-const clearHash = () => {
-  window.history.replaceState(null, '', window.location.pathname + window.location.search);
+// Old #caso/<id> links land on the home page: move them to the real path
+const initialProject = () => {
+  const project = projectFromUrl();
+  if (project && window.location.hash) window.history.replaceState(null, '', casePath(project.id));
+  return project;
+};
+
+const clearCaseUrl = () => {
+  window.history.replaceState(null, '', '/' + window.location.search);
 };
 
 const scrollToSection = (sectionId, options) => {
@@ -36,7 +41,7 @@ const scrollToSection = (sectionId, options) => {
 };
 
 function PortfolioApp() {
-  const [selectedProject, setSelectedProject] = useState(projectFromHash);
+  const [selectedProject, setSelectedProject] = useState(initialProject);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => initSmoothScroll(), []);
@@ -75,9 +80,9 @@ function PortfolioApp() {
   }, [selectedProject]);
 
   useEffect(() => {
-    // Back/forward and pasted #caso links (a hash-only change may fire just hashchange)
+    // Back/forward and pasted legacy #caso links (a hash-only change may fire just hashchange)
     const syncWithUrl = () => {
-      const project = projectFromHash();
+      const project = projectFromUrl();
       if (project) {
         if (project !== selectedProjectRef.current) setSelectedProject(project);
       } else if (selectedProjectRef.current) {
@@ -94,13 +99,13 @@ function PortfolioApp() {
   }, []);
 
   const openProject = (project) => {
-    const hash = `${CASE_HASH_PREFIX}${project.id}`;
+    const path = casePath(project.id);
     if (selectedProject) {
       // Moving between cases keeps a single history entry, so "back" returns to the gallery
-      window.history.replaceState(null, '', hash);
+      window.history.replaceState(null, '', path);
     } else {
       galleryScrollRef.current = window.scrollY;
-      window.history.pushState(null, '', hash);
+      window.history.pushState(null, '', path);
       pushedHistoryRef.current = true;
     }
     setSelectedProject(project);
@@ -112,13 +117,13 @@ function PortfolioApp() {
       return;
     }
     // Opened from a shared link: there is no gallery entry to go back to
-    clearHash();
+    clearCaseUrl();
     leaveDetail(restoreGalleryScroll);
   };
 
   const handleNavigate = (sectionId) => {
     if (selectedProject) {
-      clearHash();
+      clearCaseUrl();
       pushedHistoryRef.current = false;
       leaveDetail(() => scrollToSection(sectionId, { immediate: true }));
       return;

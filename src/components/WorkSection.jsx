@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WORK_PROJECTS, CATEGORIES } from '../data/projects';
 import { ProjectCard } from './ProjectCard';
+import { casePath } from '../lib/routes';
 import { ProjectFilter } from './ProjectFilter';
 import { ProjectGrid } from './ProjectGrid';
 import { SectionHeader, sectionClass } from './SectionHeader';
@@ -42,6 +43,7 @@ export const WorkSection = ({ onOpenProject, index }) => {
             index={String(idx + 1).padStart(2, '0')}
             title={project.title}
             meta={project.categoryLabel}
+            href={casePath(project.id)}
             onClick={() => onOpenProject(project)}
           />
         ))}

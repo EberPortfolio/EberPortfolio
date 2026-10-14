@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { EBER_ART_SECTIONS, EBER_ART_ITEMS } from '../data/projects';
 import { ProjectCard } from './ProjectCard';
+import { casePath } from '../lib/routes';
 import { ProjectFilter } from './ProjectFilter';
 import { ProjectGrid } from './ProjectGrid';
 import { SectionHeader, sectionClass } from './SectionHeader';
@@ -44,6 +45,7 @@ export const EberArtSection = ({ onOpenProject, index }) => {
             index={String(idx + 1).padStart(2, '0')}
             title={item.title}
             meta={item.categoryLabel || sectionName(item.category)}
+            href={casePath(item.id)}
             onClick={() => onOpenProject(item)}
           />
         ))}

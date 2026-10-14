@@ -1,14 +1,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cloudinaryImage } from '../lib/cloudinary';
+import { isPlainLeftClick } from '../lib/routes';
 
 const GRID_SIZES = '(min-width: 1024px) 32vw, (min-width: 640px) 48vw, 100vw';
 const EASE = 'ease-[cubic-bezier(0.16,1,0.3,1)]';
 
-// Shared by Work and Eber Art. Without onClick the card is static.
-export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick, index }) => {
+// Shared by Work and Eber Art. With href the card is a real link (crawlable, opens
+// in a new tab with ctrl/cmd); a plain click runs onClick instead. Without onClick it is static.
+export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick, href, index }) => {
   const isInteractive = Boolean(onClick);
-  const Wrapper = isInteractive ? motion.button : motion.div;
+  const Wrapper = isInteractive ? (href ? motion.a : motion.button) : motion.div;
+  const interactiveProps = href
+    ? {
+        href,
+        onClick: (e) => {
+          if (!isPlainLeftClick(e)) return;
+          e.preventDefault();
+          onClick();
+        }
+      }
+    : { type: 'button', onClick };
 
   return (
     <Wrapper
@@ -17,7 +29,7 @@ export const ProjectCard = ({ image, gravity = 'auto', title, meta, onClick, ind
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      {...(isInteractive && { type: 'button', onClick })}
+      {...(isInteractive && interactiveProps)}
       className={`group block w-full text-left ${isInteractive ? 'cursor-pointer' : ''}`}
     >
       <span className="reveal-clip relative block aspect-[4/5] overflow-hidden bg-zinc-200 dark:bg-zinc-900">

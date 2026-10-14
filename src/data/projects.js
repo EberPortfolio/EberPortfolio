@@ -222,7 +222,7 @@ export const WORK_PROJECTS = [
     subtitle: 'Accesorios',
     tagline: 'Una marca de accesorios que recorre las culturas del mundo, del logo al local.',
     summary: 'Identidad, ilustración y sistema gráfico para Zpëzia: el logo y el packaging, una familia de estampillas por país, la campaña de fotos, el catálogo y las piezas de temporada, el local y la tienda online.',
-    thumbnail: 'zpezia',
+    thumbnail: 'portada_zpz',
     coverImage: 'web_zpezia-01',
     imageSize: { width: 2200, height: 1350 },
     deliverables: ['Logo', 'Ilustración', 'Packaging', 'Estampillas', 'Campaña', 'Catálogo', 'Retail'],
