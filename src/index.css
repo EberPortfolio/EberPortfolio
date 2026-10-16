@@ -47,6 +47,14 @@
     @apply bg-accent text-accent-foreground;
   }
 
+  /* No visible scrollbars anywhere; scrolling still works (wheel, touch, keys) */
+  * {
+    scrollbar-width: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
 
   /* Visible keyboard focus everywhere, invisible for mouse clicks */
   :focus-visible {
